@@ -2,14 +2,18 @@
 
 ## Réalisé
 - [Tous] Lecture du cahier des charges 
+- [Tous] Diagramme de classes - validé par Richard
 - [Hassen] Création du projet GitHub
-- [ ]
+- [Tous] Init des règles de gestion
+- [Joseph] Init du diagramme ERD - solution à décrire
 
 ## Points Bloquants ouvertes restant à résoudre
-- [ ] 
+- [Tous] Rechercher le format des adresses open Street Map
 
 ## À Faire aujourd'hui ou à court terme
-- [ ] 
+- [Tous] Finaliser Diagramme ERD
+- [Tous] Diagramme des cas d'utilisation && Regles de gestion 
+- [Tous] Première maquette sur un outil
 
 ## Autres Points
 - [Indispo] Hassen Mardi matin 
@@ -19,4 +23,4 @@
 
 
 # Esprit du jour de l'équipe
-- Le mot du jour
+=> Ambiance Travaux
