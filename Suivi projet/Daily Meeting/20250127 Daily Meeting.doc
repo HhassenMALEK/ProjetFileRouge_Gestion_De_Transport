@@ -1,0 +1,29 @@
+# Daily Meeting Template du 27 Janvier 2025
+
+## Réalisé
+- [Hassen, Mathis] Spec à fusionner => Fin du chapitre Organiser un covoiturage 
+- [Mathis] Remarques sur maquettes Figma
+- [Seb] Ajouts sur chapitre Gerer les véhcules de services - RAF 6 CU 
+- [Joseph] : Mise a jour du Diagramme de classe
+
+## Points Bloquants ouvertes restant à résoudre
+- [Hassen ] : popup confirmer la création d'un covoiturage
+- [Sebastien] :  Statut véhicule de service 
+    => suppression si pas de réservation sinon on passe au statut "Supprimer"
+
+
+## À Faire aujourd'hui ou à court terme
+- [Mathis] Partage sur remarques Figma
+- [Joseph] ERD à mettre à jour
+- [Joseph] Spec menu burger
+- [Joseph] ERD à mettre à jour
+- [Sebastien] Spec à finir sur chapitre Gerer véhicule
+- [Mathis] Document de conception
+- [Mathis] Glossaire dans les specs à réaliser sur véhicule service, covoiturage, modèle, réparation, organisateur, participant
+
+## Autres Points
+- []   
+- [] 
+
+# Esprit du jour de l'équipe
+Entraide et amélioration
