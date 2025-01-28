@@ -1,6 +1,6 @@
 ## Dossier application Application OuiMouve
 
-## Créateurs : Mathis BASIER, Hassen MALECK, Sébastien DAUDEY, Joseph BROU.
+## Concepteurs-Développeurs : Mathis BASIER, Hassen MALEK, Sébastien DAUDEY, Joseph BROU.
 
 ## Le dossier Diagrammes contient :
 
