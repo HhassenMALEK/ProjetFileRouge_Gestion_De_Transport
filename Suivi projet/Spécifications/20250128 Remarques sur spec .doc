@@ -1,0 +1,61 @@
+# remarque autres docs
+    Diag ERD pas de date départ de Covoit, pas d'heure de départ
+    Le covoiturage ne coute rien ????
+
+# remarque générales
+- A unifier dans le wording 
+    Selecteur ou liste déroulante
+    Ascenceur ou scrolling + vérifier plusieurs écrans n'ont pas cette règle
+    Liste : ajouter dans règle affichage message si liste vide 
+    Date : saisie avec controle de format ou via calendrier ou les deux
+    Message succès suite popup Confirmer-Annuler ? Si oui à ajouter dans plusieurs chapitre
+    Revoir les retours pages précédentes : bouton comme sur Détails Covoiturages ou bouton Recherche du chap 6 ? ou autre
+- Date de résa du covoit pour un participant n'est jamais affichée ni utilisée
+
+
+# chap 3
+    Redirection du menu burger à revoir mettre le nom de la CU utilisé dans le docs
+    Ecran Creer un compte pas de titre
+    Louer une voiture => Réserver un véhicule ? Faire une demande ?
+
+# Chap 4
+    Visualiser covoiturage : Annuler et Supprimer différence ?
+    Liste en cours et historique un seul écran ? Si oui supprimer ecran historique et regle affichage et tri de la liste 
+    Rechercher un covoit : recherche partielle et tri liste - modif Mathis pendant rédaction test perdue ?
+    Maquette Détail Covoiturage ("Paris" milieu écran à supprimer)
+
+# chap 5
+    Détail covoiturage : 
+        virer dans regle le détail de ce qui est sur la maquette (c'est le seul endroit ou on le fait)  
+        Bouton annuler et modifier non dispo si le covoit est annulé 
+    Annuler un covoit : Déjà détailler dans Détail covoit, à supprimer ?
+    Créer un covoiturage : comment on accède à cet écran ? Pas dans burger, pas dans détail covoit ?
+        Je fusionnerai en un seul Créer un covoit et choisir un véhicule (même écran)
+        Unifier écran, lien, et dans les spec : gestion véhicules, créer véhicules, Ajouter véhicules
+        Virer controle sur date d'arrivée (champ insxistant)
+        Ajouter Messages d'erreurs liés aux regles métiers
+        Détailler la règle véhicule perso et service, et règle de tri
+    Créer un véhicule   
+        !! A éclater en 3 - pour cohérence avec le reste du doc 
+        Pourquoi maquette 4 ? Ou est l'écran de modif ?
+        Comment on arrive à la maquette ajouter un véhicule ?
+        Ecran détail ne prend pas en compte les modifs sur le véhicule perso d'historique
+        Liste véhicule ajouter Couleur et Nb de places
+    Modifier un covoit  
+        Reprendre Action de créer un covoit 5.3.1 => garder détail des contrôles, virer OUI et NON
+    Historique : a supprimer
+
+# Chap 6
+    Modifier une demande 
+        Si nouvelle date empiète sur un covoit mettre message erreur comme dans annuler demande
+    Annuler une demande 
+        On parle de deux popup ou qui change. Mais une seule maquette ? Je n'ai pas compris
+    Recherche véhicule  
+        Remplacer Lieu par Site 
+        Griser bouton recherche tant que date débuit, fin Site non renseigné ? ou permettre recherche partielle ?
+        Bouton Réserver appelle Réserver : un jour sans fin ?
+
+
+# Chap 7
+- A relire par ??
+- décrire Gestion des photos manquantes : placeholder et regles 
