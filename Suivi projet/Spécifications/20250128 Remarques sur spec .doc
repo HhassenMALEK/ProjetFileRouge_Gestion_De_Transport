@@ -29,27 +29,27 @@
     Ok :Liste en cours et historique un seul écran ? Si oui supprimer ecran historique et regle affichage et tri de la liste Détail covoiturage : 
         virer dans regle le détail de ce qui est sur la maquette (c'est le seul endroit ou on le fait)  
         Bouton annuler et modifier non dispo si le covoit est annulé 
-    Annuler un covoit : Déjà détailler dans Détail covoit, à supprimer ?
-    Créer un covoiturage : comment on accède à cet écran ? Pas dans burger, pas dans détail covoit ?
+    Ok Annuler un covoit : Déjà détailler dans Détail covoit, à supprimer ?
+    Ok Créer un covoiturage : comment on accède à cet écran ? Pas dans burger, pas dans détail covoit ?
         Je fusionnerai en un seul Créer un covoit et choisir un véhicule (même écran)
         Unifier écran, lien, et dans les spec : gestion véhicules, créer véhicules, Ajouter véhicules
         Virer controle sur date d'arrivée (champ insxistant)
         Ajouter Messages d'erreurs liés aux regles métiers
         Détailler la règle véhicule perso et service, et règle de tri
-    Créer un véhicule   
+    Ok Créer un véhicule   
         !! A éclater en 3 - pour cohérence avec le reste du doc 
         Pourquoi maquette 4 ? Ou est l'écran de modif ?
         Comment on arrive à la maquette ajouter un véhicule ?
         Ecran détail ne prend pas en compte les modifs sur le véhicule perso d'historique
         Liste véhicule ajouter Couleur et Nb de places
-    Modifier un covoit  
+    Ok Modifier un covoit  
         Reprendre Action de créer un covoit 5.3.1 => garder détail des contrôles, virer OUI et NON
-    Historique : a supprimer
+    Ok Historique : a supprimer
 
 # Chap 6
-    Modifier une demande 
+   Ok Modifier une demande 
         Si nouvelle date empiète sur un covoit mettre message erreur comme dans annuler demande
-    Annuler une demande 
+    Ok Annuler une demande 
         On parle de deux popup ou qui change. Mais une seule maquette ? Je n'ai pas compris
     Recherche véhicule  
         Remplacer Lieu par Site 
