@@ -1,31 +1,32 @@
 # remarque autres docs
-    Diag ERD pas de date départ de Covoit, pas d'heure de départ
-    Le covoiturage ne coute rien ????
+    Diag ERD pas de date départ de Covoit, pas d'heure de départ => Mathis
+    Le covoiturage ne coute rien ???? => Pas de prise en compte
 
 # remarque générales
 - A unifier dans le wording 
-    Selecteur ou liste déroulante
-    Ascenceur ou scrolling + vérifier plusieurs écrans n'ont pas cette règle
-    Liste : ajouter dans règle affichage message si liste vide 
-    Date : saisie avec controle de format ou via calendrier ou les deux
-    Message succès suite popup Confirmer-Annuler ? Si oui à ajouter dans plusieurs chapitre
-    Revoir les retours pages précédentes : bouton comme sur Détails Covoiturages ou bouton Recherche du chap 6 ? ou autre
-- Date de résa du covoit pour un participant n'est jamais affichée ni utilisée
+    ** Selecteur ou liste déroulante : Sélecteur
+    ** Ascenceur ou scrolling : scroll + vérifier plusieurs écrans n'ont pas cette règle => Hassen
+    ** Liste : ajouter dans règle affichage message si liste vide => ? 
+    ** Date : saisie avec controle de format ou via calendrier ou les deux => Calendrier
+    ** Message succès suite popup Confirmer-Annuler ? Si oui à ajouter dans plusieurs chapitre => Ajout texte de validation sur écran // A faire partout
+    Ok UC ou CU => CU 
+    ** Revoir les retours pages précédentes : bouton comme sur Détails Covoiturages ou bouton Recherche du chap 6 ? ou autre => Bouton retour avec une flèche à faire partout
+- Date de résa du covoit pour un participant n'est jamais affichée ni utilisée => ok ne change rien
 
 
 # chap 3
-    Redirection du menu burger à revoir mettre le nom de la CU utilisé dans le docs
-    Ecran Creer un compte pas de titre
-    Louer une voiture => Réserver un véhicule ? Faire une demande ?
+    Ok : Redirection du menu burger à revoir mettre le nom de la CU utilisé dans le docs
+    Ok : Ecran Creer un compte pas de titre
+    Ok : Louer une voiture => Réserver un véhicule ? Faire une demande ?
 
 # Chap 4
-    Visualiser covoiturage : Annuler et Supprimer différence ?
-    Liste en cours et historique un seul écran ? Si oui supprimer ecran historique et regle affichage et tri de la liste 
-    Rechercher un covoit : recherche partielle et tri liste - modif Mathis pendant rédaction test perdue ?
-    Maquette Détail Covoiturage ("Paris" milieu écran à supprimer)
+    
+    Ok : Rechercher un covoit : recherche partielle et tri liste - modif Mathis pendant rédaction test perdue ?
+    Ok : Maquette Détail Covoiturage ("Paris" milieu écran à supprimer)
 
 # chap 5
-    Détail covoiturage : 
+    Ok : Visualiser co voiturage : Annuler et Supprimer différence ?
+    Ok :Liste en cours et historique un seul écran ? Si oui supprimer ecran historique et regle affichage et tri de la liste Détail covoiturage : 
         virer dans regle le détail de ce qui est sur la maquette (c'est le seul endroit ou on le fait)  
         Bouton annuler et modifier non dispo si le covoit est annulé 
     Annuler un covoit : Déjà détailler dans Détail covoit, à supprimer ?
