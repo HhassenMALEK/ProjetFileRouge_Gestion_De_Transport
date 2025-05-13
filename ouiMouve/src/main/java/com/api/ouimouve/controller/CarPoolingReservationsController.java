@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController("/api/carpooling-reservations")
+@RestController
+@RequestMapping("/api/carpooling-reservations")
 public class CarPoolingReservationsController {
     @Autowired
     private CarPoolingReservationsService carPoolingReservationsService;
@@ -19,10 +20,10 @@ public class CarPoolingReservationsController {
         return carPoolingReservationsService.getAllReservations();
     }
 
-    @GetMapping("/list/{userId}")
-    public List<CarPoolingReservationsDTO> getAllCarPoolingReservationsByUserId(@PathVariable Long userId) {
-        return carPoolingReservationsService.getAllReservationsByUserId(userId);
-    }
+//    @GetMapping("/list/{userId}")
+//    public List<CarPoolingReservationsDTO> getAllCarPoolingReservationsByUserId(@PathVariable Long userId) {
+//        return carPoolingReservationsService.getAllReservationsByUserId(userId);
+//    }
     @GetMapping("/{id}")
     public CarPoolingReservationsDTO getCarPoolingReservation(@PathVariable Long id) throws RessourceNotFoundException {
         return carPoolingReservationsService.getReservation(id);

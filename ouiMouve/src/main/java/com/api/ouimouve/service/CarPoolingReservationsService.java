@@ -35,12 +35,12 @@ public class CarPoolingReservationsService {
      * @param userId the ID of the user
      * @return a list of CarPoolingReservationsDTO
      */
-    public List<CarPoolingReservationsDTO> getAllReservationsByUserId(Long userId) {
-        return carPoolingReservationsRepository.findByUser(userId)
-                .stream()
-                .map(carPoolingReservationsMapper::toCarPoolingReservationsDTO)
-                .collect(Collectors.toList());
-    }
+//    public List<CarPoolingReservationsDTO> getAllReservationsByUserId(Long userId) {
+//        return carPoolingReservationsRepository.findByUser(userId)
+//                .stream()
+//                .map(carPoolingReservationsMapper::toCarPoolingReservationsDTO)
+//                .collect(Collectors.toList());
+//    }
     /**
      * Get a CarPoolingReservations by its ID
      * @param id the ID of the CarPoolingReservations
