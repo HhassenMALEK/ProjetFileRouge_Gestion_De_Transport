@@ -2,12 +2,14 @@ package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.Model;
 import com.api.ouimouve.dto.ModelDto;
+import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.ModelMapper;
 import com.api.ouimouve.repository.ModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -70,22 +72,17 @@ public class ModelService {
      * @return the updated ModelDto
      */
     public ModelDto updateModel(long id, ModelDto modelDto) {
-        if (getModelById(id) != null) {
-            modelRepository.findById(id).ifPresent(model -> {
-                model.setModelName(modelDto.getModelName());
-                model.setMark(modelDto.getMark());
-                model.setPhotoURL(modelDto.getPhotoURL());
-                model.setMotorType(modelDto.getMotorType());
-                model.setCategory(modelDto.getCategory());
-                model.setCO2(modelDto.getCO2());
-                model.setPlacesModel(modelDto.getPlacesModel());
-
-                modelRepository.save(model);
-            });
-            return getModelById(id);
+        Optional<Model> modelOpt = modelRepository.findById(id);
+        if (modelOpt.isPresent()) {
+            modelRepository.save(modelMapper.toModel(modelDto));
+            return modelMapper.toModelDto(modelOpt.get());
         }
-        throw new RuntimeException("Model not found");
+
+        throw new RessourceNotFoundException("Model not found");
     }
+
+
+
 
 
 }
