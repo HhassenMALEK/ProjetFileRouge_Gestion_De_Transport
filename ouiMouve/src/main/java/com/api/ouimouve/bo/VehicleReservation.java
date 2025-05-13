@@ -51,9 +51,12 @@ public class VehicleReservation {
     @Column(nullable = false)
     private Date end;
 
+
     /**
      * Motive for the reservation.
+     * Possible values: "business", "personal", "other".
      */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private VehicleStatus status;
 
