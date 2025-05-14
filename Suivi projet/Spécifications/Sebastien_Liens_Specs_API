@@ -1,1 +1,5 @@
 
+# Chap 7.8	Cas d’utilisation Gérer les modèles des véhicules de services
+-> Filtrer par catégorie : API à créer
+-> Bouton Supprimer  - > DELETE /api/model/{id} -- Ajouter test de non existence dans réservation
+
