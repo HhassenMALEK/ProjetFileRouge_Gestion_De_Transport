@@ -3,6 +3,7 @@ package com.api.ouimouve.service;
 import com.api.ouimouve.bo.Reparation;
 import com.api.ouimouve.dto.ReparationDto;
 import com.api.ouimouve.exception.RessourceNotFoundException;
+
 import com.api.ouimouve.mapper.ReparationMapper;
 import com.api.ouimouve.repository.ReparationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Random;
+
+
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +55,7 @@ public class ReparationService {
     }
 
     /**
+
      * Delete a Reparation by its ID
      * @param id the ID of the Reparation to delete
      * @return the deleted ReparationDto
@@ -74,6 +77,7 @@ public class ReparationService {
      */
     public ReparationDto updateReparation(long id, ReparationDto reparationDto) {
         // Check if the reparation exists before updating
+
 
         Optional <Reparation> reparationOpt = reparationRepository.findById(id);
         if (reparationOpt.isPresent()) {
