@@ -1,6 +1,7 @@
 package com.api.ouimouve.controller;
 
 import com.api.ouimouve.dto.UserDto;
+import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +24,12 @@ public class UserController {
      * @return a list of UserDto
      */
     @GetMapping("/all")
-    public List<UserDto> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserDto> getAllUsers() throws RessourceNotFoundException {
+        try {
+            return userService.getAllUsers();
+        } catch (RessourceNotFoundException e) {
+            throw new RessourceNotFoundException(e.getMessage());
+        }
     }
 
     /**
@@ -47,8 +52,12 @@ public class UserController {
      * @return the created UserDto
      */
     @PostMapping()
-    public UserDto createUser(@RequestBody UserDto userDto) {
-        return userService.createUser(userDto);
+    public UserDto createUser(@RequestBody UserDto userDto) throws InvalidRessourceException {
+        try {
+            return userService.createUser(userDto);
+        } catch (InvalidRessourceException e) {
+            throw new InvalidRessourceException(e.getMessage());
+        }
     }
     /**
      * Update an existing user
@@ -57,8 +66,12 @@ public class UserController {
      * @return the updated UserDto
      */
     @PutMapping("/{id}")
-    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) {
-        return userService.updateUser(id, userDto);
+    public UserDto updateUser(@PathVariable Long id, @RequestBody UserDto userDto) throws InvalidRessourceException {
+        try {
+            return userService.updateUser(id, userDto);
+        } catch (InvalidRessourceException e) {
+            throw new InvalidRessourceException(e.getMessage());
+        }
     }
 
     /**
@@ -66,7 +79,11 @@ public class UserController {
      * @param id the ID of the user to delete
      */
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@PathVariable Long id) throws RessourceNotFoundException {
+        UserDto user = userService.getUserById(id);
+        if (user == null) {
+            throw new RessourceNotFoundException("User not found with id: " + id);
+        }
         userService.deleteUser(id);
     }
 
