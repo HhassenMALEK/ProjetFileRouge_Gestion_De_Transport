@@ -49,15 +49,25 @@ public class User {
      */
     @Column(unique = true, nullable = false, length = 20)
     private String licenseNumber;
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Vehicle> vehicles;
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<CarPoolingReservations> carPoolingReservations;
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<CarPooling> organizedCarPoolings;
-      @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
-      private List<PersonalVehicle> personalVehicles;
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<VehicleReservation> vehicleReservations;
+    /**
+     * List of carpooling reservations made by the user.
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<CarPoolingReservations> carPoolingReservations;
+    /**
+     * List of carpoolings organized by the user.
+     */
+    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<CarPooling> organizedCarPoolings;
+    /**
+     * List of personal vehicles associated with the user.
+     */
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    private List<PersonalVehicle> personalVehicles;
+    /**
+     * List of vehicle reservations made by the user.
+     */
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    private List<VehicleReservation> vehicleReservations;
 
 }
