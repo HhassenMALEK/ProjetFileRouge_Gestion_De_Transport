@@ -11,6 +11,6 @@ import java.util.List;
 public class SiteDto {
     private Long id;
     private String name;
-    private Long addressId;
+    private String addressId;
     private List<Long> vehicleIds;
 }
