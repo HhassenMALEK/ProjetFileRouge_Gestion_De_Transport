@@ -33,9 +33,10 @@ public class VehicleReservation {
     /**
      * User ID associated with the reservation.
      */
-//    @ManyToOne
-//    @JoinColumn(name = "user_id", nullable = false)
-//    private User user;
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     @Column(nullable = false)
     private long userID;
 
