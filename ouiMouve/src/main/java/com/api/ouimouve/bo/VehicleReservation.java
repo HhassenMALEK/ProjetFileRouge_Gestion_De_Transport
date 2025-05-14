@@ -21,21 +21,7 @@ public class VehicleReservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    /**
-     * Vehicle ID associated with the reservation.
-     */
-    @ManyToOne
-    @JoinColumn(name = "service_vehicle_id", nullable = false)
-    private ServiceVehicle servicelVehicle;
-    @Column(nullable = false)
-    private long vehicleID;
 
-    /**
-     * User ID associated with the reservation.
-     */
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
 
     @Column(nullable = false)
     private long userID;
@@ -61,4 +47,17 @@ public class VehicleReservation {
     @Column(nullable = false)
     private VehicleStatus status;
 
+    /**
+     * Vehicle ID associated with the reservation.
+     */
+    @ManyToOne
+    @JoinColumn(name = "service_vehicle_id", nullable = false)
+    private ServiceVehicle serviceVehicle;
+
+    /**
+     * User ID associated with the reservation.
+     */
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 }

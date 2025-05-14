@@ -24,7 +24,7 @@ public class ServiceVehicle extends Vehicle {
     /**
      * relationship with the reservation
      */
-    @OneToMany(mappedBy = "servicelVehicle", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "serviceVehicle")
     private List<VehicleReservation> vehicleReservations;
 
     @ManyToOne
@@ -35,7 +35,7 @@ public class ServiceVehicle extends Vehicle {
     @JoinColumn(name = "site_id", nullable = false)
     private Site site;
 
-    @OneToMany (mappedBy = "serviceVehicle", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "serviceVehicle")
     private List<Reparation> reparations;
 
 }

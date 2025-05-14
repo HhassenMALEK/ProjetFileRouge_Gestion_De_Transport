@@ -38,8 +38,5 @@ public class Reparation {
     @ManyToOne
     @JoinColumn(name = "service_vehicle_id", nullable = false)
     private ServiceVehicle serviceVehicle;
-    /**
-     * Vehicle ID associated with the repair.
-     */
-    private long vehicleId;
+
 }

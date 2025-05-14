@@ -14,7 +14,7 @@ import java.util.List;
 public interface VehicleReservationRepository extends JpaRepository<VehicleReservation, Long> {
     // Custom query methods can be defined here if needed
     // For example, find by vehicle ID or date range
-    List<VehicleReservation> findByVehicleID(Long vehicleID);
-    List<VehicleReservation> findByUserID(Long userID);
+    List<VehicleReservation> findByServiceVehicleId(Long vehicleID);
+    List<VehicleReservation> findByUserId(Long userID);
     // List<Reparation> findByStartDateBetween(Date startDate, Date endDate);
 }

@@ -14,6 +14,6 @@ import java.util.List;
 public interface ReparationRepository extends JpaRepository<Reparation, Long> {
     // Custom query methods can be defined here if needed
     // For example, find by vehicle ID or date range
-    List<Reparation> findByVehicleId(Long vehicleId);
+    List<Reparation> findByServiceVehicleId(Long serviceVehicle);
     // List<Reparation> findByStartDateBetween(Date startDate, Date endDate);
 }

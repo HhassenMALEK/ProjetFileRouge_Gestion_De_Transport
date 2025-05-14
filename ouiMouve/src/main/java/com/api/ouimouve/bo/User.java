@@ -52,22 +52,22 @@ public class User {
     /**
      * List of carpooling reservations made by the user.
      */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<CarPoolingReservations> carPoolingReservations;
     /**
      * List of carpoolings organized by the user.
      */
-    @OneToMany(mappedBy = "organizer", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "organizer")
     private List<CarPooling> organizedCarPoolings;
     /**
      * List of personal vehicles associated with the user.
      */
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<PersonalVehicle> personalVehicles;
     /**
      * List of vehicle reservations made by the user.
      */
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user")
     private List<VehicleReservation> vehicleReservations;
 
 }

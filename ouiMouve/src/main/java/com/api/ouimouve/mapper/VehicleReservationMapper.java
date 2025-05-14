@@ -10,8 +10,7 @@ import org.mapstruct.factory.Mappers;
  * Mapper interface for converting between Reservation and ReservationDto objects.
  */
 @Mapper(componentModel = "spring")
-public interface VehicleReservationMapper {
-    VehicleReservationMapper MAPPER = Mappers.getMapper(VehicleReservationMapper.class);
+public interface VehicleReservationMapper { ;
     VehicleReservation toVehicleReservation(VehicleReservationDto reservationDto);
     VehicleReservationDto toVehicleReservationDto(VehicleReservation reservation);
 

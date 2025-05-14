@@ -27,14 +27,10 @@ public class Site {
     @Column(nullable = false)
     private String name;
 
-
-    //@OneToOne(cascade = CascadeType.ALL)
-    //@JoinColumn(name = "address_id", referencedColumnName = "id")
-    //private Address address;
+    @OneToOne()
+    @JoinColumn(name = "adress_id", referencedColumnName = "id")
+    private Adress adress;
 
     @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
     private List<ServiceVehicle> vehiclesServices;
-
-    private String AdresseID;
-    private Long vehiculeID;
 }

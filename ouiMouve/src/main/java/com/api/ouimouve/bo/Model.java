@@ -63,7 +63,7 @@ public class Model {
     private Integer placesModel;
 
     @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
-   private List<ServiceVehicle> servicelVehicles;
+    private List<ServiceVehicle> serviceVehicles;
 
 }
 

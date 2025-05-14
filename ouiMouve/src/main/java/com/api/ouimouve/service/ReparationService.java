@@ -29,7 +29,7 @@ public class ReparationService {
      * @return a list of ReparationDto
      */
     public List<ReparationDto>  getAllReparations(Long vehicleId) {
-        return reparationRepository.findByVehicleId(vehicleId).stream()
+        return reparationRepository.findByServiceVehicleId(vehicleId).stream()
                 .map(reparationMapper::toReparationDto)
                 .collect(Collectors.toList());
     }
