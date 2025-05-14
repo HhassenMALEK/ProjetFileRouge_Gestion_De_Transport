@@ -1,5 +1,6 @@
 package com.api.ouimouve.bo;
 
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -39,32 +40,29 @@ public class CarPooling {
     @NotNull
     private Integer distance;
 
-//    /** Address where the carpooling starts. */
-//    @ManyToOne
-//    @JoinColumn(name = "start_address_id", nullable = false)
-//    private Address startAddress;
 
-//    /** Address where the carpooling ends. */
-//    @ManyToOne
-//    @JoinColumn(name = "end_address_id", nullable = false)
-//    private Address endAddress;
 
-//    /** Vehicle used for the carpooling. */
-//    @ManyToOne
-//    @JoinColumn(name = "vehicle_id", nullable = false)
-//    private Vehicle vehicle;
+    /** Adress where the carpooling starts. */
+    @ManyToOne
+    @JoinColumn(name = "departure_address_id", nullable = false)
+    private Adress departureAdress;
 
-//    /** User who organizes the carpooling. */
-//    @ManyToOne
-//    @JoinColumn(name = "organizer_id", nullable = false)
-//    private User organizer;
+    /** Adress where the carpooling ends. */
+    @ManyToOne
+    @JoinColumn(name = "destination_address_id", nullable = false)
+    private Adress destinationAdress;
 
-//    /** Users who participate as passengers in the carpooling. */
-//    @ManyToMany
-//    @JoinTable(
-//            name = "car_pooling_passengers",
-//            joinColumns = @JoinColumn(name = "car_pooling_id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id")
-//    )
-//    private List<User> passengers;
+    /** Vehicle used for the carpooling. */
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
+
+    /** User who organizes the carpooling. */
+    @ManyToOne
+    @JoinColumn(name = "organizer_id", nullable = false)
+    private User organizer;
+
+    /** Users who participate as passengers in the carpooling. */
+    @OneToMany(mappedBy = "carPooling")
+    private List<CarPoolingReservations> reservations;
 }

@@ -15,25 +15,31 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum CarPoolingStatus {
+
+    /**
+     * Indicates that the carpooling reservation is currently in progress.
+     */
     IN_PROGRESS("IN_PROGRESS"),
+    /**
+     * Indicates that the carpooling reservation has been completed.
+     */
     FINISHED("FINISHED"),
+
+    /**
+     * Indicates that the carpooling reservation has been cancelled.
+     */
     CANCELLED("CANCELLED"),
+
+    /**
+     * Indicates that the carpooling reservation is open for booking.
+     */
     BOOKING_OPEN("BOOKING_OPEN"),
+
+    /**
+     * Indicates that the carpooling reservation is full and no more bookings can be made.
+     */
     BOOKING_FULL("BOOKING_FULL");
 
     private final String value;
 
-    /**
-     * Get the string value of the enum constant.
-     * @param value The string value to match.
-     * @return The corresponding CarPoolingStatus enum constant.
-     */
-    public static CarPoolingStatus fromValue(String value) {
-        for (CarPoolingStatus status : values()) {
-            if (status.getValue().equalsIgnoreCase(value)) { // Utilise le getter généré par Lombok
-                return status;
-            }
-        }
-        throw new IllegalArgumentException("Unknown enum type " + value + ", Allowed values are " + java.util.Arrays.toString(values()));
-    }
 }

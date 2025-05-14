@@ -25,13 +25,13 @@ public class ReservationService {
 
 
     public List<VehicleReservationDto> getAllReservationsByVehicle(Long vehicleId) {
-        return reservationRepository.findByVehicleID(vehicleId).stream()
+        return reservationRepository.findByServiceVehicleId(vehicleId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }
 
     public List<VehicleReservationDto> getAllReservationsByUser(Long userId) {
-        return reservationRepository.findByUserID(userId).stream()
+        return reservationRepository.findByUserId(userId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }

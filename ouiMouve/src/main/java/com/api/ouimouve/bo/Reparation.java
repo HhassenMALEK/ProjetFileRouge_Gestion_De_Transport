@@ -34,11 +34,9 @@ public class Reparation {
      */
     @Column(nullable = false)
     private String motive;
-//    @ManyToOne
-//    @JoinColumn(name = "vehicle_id", nullable = false)
-//    private Vehicle vehicle;
-    /**
-     * Vehicle ID associated with the repair.
-     */
-    private long vehicleId;
+
+    @ManyToOne
+    @JoinColumn(name = "service_vehicle_id", nullable = false)
+    private ServiceVehicle serviceVehicle;
+
 }

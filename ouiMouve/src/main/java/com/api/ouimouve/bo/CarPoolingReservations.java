@@ -32,16 +32,16 @@ public class CarPoolingReservations {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private CarPoolingStatus status;
-//    /**
-//     * User ID associated with the reservation.
-//     */
-//    @OneToOne
-//    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
-//    private User user;
-//    /**
-//     * Carpooling ID associated with the reservation.
-//     */
-//    @OneToOne
-//    @JoinColumn(name = "carpooling_id", referencedColumnName = "id",nullable = false)
-//    private CarPooling carPooling;
+    /**
+     * User ID associated with the reservation.
+     */
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id",nullable = false)
+    private User user;
+    /**
+     * Carpooling ID associated with the reservation.
+     */
+    @ManyToOne
+    @JoinColumn(name = "carpooling_id", referencedColumnName = "id",nullable = false)
+    private CarPooling carPooling;
 }

@@ -47,18 +47,15 @@ public class Adress {
     @Column(nullable = false)
     private float longY;
 
-//    @OneToOne
-//    @JoinColumn(name = "site_id", referencedColumnName = "id")
     /**
-     * site ID associated with the adress.
+     * The carpooling departures associated with this address
      */
-    private long siteId;
-
-    //@OneToMany(mappedBy = "departure", cascade = CascadeType.ALL, orphanRemoval = true)
-    //private List<Carpooling> departures;
-    private long departures;
-
-    //@OneToMany(mappedBy = "arrival", cascade = CascadeType.ALL, orphanRemoval = true)
-    private long arrivals;
+    @OneToMany(mappedBy = "departureAdress")
+    private List<CarPooling> departures;
+    /**
+     * The carpooling arrivals associated with this address
+     */
+    @OneToMany(mappedBy = "destinationAdress")
+    private List<CarPooling> arrivals;
 
 }
