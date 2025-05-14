@@ -6,11 +6,16 @@ import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
 
+import org.springframework.stereotype.Component;
+
+
 /**
  * Mapper interface for converting between Reparation and ReparationDto objects.
  */
 @Mapper(componentModel = "spring")
 public interface ReparationMapper {
+
+
 
     Reparation toReparation(ReparationDto reparationDto);
     ReparationDto toReparationDto(Reparation reparation);

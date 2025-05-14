@@ -1,6 +1,9 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.bo.Reparation;
 import com.api.ouimouve.dto.ReparationDto;
+import com.api.ouimouve.exception.RessourceNotFoundException;
+
 import com.api.ouimouve.mapper.ReparationMapper;
 import com.api.ouimouve.repository.ReparationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +12,8 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+
+
 import java.util.stream.Collectors;
 
 @Service
@@ -50,9 +55,10 @@ public class ReparationService {
     }
 
     /**
-     * Update an existing Reparation
-     * @param id the id of the Reparation to update
-     * @return the updated ReparationDto
+
+     * Delete a Reparation by its ID
+     * @param id the ID of the Reparation to delete
+     * @return the deleted ReparationDto
      */
     public ReparationDto deleteReparation(long id) {
         ReparationDto reparationDto = getReparationById(id);
@@ -71,16 +77,14 @@ public class ReparationService {
      */
     public ReparationDto updateReparation(long id, ReparationDto reparationDto) {
         // Check if the reparation exists before updating
-        if (getReparationById(id) != null) {
-            reparationRepository.findById(id).ifPresent(reparation -> {
-                // TODO Contrôller qu'il n'y a pas de réparation qui se chevauche
-                reparation.setStart(reparationDto.getStart());
-                reparation.setEnd(reparationDto.getEnd());
-                reparation.setMotive(reparationDto.getMotive());
-                reparation.setVehicleId(reparationDto.getVehicleId());
-                reparationRepository.save(reparation);
-            });
+
+
+        Optional <Reparation> reparationOpt = reparationRepository.findById(id);
+        if (reparationOpt.isPresent()) {
+            reparationRepository.save(reparationMapper.toReparation(reparationDto));
+            return reparationMapper.toReparationDto(reparationOpt.get());
         }
-        throw new RuntimeException("Reparation not found");
+
+        throw new RessourceNotFoundException("Reparation not found");
     }
 }
