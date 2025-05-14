@@ -1,7 +1,7 @@
 package com.api.ouimouve.repository;
 
 import com.api.ouimouve.bo.CarPooling;
-import com.api.ouimouve.bo.CarPoolingStatus;
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

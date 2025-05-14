@@ -1,7 +1,7 @@
 package com.api.ouimouve.service;
 
-import com.api.ouimouve.bo.CarPoolingStatus;
 import com.api.ouimouve.dto.CarPoolingDto;
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.CarPoolingMapper;
 import com.api.ouimouve.repository.CarPoolingRepository;

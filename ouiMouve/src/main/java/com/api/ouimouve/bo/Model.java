@@ -3,7 +3,6 @@ package com.api.ouimouve.bo;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -63,14 +62,8 @@ public class Model {
     @Column(nullable = false)
     private Integer placesModel;
 
-
-// TODO à compléter si nécessaire de mettre la liste
-
-// A voir si c'est utile
-//    @ManyToOne
-//    @JoinColumn(name = "model_id", nullable = false)
-
-   // private List<Vehicle> vehicles;
+    @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
+   private List<ServiceVehicle> servicelVehicles;
 
 }
 

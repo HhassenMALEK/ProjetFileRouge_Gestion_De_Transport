@@ -55,8 +55,8 @@ public class User {
 //    private List<CarPoolingReservations> carPoolingReservations;
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private List<CarPooling> organizedCarPoolings;
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-//    private List<Vehicle> vehicles;
+      @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+      private List<PersonalVehicle> personalVehicles;
 //    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 //    private List<VehicleReservation> vehicleReservations;
 

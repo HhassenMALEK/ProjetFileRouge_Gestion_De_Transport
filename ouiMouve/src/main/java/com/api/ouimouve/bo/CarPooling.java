@@ -1,5 +1,6 @@
 package com.api.ouimouve.bo;
 
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -39,6 +40,8 @@ public class CarPooling {
     @NotNull
     private Integer distance;
 
+
+
 //    /** Address where the carpooling starts. */
 //    @ManyToOne
 //    @JoinColumn(name = "start_address_id", nullable = false)
@@ -49,10 +52,10 @@ public class CarPooling {
 //    @JoinColumn(name = "end_address_id", nullable = false)
 //    private Address endAddress;
 
-//    /** Vehicle used for the carpooling. */
-//    @ManyToOne
-//    @JoinColumn(name = "vehicle_id", nullable = false)
-//    private Vehicle vehicle;
+    /** Vehicle used for the carpooling. */
+    @ManyToOne
+    @JoinColumn(name = "vehicle_id", nullable = false)
+    private Vehicle vehicle;
 
 //    /** User who organizes the carpooling. */
 //    @ManyToOne

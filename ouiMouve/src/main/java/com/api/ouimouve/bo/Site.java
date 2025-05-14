@@ -4,7 +4,7 @@ package com.api.ouimouve.bo;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.Date;
+import java.util.List;
 
 /**
  * Entity class representing a Site.
@@ -32,8 +32,8 @@ public class Site {
     //@JoinColumn(name = "address_id", referencedColumnName = "id")
     //private Address address;
 
-    //@OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
-    //private List<Vehicle> vehicles;
+    @OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
+    private List<ServiceVehicle> vehiclesServices;
 
     private String AdresseID;
     private Long vehiculeID;

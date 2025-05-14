@@ -1,8 +1,8 @@
 package com.api.ouimouve.controller;
 
 
-import com.api.ouimouve.bo.CarPoolingStatus;
 import com.api.ouimouve.dto.CarPoolingDto;
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.CarPoolingService;
 import org.springframework.beans.factory.annotation.Autowired;
