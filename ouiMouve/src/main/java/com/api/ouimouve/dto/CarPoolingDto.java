@@ -1,6 +1,6 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.bo.CarPoolingStatus;
+import com.api.ouimouve.enumeration.CarPoolingStatus;
 import lombok.Data;
 
 import java.util.Date;
