@@ -35,6 +35,6 @@ public class Site {
     //@OneToMany(mappedBy = "site", cascade = CascadeType.ALL)
     //private List<Vehicle> vehicles;
 
-    private Long AdresseID;
+    private String AdresseID;
     private Long vehiculeID;
 }
