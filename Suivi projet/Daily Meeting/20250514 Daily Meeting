@@ -1,1 +1,16 @@
-# Point perso
+# Daily Meeting Template du 14 Mai
+
+## Réalisé
+- [Tous] Fin de la réalisation des paquets création API CRUD à l'exception de Véhicle ID
+
+## Points Bloquants ouvertes restant à résoudre
+- Revoir le mode de gestion Cascade pour les delete
+
+
+## À Faire aujourd'hui ou à court terme
+- [Ensemble] API CRUD pour Vehicle et ces deux enfants
+- [Chacun] Pour chaque entité (2 par personnes) mettre a jour jointure de table, et les règles métiers des spécifs
+- [Hassen] Corriger ERD entre Model et Véhicle
+
+# Esprit du jour de l'équipe
+Combattif
