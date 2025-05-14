@@ -5,6 +5,7 @@ import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.ModelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -92,7 +93,7 @@ public class ModelController {
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "404", description = "No model found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    public ModelDto updateModel(@PathVariable long id, @RequestBody ModelDto modelDto) throws RessourceNotFoundException {
+    public ModelDto updateModel(@PathVariable long id, @Valid @RequestBody ModelDto modelDto) throws RessourceNotFoundException {
         ModelDto updatedModel = modelService.updateModel(id, modelDto);
         if (updatedModel == null) {
             throw new RessourceNotFoundException("The model does not exist");
@@ -111,7 +112,7 @@ public class ModelController {
             @ApiResponse(responseCode = "200", description = "Model created"),
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    public ModelDto createModel(@RequestBody ModelDto modelDto) {
+    public ModelDto createModel( @Valid @RequestBody ModelDto modelDto) {
         return modelService.createModel(modelDto);
     }
 }
