@@ -23,7 +23,7 @@ public class AdressController {
     }
 
     @GetMapping("/{latX}/{longY}")
-    public AdressDto getAdressById(@PathVariable float latX, @PathVariable float longY) throws RessourceNotFoundException {
+    public AdressDto getAdressByLatAndLong(@PathVariable float latX, @PathVariable float longY) throws RessourceNotFoundException {
         AdressDto adress = adressService.getAdressByLatXAndLatY(latX, longY);
         if (adress == null) {
             throw new RessourceNotFoundException("Adress not found");
@@ -32,7 +32,7 @@ public class AdressController {
     }
 
     @GetMapping("/{label}/{city}")
-    public AdressDto getAdressById(@PathVariable String label, @PathVariable String city) throws RessourceNotFoundException {
+    public AdressDto getAdressByLabelAndCity(@PathVariable String label, @PathVariable String city) throws RessourceNotFoundException {
         AdressDto adress = adressService.getSiteAdressByLabelAndCity(label, city);
         if (adress == null) {
             throw new RessourceNotFoundException("Adress not found");
