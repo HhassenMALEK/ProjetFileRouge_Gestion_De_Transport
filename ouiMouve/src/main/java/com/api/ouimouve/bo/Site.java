@@ -6,7 +6,11 @@ import lombok.Data;
 
 import java.util.Date;
 
-
+/**
+ * Entity class representing a Site.
+ * This class is used to map the Site entity to the database table.
+ * It contains fields for the site ID, name, and other related entities.
+ */
 @Entity
 @Data
 public class Site {
