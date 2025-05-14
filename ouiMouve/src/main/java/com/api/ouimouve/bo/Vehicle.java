@@ -40,10 +40,7 @@ public class Vehicle {
     @OneToMany (mappedBy = "vehicle", fetch = FetchType.LAZY)
     private List<CarPooling> carPoolings;
 
-    /**
-     * status of the vehicle
-     */
-    private VehicleStatus status;
+
 }
 
 

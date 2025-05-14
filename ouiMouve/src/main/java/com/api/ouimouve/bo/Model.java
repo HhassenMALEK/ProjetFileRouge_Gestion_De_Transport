@@ -1,5 +1,7 @@
 package com.api.ouimouve.bo;
 
+import com.api.ouimouve.enumeration.VehicleCategory;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -47,8 +49,9 @@ public class Model {
     /**
      * Category of the model.
      */
+    @Enumerated(EnumType.STRING)
     @Column(nullable = true)
-    private Integer category;
+    private VehicleCategory category;
 
     /**
      * Consumption of CO2 in grams per kilometer.
@@ -62,8 +65,11 @@ public class Model {
     @Column(nullable = false)
     private Integer placesModel;
 
+    /**
+     * Relationship with the Service Vehicle entity.
+     */
     @OneToMany(mappedBy = "model", fetch = FetchType.EAGER)
-   private List<ServiceVehicle> servicelVehicles;
+    private List<ServiceVehicle> serviceVehicles;
 
 }
 

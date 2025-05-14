@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import java.util.List;
 import java.util.Optional;
 
+import static com.api.ouimouve.enumeration.VehicleCategory.MICRO_URBANE;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -130,7 +131,7 @@ public class ModelRepositoryTest {
         model.setModelName(modelName);
         model.setMark(mark);
         model.setMotorType("Electric");
-        model.setCategory(2);
+        model.setCategory(MICRO_URBANE);
         model.setCO2(0);
         model.setPlacesModel(5);
         model.setPhotoURL("http://example.com/photo.jpg");
