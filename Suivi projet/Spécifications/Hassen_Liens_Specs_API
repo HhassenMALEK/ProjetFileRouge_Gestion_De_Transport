@@ -1,1 +1,67 @@
+Création CarPooling
+    profile : User
+    Données envoyées : départ, destination, date, heure, véhiculeId, places
+     Réponse attendue :{
+                          "statusCode": 201,
+                          "message": "Inscription covoiturage réalisée."
+                        }
+    Erreur 400 si :
+        Champ manquant.
+        Date passée date < date du jour.
+        Heure invalide 00:00 => 23.59.
+
+--------------
+
+Modification d’un CarPooling
+    profile : Admin
+    Données envoyées : champs modifiables (mêmes que pour la création)
+    Réponse attendue :{
+                        "statusCode": 200,
+                        "message": "Modification du covoiturage réalisée."
+                      }
+    Erreur 400 si :
+    Véhicule de service non réservé à la nouvelle date.
+    Nombre de participants > nombre de places.
+    Date ou heure invalide 00:00 23:59.
+
+------------
+
+Annulation d’un CarPooling
+    profile : Admin
+    Carpooling = Annulé
+    Réponse :{
+                "statusCode": 200,
+                "message": "Le covoiturage a été annulé avec succès."
+              }
+==> Envoi automatique d’un email à tous les participants
+
+-----
+
+
+Suppression d’un CarPooling
+Profile= Admin
+Réponse :{
+            "statusCode": 200,
+            "message": "Covoiturage supprimé avec succès."
+          }
+Erreur 403 ou 400 si le covoiturage est déjà annulé ou terminé
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
