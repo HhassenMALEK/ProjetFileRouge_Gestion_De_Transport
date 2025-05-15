@@ -31,14 +31,8 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
      */
     List<CarPooling> findByStatusAndDepartureAfter(CarPoolingStatus status, Date date);
 
-    /**
-     * Finds all carpoolings ordered by departure time ascending for a given status.
-     *
-     * @param status the status of the carpooling
-     * @return an ordered list of carpoolings
-     */
+    // Liste par statut et tri par date
     List<CarPooling> findByStatusOrderByDepartureAsc(CarPoolingStatus status);
-
 
     // Liste des covoiturages par statut
     List<CarPooling> findByStatus(CarPoolingStatus status);
@@ -58,36 +52,25 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     // Supprimer seulement si statut EN_COURS
     void deleteByIdAndStatus(Long id, CarPoolingStatus status);
 
-    // Filtrage par statut, date, véhicule
-//    List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
-//    List<CarPooling> findByOrganizerIdAndDepartureDate(Long userId, LocalDate date);
-//    List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
-
-    // Filtrage combiné
-//    List<CarPooling> findByOrganizerIdAndStatusAndDepartureDateAndVehicleId(
-//            Long userId, CarPoolingStatus status, LocalDate date, Long vehicleId);
-
-
-
     // Vérifier chevauchement pour un utilisateur (création/modification)
 //    @Query("SELECT c FROM CarPooling c WHERE c.organizer.id = :userId AND c.departure = :date AND c.departureTime = :time AND (:excludeId IS NULL OR c.id <> :excludeId)")
-//    List<CarPooling> findOverlappingCarPoolingForUser(@Param("userId") Long userId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
+    List<CarPooling> findOverlappingCarPoolingForUser(@Param("userId") Long userId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
 
     // Vérifier chevauchement pour un véhicule
-//    @Query("SELECT c FROM CarPooling c WHERE c.vehicle.id = :vehicleId AND c.departure = :date AND c.departureTime = :time AND (:excludeId IS NULL OR c.id <> :excludeId)")
-//    List<CarPooling> findOverlappingCarPoolingForVehicle(@Param("vehicleId") Long vehicleId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
+    @Query("SELECT c FROM CarPooling c WHERE c.vehicle.id = :vehicleId AND c.departure = :date AND c.departureTime = :time AND (:excludeId IS NULL OR c.id <> :excludeId)")
+    List<CarPooling> findOverlappingCarPoolingForVehicle(@Param("vehicleId") Long vehicleId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
 
 
+    // Filtrage par statut, date, véhicule
+    List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
+    List<CarPooling> findByOrganizerIdAndDeparture(Long userId, LocalDate departure);
+    List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
 
-    // Liste par statut et tri par date
-//    List<CarPooling> findByStatusOrderByDepartureDateAsc(CarPoolingStatus status);
-
-
+    // Filtrage combiné
+    List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
+            Long userId, CarPoolingStatus status, LocalDate departure, Long vehicleId);
 
     // Liste par date
-    //List<CarPooling> findByDepartureDate(Date date);
-
-
-
+    List<CarPooling> findByDeparture(Date departure);
 
 }
