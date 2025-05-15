@@ -1,0 +1,30 @@
+###USER
+
+#Chapitre 3.2 Authentification
+Bouton valider authentification -> API à créer, requête POST vers une fonction login (spring security)
+Rôle -> GET /api/users/{id} extraction du rôle dans l'objet retourné si il existe -> Utilisateur inconnu
+Voir comment stocker le role et l'id avec angular pour la manipulation dans tous les objets
+
+#Chapitre 3.3 Créer un compte
+Bouton Valider -> POST /api/users -> mail existant ou mot de passe pas conforme -> afficher l'erreur
+
+#Chapitre 3.7 Gestion de compte
+Profil utilisateur -> GET /api/users/{user_id}
+Bouton supprimer mon compte -> DELETE /api/users/{useer_id}
+Bouton modifier -> PUT /api/users/{user_id} -> mdp ou mail non conforme -> afficher l'erreur
+
+
+###CAR_POOLING_RESERVATIONS
+
+#Chapitre 4.1 Liste des covoiturages réservés
+Liste des reservations -> GET /api/carpooling-reservations/list/{user_id} à créer
+Bouton s'inscrire -> PUT /api/carpooling-reservations/{carpooling_reservations_id} -> le covoit n'as plus de place ou n'existe plus -> erreur
+Enlever la liste de toutes les réservations
+
+#Chapitre 4.2 visualiser le détail d’une réservation de covoiturage
+Extraction de la réservation -> GET /api/carpooling-reservations/{carpooling_reservations_id}
+Bouton annulation -> PUT /api/carpooling-reservations/{carpooling_reservations_id}
+Bouton s'inscrire -> PUT /api/carpooling-reservations/{carpooling_reservations_id} -> le covoit n'as plus de place ou n'existe plus -> erreur
+
+#Chapitre 4.5 Réserver un covoiturage
+Bouton Oui -> POST  /api/carpooling-reservations/
