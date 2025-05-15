@@ -11,6 +11,7 @@ public class CarPoolingReservationsCreateDTO {
     private Date date;
     private long userId;
     private long carPoolingId;
+    @Nullable
     private CarPoolingReservationStatus status;
     @Nullable
     private Long id;

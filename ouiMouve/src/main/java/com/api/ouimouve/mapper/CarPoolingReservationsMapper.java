@@ -3,6 +3,7 @@ package com.api.ouimouve.mapper;
 import com.api.ouimouve.bo.CarPoolingReservations;
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
+import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.repository.CarPoolingReservationsRepository;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
@@ -27,10 +28,16 @@ public abstract class CarPoolingReservationsMapper {
     @Mapping(target = "carPooling.id", source = "carPoolingId")
     public abstract CarPoolingReservations toEntity(CarPoolingReservationsCreateDTO dto);
 
+    /**
+     * Calculates the participant count for a carpooling reservation. It filters the data
+     * through the status of the reservation, thus counting only the booked ones.
+     * @param entity the entity of the reservation
+     * @param dto the DTO where the participant count will be set
+     */
     @AfterMapping
     protected void calculateParticipantCount(CarPoolingReservations entity, @MappingTarget CarPoolingReservationsResponseDTO dto) {
         if (entity.getCarPooling() != null && entity.getCarPooling().getId() != null) {
-            dto.setParticipantCount(repository.countByCarPoolingId(entity.getCarPooling().getId()));
+            dto.setParticipantCount(repository.countByCarPoolingIdAndStatus(entity.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED));
         }
     }
 }

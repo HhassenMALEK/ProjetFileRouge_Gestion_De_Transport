@@ -2,6 +2,7 @@ package com.api.ouimouve.service;
 
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
+import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.mapper.CarPoolingReservationsMapper;
 import com.api.ouimouve.repository.CarPoolingReservationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -81,13 +82,14 @@ public class CarPoolingReservationsService {
         }
         return null;
     }
-    /**
-     * Delete a CarPoolingReservations by its ID
-     * @param id the ID of the CarPoolingReservations to delete
-     */
-    public void deleteReservation(Long id) {
-        carPoolingReservationsRepository.deleteById(id);
-    }
+    // Pas utilisé pour l'instant
+//    /**
+//     * Delete a CarPoolingReservations by its ID
+//     * @param id the ID of the CarPoolingReservations to delete
+//     */
+//    public void deleteReservation(Long id) {
+//        carPoolingReservationsRepository.deleteById(id);
+//    }
 
     /**
      * Count the number of participants in a carpooling by its ID
@@ -95,7 +97,7 @@ public class CarPoolingReservationsService {
      * @return the number of participants
      */
     public int countParticipantsByCarPoolingId(Long carPoolingId) {
-        return carPoolingReservationsRepository.countByCarPoolingId(carPoolingId);
+        return carPoolingReservationsRepository.countByCarPoolingIdAndStatus(carPoolingId, CarPoolingReservationStatus.BOOKED);
     }
 
     /**
@@ -103,7 +105,7 @@ public class CarPoolingReservationsService {
      * @param dto the CarPoolingReservationsResponseDTO
      * @return true if there are available seats, false otherwise
      */
-    public boolean isTheirAvailableSeats(CarPoolingReservationsCreateDTO dto) {
+    public boolean noAvailableSeats(CarPoolingReservationsCreateDTO dto) {
         CarPoolingReservationsResponseDTO responseDTO = carPoolingReservationsMapper
                 .toResponseDTO(carPoolingReservationsMapper
                         .toEntity(dto));

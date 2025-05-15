@@ -31,10 +31,13 @@ public class CarPoolingReservationsController {
     }
     @PostMapping()
     public CarPoolingReservationsResponseDTO createCarPoolingReservation(@RequestBody CarPoolingReservationsCreateDTO carPoolingReservations) throws InvalidRessourceException {
-        if (carPoolingReservationsService.isTheirAvailableSeats(carPoolingReservations)) {
+        if (carPoolingReservationsService.noAvailableSeats(carPoolingReservations)) {
             throw new InvalidRessourceException("This carpooling is already full. Please choose another one.");
         }
-        return carPoolingReservationsService.createReservation(carPoolingReservations);
+        CarPoolingReservationsResponseDTO res =  carPoolingReservationsService.createReservation(carPoolingReservations);
+        // Set the status to BOOKED after the creation of the reservation
+        res.setStatus(CarPoolingReservationStatus.BOOKED);
+        return res;
     }
 
     /**
@@ -48,9 +51,11 @@ public class CarPoolingReservationsController {
     @PutMapping("/cancel/{id}")
     public CarPoolingReservationsResponseDTO cancelReservation(@PathVariable Long id, @RequestBody CarPoolingReservationsCreateDTO reservation) throws RessourceNotFoundException, InvalidRequestException {
         Optional<CarPoolingReservationsResponseDTO> dto = Optional.ofNullable(carPoolingReservationsService.getReservation(id));
+        // Check if the reservation exists
         if (dto.isEmpty()) {
             throw new RessourceNotFoundException("The requested reservation does not exist, it might have been deleted by the organizer.");
         }
+        // Check if the reservation is already cancelled or finished else update the status to CANCELLED.
         return switch (dto.get().getStatus()) {
             case FINISHED -> throw new InvalidRequestException("This carpooling is already finished.");
             case CANCELLED -> throw new InvalidRequestException("The reservation is already cancelled.");
@@ -70,21 +75,28 @@ public class CarPoolingReservationsController {
      */
     @PutMapping("/subscribe/{id}")
     public CarPoolingReservationsResponseDTO subscribeToCarPooling(@PathVariable Long id, @RequestBody CarPoolingReservationsCreateDTO reservation) throws RessourceNotFoundException {
-        if (carPoolingReservationsService.isTheirAvailableSeats(reservation)) {
+        // Check if the reservation as available seats
+        if (carPoolingReservationsService.noAvailableSeats(reservation)) {
             throw new InvalidRequestException("This carpooling is already full. PLease choose another one.");
         }
         Optional<CarPoolingReservationsResponseDTO> dto = Optional.ofNullable(carPoolingReservationsService.getReservation(id));
+        // Check if the reservation exists
         dto.ifPresent(res-> {
+            // If no carpooling is found, throw an exception
             if (res.getCarPooling() == null) {
                 throw new InvalidRequestException("The carpooling you're trying to book does not exist.");
             }
+            // Check the status of the carpooling, if it's finished or cancelled, throw an exception
             switch (res.getCarPooling().getStatus()) {
                 case FINISHED -> throw new InvalidRequestException("This carpooling is already finished.");
                 case CANCELLED -> throw new InvalidRequestException("The carpooling has been cancelled by the organizer.");
+                // If the carpooling is open, set the status to BOOKED on the user reservation
                 case BOOKING_OPEN -> res.setStatus(CarPoolingReservationStatus.BOOKED);
+                // Default equals to a full carpooling
                 default -> throw new InvalidRequestException("The carpooling is full.");
             }
         });
+        // Update the reservation accordingly, the status will be set to BOOKED
         return carPoolingReservationsService.updateReservation(id, reservation);
     }
 
