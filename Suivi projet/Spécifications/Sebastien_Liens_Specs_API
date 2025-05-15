@@ -1,5 +1,58 @@
+# Chap 6.1	Cas d’utilisation Liste des véhicules de service réservés
+-> Filtrer véhicule réservés d'un utilisateur -> GET api/reservation/list/user/{userId}
+-> Filtrer véhicule réservés d'un utilisateur - multicritères statut/date/site/userid : API à créer
+
+# Chap 6.2	Cas d’utilisation modifier une demande de véhicule de service
+-> Détail d'une réservation -> GET api/reservation/{id}
+-> Modifier une réservation -> PATCH api/reservation/{id}
+
+Pour vérifier que la réservation du véhicule de service n’est pas rattachée 
+à un covoiturage en cours pour cet utilisateur sur des nouvelles dates incompatibles
+Vérifier que les dates modifiées du véhicule n’empiètent pas sur une autre réservation de ce véhicule ou à une réparation
+
+# Chap 6.3 6.3	Cas d’utilisation annuler une demande de véhicule de service
+-> Supprimer  - > DELETE /api/reservation/{id} -- Ajouter test de non existence d'un covoit de cet utilisateur sur 
+la meme période
+
+# Chap 6.4	Cas d’utilisation rechercher un véhicule de service
+-> Filtre véhicules disponibles sur site /date début/date de fin -> API à créer
+prendre en compte le statut du véhicule de service et réparation (à voir avec Joseph)
+
+# Chap 6.5	6.5	Cas d’utilisation réserver un véhicule de service
+-> Filtrer aucun véhicule réservé par cet utilisateur sur la même période - API à créer
+-> Créer une réservation ->  POST API/réservation
+
+# Chap 7 7.1	Cas d’utilisation Liste des véhicules de services
+-> Liste de l'ensemble des véhicules de services non supprimés : API à créer
+-> Filtrer véhicule services modèle et site non supprimés : API à créer
+
+# Chap 7.2	Cas d’utilisation Ajouter un véhicule de service
+-> Ajouter un véhicule de service : API à créer -- Controle sur numéro d'immat (se coordoner avec PersonalVéhicle) 
+Control pas de véhicule déjà existant avec le même numéro de service
+
+# Chap 7.3	Cas d’utilisation voir le détail du véhicule de service
+-> Détail d'un Véhicule de service -> API à créer
+-> Liste des réservations d'un véhicule de service  -> GET api/reservation/list/{véhiculeId}
+
+# Chap 7.4 Cas d’utilisation supprimer le véhicule de service
+-> Supprimer véhiculeService : API à créer 
+-> Passer toutes les réservations à venir d'un véhicule à Annulé : API à créer 
+
+# Chap 7.5 Cas d’utilisation modifier le véhicule de service
+-> Créer un véhicule de service : API à créer -- reprendre les controles de création sur n° Immat 
+et existence d'un véhicule avec la même immat
+
+# Chap 7.6 et 7.7 : Réparation => Joseph
+
 
 # Chap 7.8	Cas d’utilisation Gérer les modèles des véhicules de services
+-> Liste des modèles sans filtre : GET Api/model/list
 -> Filtrer par catégorie : API à créer
 -> Bouton Supprimer  - > DELETE /api/model/{id} -- Ajouter test de non existence dans réservation
 
+# Chap 7.9 Ajouter un modèle
+-> Ajout -> POST API/model -- Ajouter controle 12 places max
+
+# Chap 7.10 Modifier un modèle
+-> Détail d'un modèle : GET api/model/{id]
+-> Ajout -> PATCH API/model/{id} -- Ajouter controle 12 places max
