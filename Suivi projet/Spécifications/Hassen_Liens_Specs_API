@@ -46,21 +46,62 @@ Réponse :{
           }
 Erreur 403 ou 400 si le covoiturage est déjà annulé ou terminé
 
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
+# Chap 5.1 Cas d’utilisation Liste des covoiturages organisés
+-> Récupérer les covoiturages organisés par l’utilisateur connecté → GET /api/carpooling/list/user/{userId}
+-> Filtrage possible par date / statut / véhicule : API à créer
+--------------------
+
+# Chap 5.2 Cas d’utilisation Détail d’un covoiturage organisé
+-> Récupérer le détail d’un covoiturage → GET /api/carpooling/{id} 
+
+Afficher les participants, les infos trajet, le véhicule.
+Règle d’accès : uniquement pour l’organisateur.
+
+--------------------
+
+# Chap 5.3 Cas d’utilisation Annuler un covoiturage
+-> Annuler un covoiturage → PATCH /api/carpooling/{id}/cancel  
+Règles métier :
+- Mettre à jour le statut en « Annulé »
+- Envoyer un email à tous les participants
+- Empêcher toute modification ou suppression future
+
+--------------------
+
+# Chap 5.4 Cas d’utilisation Créer un covoiturage
+-> Créer un nouveau covoiturage → POST /api/carpooling  
+
+Règles métier :
+- Tous les champs doivent être renseignés
+- Date ≥ aujourd’hui
+- Heure entre 00:00 et 23:59
+- Vérifier que le véhicule est dispo
+- Vérifier qu’il n’existe pas déjà un covoiturage pour cet utilisateur sur cette période
+- Empêcher les chevauchements avec d'autres covoiturages ou réservations:
+         utilisateur ne peut pas créer un covoiturage si :
+            Il a déjà un autre covoiturage à la même date et heure.
+            Il a déjà réservé un véhicule de service sur la même plage horaire.
+
+--------------------
+
+# Chap 5.5 Cas d’utilisation Modifier un covoiturage
+-> Récupérer les infos du covoiturage + Statut de  → GET /api/carpooling/{id}
+-> Modifier un covoiturage → PATCH /api/carpooling/{id}
+
+Règles métier :
+- Tous les champs obligatoires doivent rester valides.
+- Si véhicule de service, vérifier qu’il est réservé à la nouvelle date.
+- Vérifier que le nombre de places reste ≥ au nombre de participants
+- Empêcher les chevauchements avec d'autres covoiturages ou réservations:
+         utilisateur ne peut pas créer un covoiturage si :
+            Il a déjà un autre covoiturage qui à la même date et heure.
+            Il a déjà réservé un véhicule de service sur la même plage horaire.
 
 
-
-
-
-
-
-
-
-
-
-
-
+--------------------
 
 
 
