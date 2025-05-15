@@ -28,3 +28,6 @@ Bouton s'inscrire -> PUT /api/carpooling-reservations/{carpooling_reservations_i
 
 #Chapitre 4.5 Réserver un covoiturage
 Bouton Oui -> POST  /api/carpooling-reservations/
+
+#Chapitre 6.2
+API GET /api/carpooling-reservations/ filtrage par dates à revoir
