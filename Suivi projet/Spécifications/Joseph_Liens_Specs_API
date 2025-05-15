@@ -1,1 +1,54 @@
+# Chap 7.6 Cas d’utilisation ajouter une réparation véhicule de service
 
+ -> Créer une réparation  -> POST api/reparation
+
+ -> Check des dates (cf RG1 & 2 géré dans le Front ?)-> A valider
+
+ -> Check lors de validation de la réparation de la non présence d'une réparation sur ces dates - API à créer
+ 
+ -> Check entre la réservation de réparation :
+	Si la réparation se déroule pendant une réservation du véhicule : 
+		- on passe la réservation à « Annulée »
+		- on envoie un mail à l’utilisateur pour le prévenir de l’annulation de sa réservation
+	
+	-> API à créer (à définir avec Sébastien)
+
+# Chap 7.7 
+
+1) Cas d’utilisation modifier une réparation véhicule de service
+
+ -> Modifier une réparation -> PATCH api/reparation/{id}
+ 
+ -> Check des dates (cf RG1 & 2 géré dans le Front ?)-> A valider
+ 
+ -> Check lors de validation de la modification de la réparation de la non présence d'une réparation sur ces dates - API à créer
+ 
+ -> Check entre la réservation de réparation :
+	Si la modification est confirmée et si la réparation se déroule pendant une réservation du véhicule : 
+		- on passe la réservation à « Annulée »
+		- on envoie un mail à l’utilisateur pour le prévenir de l’annulation de sa réservation
+	
+	-> API à créer (à définir avec Sébastien)
+	
+2) Cas d’utilisation supprimer une réparation véhicule de service
+
+ -> Supprimer une demande de réparation -> DELETE api/reparation/{id}
+
+ 
+-------------------------------------
+
+Gestion du cas de l'adresse dans Carpooling (A voir avec Hassen)
+ # Chap 5.4 créer un Covoiturage
+
+
+--> Si L'API d'adresse est gérée dans le Front pour la recherche d'adresse
+(il faut récupéer le label, city, longitude et latitude)
+ 
+
+
+ 
+
+
+ 
+ 
+ 
