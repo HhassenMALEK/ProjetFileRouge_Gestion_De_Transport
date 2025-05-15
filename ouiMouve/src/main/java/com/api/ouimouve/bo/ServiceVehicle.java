@@ -24,7 +24,7 @@ public class ServiceVehicle extends Vehicle {
     /**
      * relationship with the reservation
      */
-    @OneToMany(mappedBy = "servicelVehicle", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "serviceVehicle", fetch = FetchType.EAGER)
     private List<VehicleReservation> vehicleReservations;
 
     @ManyToOne

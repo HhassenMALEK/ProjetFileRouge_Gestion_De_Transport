@@ -2,7 +2,9 @@ package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.Reparation;
 import com.api.ouimouve.bo.VehicleReservation;
+import com.api.ouimouve.dto.VehicleReservationCreateDto;
 import com.api.ouimouve.dto.VehicleReservationDto;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleReservationMapper;
 import com.api.ouimouve.repository.VehicleReservationRepository;
@@ -11,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,14 +27,16 @@ public class ReservationService {
     private VehicleReservationMapper reservationMapper;
 
 
+
+
     public List<VehicleReservationDto> getAllReservationsByVehicle(Long vehicleId) {
-        return reservationRepository.findByVehicleID(vehicleId).stream()
+        return reservationRepository.findByServiceVehicleId(vehicleId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }
 
     public List<VehicleReservationDto> getAllReservationsByUser(Long userId) {
-        return reservationRepository.findByUserID(userId).stream()
+        return reservationRepository.findByUserId(userId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }
@@ -41,7 +46,7 @@ public class ReservationService {
                 .orElse(null);
     }
 
-    public VehicleReservationDto createReservation(VehicleReservationDto reservationDto) {
+    public VehicleReservationDto createReservation(VehicleReservationCreateDto reservationDto) {
         return reservationMapper.toVehicleReservationDto(
                 reservationRepository.save(reservationMapper.toVehicleReservation(reservationDto)));
     }
@@ -54,7 +59,14 @@ public class ReservationService {
         return reservationDto;
     }
 
-    public VehicleReservationDto updateReservation(long id, VehicleReservationDto reservationDto) {
+    public List<VehicleReservationDto> getAllReservationsByUserAndFilterByStartDateAndStatus(Long userId, Date start, VehicleStatus status) {
+        List<VehicleReservation> reservations = reservationRepository.findByUserWithFilters(userId, start, status);
+        return reservations.stream()
+                .map(reservationMapper::toVehicleReservationDto)
+                .collect(Collectors.toList());
+          }
+
+    public VehicleReservationDto updateReservation(long id, VehicleReservationCreateDto reservationDto) {
         Optional<VehicleReservation> reservationOpt = reservationRepository.findById(id);
         if (reservationOpt.isPresent()) {
             reservationRepository.save(reservationMapper.toVehicleReservation(reservationDto));

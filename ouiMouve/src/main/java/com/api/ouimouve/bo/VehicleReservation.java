@@ -26,9 +26,8 @@ public class VehicleReservation {
      */
     @ManyToOne
     @JoinColumn(name = "service_vehicle_id", nullable = false)
-    private ServiceVehicle servicelVehicle;
-    @Column(nullable = false)
-    private long vehicleID;
+    private ServiceVehicle serviceVehicle;
+
 
     /**
      * User ID associated with the reservation.
@@ -37,8 +36,6 @@ public class VehicleReservation {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(nullable = false)
-    private long userID;
 
     /**
      * Start date of the reservation.

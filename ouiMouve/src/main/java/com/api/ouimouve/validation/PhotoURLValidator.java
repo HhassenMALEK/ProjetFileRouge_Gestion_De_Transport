@@ -12,7 +12,7 @@ public class PhotoURLValidator implements ConstraintValidator<ValidPhotoURL, Str
     @Override
     public boolean isValid(String url, ConstraintValidatorContext context) {
         if (url == null) {
-            return false;  // null n'est pas valide car le champ est marqué nullable=false
+            return false;
         }
         return URL_PATTERN.matcher(url).matches();
     }

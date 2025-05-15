@@ -1,9 +1,13 @@
 package com.api.ouimouve.repository;
 
 import com.api.ouimouve.bo.VehicleReservation;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,9 +16,15 @@ import java.util.List;
  */
 @Repository
 public interface VehicleReservationRepository extends JpaRepository<VehicleReservation, Long> {
-    // Custom query methods can be defined here if needed
-    // For example, find by vehicle ID or date range
-    List<VehicleReservation> findByVehicleID(Long vehicleID);
-    List<VehicleReservation> findByUserID(Long userID);
-    // List<Reparation> findByStartDateBetween(Date startDate, Date endDate);
+
+    List<VehicleReservation> findByServiceVehicleId(Long vehicleID);
+    List<VehicleReservation> findByUserId(Long userID);
+
+    @Query("SELECT vr FROM VehicleReservation vr WHERE vr.user.id = :userId " +
+            "AND (:start IS NULL OR vr.start >= :start) " +
+            "AND (:status IS NULL OR vr.status = :status)")
+    List<VehicleReservation> findByUserWithFilters(
+            @Param("userId") Long userId,
+            @Param("start") Date start,
+            @Param("status") VehicleStatus status);
 }
