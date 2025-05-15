@@ -1,6 +1,7 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.dto.UserDto;
+import com.api.ouimouve.dto.UserWithPasswordDto;
 import com.api.ouimouve.mapper.UserMapper;
 import com.api.ouimouve.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class UserService {
      */
     public List<UserDto> getAllUsers() {
         return userRepository.findAll().stream()
-                .map(userMapper::toDto)
+                .map(userMapper::toDtoWithoutPassword)
                 .toList();
     }
     /**
@@ -34,16 +35,8 @@ public class UserService {
      */
     public UserDto getUserById(Long id) {
         return userRepository.findById(id)
-                .map(userMapper::toDto)
+                .map(userMapper::toDtoWithoutPassword)
                 .orElse(null);
-    }
-    /**
-     * Create a new user
-     * @param userDto the UserDto to create
-     * @return the created UserDto
-     */
-    public UserDto createUser(UserDto userDto) {
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
 
     /**
@@ -56,7 +49,28 @@ public class UserService {
         UserDto existingUser = getUserById(id);
         if (existingUser != null) {
             existingUser.setId(id);
-            return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+            return userMapper
+                    .toDtoWithoutPassword(userRepository
+                            .save(userMapper.toEntity(userDto)));
+        }
+        return null;
+    }
+
+    /**
+     * Update the password of an existing user
+     * @param id the id of the user to update
+     * @param user the UserWithPasswordDto to update
+     * @return the updated user
+     */
+    public UserWithPasswordDto updateUserPassword(Long id, UserWithPasswordDto user) {
+        UserWithPasswordDto existingUser = userMapper
+                .toDtoWithPassword(userRepository
+                        .findById(id).orElse(null));
+        if (existingUser != null) {
+            existingUser.setId(id);
+            return userMapper.toDtoWithPassword(userRepository
+                    .save(userMapper
+                            .toEntityWithPassword(user)));
         }
         return null;
     }
