@@ -47,8 +47,9 @@ public class ExceptionsHandler {
     })
     public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    
-     * Handles IllegalArgumentException and returns a 400 Bad Request response.
+    }
+
+     /** Handles IllegalArgumentException and returns a 400 Bad Request response.
      *
      * @param ex the IllegalArgumentException
      * @return ResponseEntity with a 400 status and the exception message
