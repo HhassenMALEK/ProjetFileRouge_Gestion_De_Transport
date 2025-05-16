@@ -25,7 +25,6 @@ public class CarPooling {
     /** The date and time when the carpooling is scheduled to arrive. */
     @NotNull
     private Date arrival;
-
     /**
      * The status of the carpooling.
      */

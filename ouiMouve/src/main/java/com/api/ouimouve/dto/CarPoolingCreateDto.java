@@ -1,18 +1,18 @@
 package com.api.ouimouve.dto;
 
 import com.api.ouimouve.enumeration.CarPoolingStatus;
-import com.api.ouimouve.exception.InvalidRessourceException;
+import jakarta.annotation.Nullable;
 import lombok.Data;
 
-import java.time.LocalTime;
 import java.util.Date;
 
 /**
  * Dto for CarPooling entity.
  */
 @Data
-public class CarPoolingDto {
+public class CarPoolingCreateDto {
     /** Unique identifier for the carpooling. */
+    @Nullable
     private Long id;
     /** The date and time when the carpooling is scheduled to start. */
     private Date departure;
@@ -28,7 +28,5 @@ public class CarPoolingDto {
     private Long departureAddressId;
     private Long destinationAddressId;
     private Long vehicleId;
-    private Long organizerId;
-
 
 }
