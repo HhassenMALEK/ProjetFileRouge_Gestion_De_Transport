@@ -43,6 +43,7 @@ public class Vehicle {
     /**
      * status of the vehicle
      */
+    @Enumerated(EnumType.STRING)
     private VehicleStatus status;
 }
 
