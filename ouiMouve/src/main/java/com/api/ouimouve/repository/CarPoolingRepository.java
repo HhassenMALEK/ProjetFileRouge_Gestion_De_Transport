@@ -3,10 +3,15 @@ package com.api.ouimouve.repository;
 import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository interface for managing CarPooling entities.
@@ -15,21 +20,7 @@ import java.util.List;
 @Repository
 public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
 
-    /**
-     * Finds all carpoolings with the specified status.
-     *
-     * @param status the status of the carpooling
-     * @return a list of car poolings with the specified status
-     */
-    List<CarPooling> findByStatus(CarPoolingStatus status);
 
-    /**
-     * Finds all carpoolings scheduled to depart after the specified date
-     *
-     * @param date the date to compare with departure time
-     * @return a list of carpoolings with departure dates after the specified date
-     */
-    List<CarPooling> findByDepartureAfter(Date date);
 
     /**
      * Finds all carpoolings with the specified status and departure date after a given date.
@@ -40,13 +31,37 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
      */
     List<CarPooling> findByStatusAndDepartureAfter(CarPoolingStatus status, Date date);
 
-    /**
-     * Finds all carpoolings ordered by departure time ascending for a given status.
-     *
-     * @param status the status of the carpooling
-     * @return an ordered list of carpoolings
-     */
+    // Liste par statut et tri par date
     List<CarPooling> findByStatusOrderByDepartureAsc(CarPoolingStatus status);
 
+    //List des covoiturages aprés une date
+    List<CarPooling> findByDepartureAfter(Date date);
 
+    // Liste des covoiturages organisés par un utilisateur
+    List<CarPooling> findByOrganizerId(Long userId);
+
+    // Liste par véhicule
+    List<CarPooling> findByVehicleId(Long vehicleId);
+
+    // Détail d’un covoiturage pour l’organisateur
+    Optional<CarPooling> findByIdAndOrganizerId(Long id, Long organizerId);
+
+    // Vérifier chevauchement pour un utilisateur (création/modification) ==> a vérifier
+    List<CarPooling>findByOrganizerIdAndDepartureBetween(Long organizerId, Date departure, Date arrival);
+
+    // Vérifier chevauchement pour un véhicule ==> à vérifier
+    List<CarPooling> findByVehicleIdAndDepartureBetween(Long vehicleId, Date departure, Date arrival);
+
+    // Filtrage par statut, date, véhicule
+    List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
+
+   // ==> a vérifier List<CarPooling> findByOrganizerIdAndDeparture(Long userId, Date departure);
+    List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
+
+    // Filtrage combiné
+    List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
+            Long userId, CarPoolingStatus status, Date departure, Long vehicleId);
+
+    //find by status
+    List<CarPooling> findByStatus(CarPoolingStatus status);
 }
