@@ -18,7 +18,7 @@ public class AuthContext {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated()) {
             String email = auth.getName();
-            return userService.getUserByEmail(email);
+            return userService.findUserByEmail(email);
         }
         throw new RessourceNotFoundException("You're not authenticated");
     }

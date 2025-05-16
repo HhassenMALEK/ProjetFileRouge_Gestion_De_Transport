@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.List;
+
 /**
  * Exception handler class for handling exceptions in the application.
  */
@@ -47,11 +49,12 @@ public class ExceptionsHandler {
     })
     public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException ex) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
-    
-     * Handles IllegalArgumentException and returns a 400 Bad Request response.
+    }
+    /**
+     * Handles InvalidCredentialsException and returns a 401 Unauthorized response.
      *
-     * @param ex the IllegalArgumentException
-     * @return ResponseEntity with a 400 status and the exception message
+     * @param ex the InvalidCredentialsException
+     * @return ResponseEntity with a 401 status and the exception message
      */
     @ExceptionHandler(value = {
             IllegalArgumentException.class
@@ -73,4 +76,14 @@ public class ExceptionsHandler {
     }
 
 
+    @ExceptionHandler(UniqueConstraintsExceptions.class)
+    public ResponseEntity<List<ValidationErrorResponse.FieldError>> handleUniqueConstraintViolation(UniqueConstraintsExceptions ex) {
+        return new ResponseEntity<>(ex.getErrors(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserException.class)
+    public ResponseEntity<ValidationErrorResponse> handleUserException(UserException ex) {
+        ValidationErrorResponse errorResponse = new ValidationErrorResponse();
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
+    }
 }

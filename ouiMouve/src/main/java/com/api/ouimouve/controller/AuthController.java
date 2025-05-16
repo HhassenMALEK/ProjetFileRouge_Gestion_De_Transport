@@ -5,9 +5,13 @@ import com.api.ouimouve.dto.AuthResponse;
 import com.api.ouimouve.dto.LoginRequest;
 import com.api.ouimouve.dto.RegisterRequest;
 import com.api.ouimouve.enumeration.Role;
+import com.api.ouimouve.exception.UserException;
+import com.api.ouimouve.exception.ValidationErrorResponse;
 import com.api.ouimouve.repository.UserRepository;
 import com.api.ouimouve.service.JwtService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -58,18 +63,50 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
-
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        User user = new User();
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setEmail(request.getEmail());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setRole(Role.USER); // Role par défaut
-        user.setLicenseNumber(request.getLicenseNumber());
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        log.info("Tentative d'inscription pour l'utilisateur: {}", request.getEmail());
 
-        userRepository.save(user);
+        // Créer un objet de validation pour collecter les erreurs
+        ValidationErrorResponse validationErrors = new ValidationErrorResponse();
+        validationErrors.setStatus(HttpStatus.CONFLICT.value());
+
+        // Vérifier si l'email existe déjà
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            log.warn("Email déjà utilisé: {}", request.getEmail());
+            validationErrors.addFieldError("email",
+                    "Un utilisateur avec l'adresse email " + request.getEmail() + " existe déjà");
+        }
+
+        // Vérifier si le numéro de licence existe déjà
+        if (request.getLicenseNumber() != null &&
+                userRepository.findByLicenseNumber(request.getLicenseNumber()).isPresent()) {
+            log.warn("Numéro de licence déjà utilisé: {}", request.getLicenseNumber());
+            validationErrors.addFieldError("licenseNumber",
+                    "Un utilisateur avec le numéro de licence " + request.getLicenseNumber() + " existe déjà");
+        }
+
+        // Si des erreurs ont été trouvées, retourner la réponse avec les erreurs
+        if (validationErrors.hasErrors()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body(validationErrors);
+        }
+
+        // Procéder à l'inscription si aucune erreur n'a été trouvée
+        User user = new User();
+        try {
+            user.setFirstName(request.getFirstName());
+            user.setLastName(request.getLastName());
+            user.setEmail(request.getEmail());
+            user.setPassword(passwordEncoder.encode(request.getPassword()));
+            user.setRole(Role.USER);
+            user.setLicenseNumber(request.getLicenseNumber());
+
+            userRepository.save(user);
+            log.info("Utilisateur inscrit avec succès: {}", user.getEmail());
+        } catch (Exception e) {
+            log.error("Erreur inattendue lors de l'inscription: {}", e.getMessage(), e);
+            throw new UserException("Erreur lors de la création du compte utilisateur");
+        }
 
         String token = jwtService.generateToken(
                 new org.springframework.security.core.userdetails.User(
@@ -82,3 +119,4 @@ public class AuthController {
         return ResponseEntity.ok(new AuthResponse(token));
     }
 }
+

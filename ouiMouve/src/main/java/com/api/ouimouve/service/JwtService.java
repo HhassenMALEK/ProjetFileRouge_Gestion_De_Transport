@@ -1,9 +1,11 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.dto.UserDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,8 @@ import java.util.function.Function;
 
 @Service
 public class JwtService {
+    @Autowired
+    private UserService userService;
 
     private static final String SECRET_KEY = "vKQB8V+XjJ7XUYcVnRWeAjXgWPgcyLk1GEsXSORmQpBQAoGVxbAL1PzGFzE6jzHEcbh7/jn5E+8PsEA/5Xqgfeg==";
 
@@ -28,7 +32,13 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        if (userDetails instanceof org.springframework.security.core.userdetails.User) {
+            UserDto user = userService.findUserByEmail(userDetails.getUsername());
+            claims.put("userId", user.getId());
+            claims.put("role", user.getRole());
+        }
+        return generateToken(claims, userDetails);
     }
 
     public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
@@ -63,5 +73,13 @@ public class JwtService {
     private SecretKey getSigningKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> claims.get("userId", Long.class));
+    }
+
+    public String extractRole(String token) {
+        return extractClaim(token, claims -> claims.get("role", String.class));
     }
 }

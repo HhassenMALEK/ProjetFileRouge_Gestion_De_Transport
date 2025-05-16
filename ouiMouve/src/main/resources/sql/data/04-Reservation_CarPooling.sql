@@ -13,8 +13,8 @@ INSERT INTO car_pooling (id, departure, arrival, status, duration_in_minutes, di
 
 -- CarPoolingReservation
 INSERT INTO car_pooling_reservations (id, date, status, user_id, carpooling_id) VALUES
-(1, '2023-11-15 14:25:00', 'BOOKING_OPEN', 3, 1),
-(2, '2023-11-15 16:42:00', 'BOOKING_OPEN', 4, 1),
-(3, '2023-11-16 09:12:00', 'BOOKING_OPEN', 3, 2),
-(4, '2023-11-16 11:05:00', 'BOOKING_FULL', 2, 3),
-(5, '2023-11-16 13:30:00', 'BOOKING_FULL', 4, 3);
+(1, '2023-11-15 14:25:00', 'BOOKED', 3, 1),
+(2, '2023-11-15 16:42:00', 'BOOKED', 4, 1),
+(3, '2023-11-16 09:12:00', 'BOOKED', 3, 2),
+(4, '2023-11-16 11:05:00', 'BOOKED', 2, 3),
+(5, '2023-11-16 13:30:00', 'BOOKED', 4, 3);
