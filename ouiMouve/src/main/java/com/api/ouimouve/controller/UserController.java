@@ -47,19 +47,6 @@ public class UserController {
     }
 
     /**
-     * Create a new user
-     * @param userDto the UserDto to create
-     * @return the created UserDto
-     */
-    @PostMapping()
-    public UserDto createUser(@RequestBody UserDto userDto) throws InvalidRessourceException {
-        try {
-            return userService.createUser(userDto);
-        } catch (InvalidRessourceException e) {
-            throw new InvalidRessourceException(e.getMessage());
-        }
-    }
-    /**
      * Update an existing user
      * @param id the id of the user to update
      * @param userDto the UserDto with updated information
