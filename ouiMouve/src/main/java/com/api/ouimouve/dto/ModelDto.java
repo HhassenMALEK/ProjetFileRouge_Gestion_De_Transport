@@ -1,7 +1,11 @@
 package com.api.ouimouve.dto;
 
+import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.validation.ValidPhotoURL;
 import lombok.Data;
+
+import java.util.List;
 
 /**
  * Data Transfer Object (DTO) for Model.
@@ -17,7 +21,8 @@ public class ModelDto {
     @ValidPhotoURL
     private String photoURL;
     private String motorType;
-    private Integer category;
+    private VehicleCategory category;
     private Integer CO2;
     private Integer placesModel;
+    private List<ServiceVehicle> serviceVehicles;
 }

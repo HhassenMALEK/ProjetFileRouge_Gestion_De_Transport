@@ -19,12 +19,13 @@ public class ServiceVehicle extends Vehicle {
     /**
      * Status of the vehicle (available, in service, etc.)
      */
-   private VehicleStatus status;
+    @Enumerated(EnumType.STRING)
+    private VehicleStatus status;
 
     /**
      * relationship with the reservation
      */
-    @OneToMany(mappedBy = "serviceVehicle")
+    @OneToMany(mappedBy = "serviceVehicle", fetch = FetchType.EAGER)
     private List<VehicleReservation> vehicleReservations;
 
     @ManyToOne

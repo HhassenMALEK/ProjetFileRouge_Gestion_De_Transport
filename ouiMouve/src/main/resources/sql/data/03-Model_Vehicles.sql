@@ -16,9 +16,9 @@ INSERT INTO vehicle (id, type, immatriculation, places, status, model_id, site_i
 (5, 'service', 'II-345-JJ', 5, 'DISABLED', 5, 3); -- Renault Zoe à Bordeaux
 
 
-INSERT INTO vehicle (id, type, immatriculation, places, status,color, description, user_id) VALUES
+INSERT INTO vehicle (id, type, immatriculation, places,color, description, user_id) VALUES
 -- PersonnalVehicle
-(6, 'personal', 'KK-678-LL', 5, 'ENABLED', 'Rouge', 'Berline familiale, très confortable', 2),
-(7, 'personal', 'MM-901-NN', 4, 'ENABLED', 'Bleu', 'Citadine compacte', 3),
-(8, 'personal', 'OO-234-PP', 5, 'ENABLED', 'Noir', 'SUV spacieux', 4);
+(6, 'personal', 'KK-678-LL', 5,  'Rouge', 'Berline familiale, très confortable', 2),
+(7, 'personal', 'MM-901-NN', 4,  'Bleu', 'Citadine compacte', 3),
+(8, 'personal', 'OO-234-PP', 5,  'Noir', 'SUV spacieux', 4);
 
