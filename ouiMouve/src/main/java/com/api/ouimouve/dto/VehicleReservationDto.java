@@ -1,6 +1,10 @@
 package com.api.ouimouve.dto;
 
+import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.bo.User;
+import com.api.ouimouve.bo.Vehicle;
 import com.api.ouimouve.enumeration.VehicleStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import java.util.Date;
@@ -13,8 +17,12 @@ import java.util.Date;
 @Data
 public class VehicleReservationDto {
     private long id;
-    private long VehicleID;
-    private long userID;
+
+    @JsonIgnoreProperties({"vehicleReservations", "reparations", "carPoolings","model","site"})
+    private ServiceVehicle serviceVehicle;
+
+    @JsonIgnoreProperties({"personalVehicles", "carPoolingReservations", "vehicleReservations","organizedCarPoolings"})
+    private User user;
     private Date start;
     private Date end;
     private VehicleStatus status;

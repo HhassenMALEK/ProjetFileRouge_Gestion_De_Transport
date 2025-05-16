@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.api.ouimouve.enumeration.VehicleCategory.CITADINE_POLYVALENTE;
+import static com.api.ouimouve.enumeration.VehicleCategory.MINI_CITADINE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
@@ -46,7 +48,7 @@ public class ModelServiceTest {
         model.setModelName("Model3");
         model.setMark("Tesla");
         model.setMotorType("Electric");
-        model.setCategory(2);
+        model.setCategory(MINI_CITADINE);
         model.setCO2(0);
         model.setPlacesModel(5);
         model.setPhotoURL("http://example.com/photo.jpg");
@@ -56,7 +58,7 @@ public class ModelServiceTest {
         modelDto.setModelName("Model3");
         modelDto.setMark("Tesla");
         modelDto.setMotorType("Electric");
-        modelDto.setCategory(2);
+        modelDto.setCategory(CITADINE_POLYVALENTE);
         modelDto.setCO2(0);
         modelDto.setPlacesModel(5);
         modelDto.setPhotoURL("http://example.com/photo.jpg");

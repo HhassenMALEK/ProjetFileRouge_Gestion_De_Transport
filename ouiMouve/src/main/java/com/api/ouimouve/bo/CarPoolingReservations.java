@@ -1,6 +1,6 @@
 package com.api.ouimouve.bo;
 
-import com.api.ouimouve.enumeration.CarPoolingStatus;
+import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,11 +27,11 @@ public class CarPoolingReservations {
     private Date date;
     /**
      * Status of the reservation.
-     * Possible values: IN_PROGRESS, FINISHED, CANCELLED, BOOKING_OPEN, BOOKING_FULL
+     * Possible values: IN_PROGRESS, FINISHED, CANCELLED
      */
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private CarPoolingStatus status;
+    private CarPoolingReservationStatus status;
     /**
      * User ID associated with the reservation.
      */

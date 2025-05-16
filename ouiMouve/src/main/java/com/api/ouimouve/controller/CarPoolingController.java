@@ -1,10 +1,14 @@
 package com.api.ouimouve.controller;
 
 
-import com.api.ouimouve.dto.CarPoolingDto;
+import com.api.ouimouve.bo.Vehicle;
+import com.api.ouimouve.dto.CarPoolingCreateDto;
+import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.CarPoolingService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,39 +21,31 @@ public class CarPoolingController {
     @Autowired
     private CarPoolingService carPoolingService;
 
-    /**
-     * Fetches all carpoolings from the repository and converts them to DTOs.
-     */
-    @GetMapping("/list")
-    public List<CarPoolingDto> getAllCarPoolings() {
-        return carPoolingService.getAllCarPoolings();
-    }
+
+
+
+//    /**
+//     * Fetches all carpoolings with a specific status from the repository and converts them to DTOs.
+//     */
+//    @GetMapping("/{status}/filter")
+//    public List<CarPoolingResponseDto> getCarpoolingByStatus(@PathVariable CarPoolingStatus status) {
+//        return carPoolingService.getCarpoolingByStatus(status);
+//    }
+//    @GetMapping("/{vceicule}/filter")
+//    public List<CarPoolingResponseDto> getCarPoolingsByStatusAndDate(@PathVariable  CarPoolingStatus status, Date date) {
+//        return carPoolingService.getCarpoolingByStatus(status,date);
+//    }
+//
+//    @GetMapping("/{date}/filter")
+//    public List<CarPoolingResponseDto> findByStatus(@PathVariable Date date) {
+//        return carPoolingService.getCarpoolingByStatus(date);
+//    }
+
 
     /**
-     * Fetches a carpooling by its ID from the repository and converts it to a DTO.
-     */
-    @GetMapping("/{id}")
-    public CarPoolingDto getCarPoolingById(@PathVariable Long id) {
-        CarPoolingDto carPooling = carPoolingService.getCarPoolingById(id);
-        if (carPooling == null) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
-        }
-        return carPooling;
-    }
-
-    /**
-     * Fetches all carpoolings with a specific status from the repository and converts them to DTOs.
-     */
-    @GetMapping("/status/{status}")
-    public List<CarPoolingDto> getCarPoolingsByStatus(@PathVariable CarPoolingStatus status) {
-        return carPoolingService.getCarPoolingsByStatus(status);
-    }
-
-    /**
-     * Fetches all carpoolings with departure after the given date from the repository and converts them to DTOs.
-     */
+     * Fetches all carpoolings with departure after the given date from the repository and converts them to DTO*/
     @GetMapping("/departureAfter/{date}")
-    public List<CarPoolingDto> getCarPoolingsAfterDate(@PathVariable Date date) {
+    public List<CarPoolingResponseDto> getCarPoolingsAfterDate(@PathVariable Date date) {
         return carPoolingService.getCarPoolingsAfterDate(date);
     }
 
@@ -57,53 +53,113 @@ public class CarPoolingController {
      * getCarPoolingsByStatusAndDate
      */
     @GetMapping("/status/{status}/date/{date}")
-    public List<CarPoolingDto> getCarPoolingsByStatusAndDate(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
-        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
+    public List<CarPoolingResponseDto> getCarpoolingByStatus(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
+        return carPoolingService.getCarpoolingByStatus(status);
     }
 
     /**
      * create a carpooling
      *
-     * @param carPoolingDto
-     * @return CarPoolingDto
+     * @param carPoolingCreateDto
+     * @return CarPoolingResponseDto
      */
     @PostMapping
-    public CarPoolingDto createCarPooling(@RequestBody CarPoolingDto carPoolingDto) {
-        return carPoolingService.createCarPooling(carPoolingDto);
+    public CarPoolingResponseDto createCarPoColing(@RequestBody CarPoolingCreateDto carPoolingCreateDto) {
+        return carPoolingService.createCarpooling(carPoolingCreateDto);
     }
 
     /**
      * update a carpooling
      *
      * @param id
-     * @param carPoolingDto
-     * @return CarPoolingDto
+     * @param carPoolingCreateDto
+     * @return CarPoolingResponseDto
      */
-    @PutMapping("/{id}")
-    public CarPoolingDto updateCarPooling(@PathVariable Long id, @RequestBody CarPoolingDto carPoolingDto) {
-        CarPoolingDto updated = carPoolingService.updateCarPooling(id, carPoolingDto);
-        if (updated == null) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
-        }
-        return updated;
-    }
-
-
 
     /**
      * delete a carpooling
      *
      * @param id
-     * @return CarPoolingDto
+     * @return CarPoolingResponseDto
+     * ==> a vérifier
      */
     @DeleteMapping("/{id}")
-    public CarPoolingDto deleteCarPooling(@PathVariable Long id) {
-        CarPoolingDto existing = getCarPoolingById(id);
+    public CarPoolingResponseDto deleteCarPooling(@PathVariable Long id) {
+        CarPoolingResponseDto existing = getCarPoolingById(id);
         if (existing == null) {
             throw new RessourceNotFoundException("Carpooling not found with id: " + id);
         }
-        carPoolingService.deleteCarPooling(id);
+        carPoolingService.deleteCarpooling(id);
         return existing;
+    }
+
+    @GetMapping("/status-ordered/{status}")
+    public List<CarPoolingResponseDto> getCarpoolingsByStatusOrdered(@PathVariable CarPoolingStatus status) {
+        return carPoolingService.getCarPoolingsByStatusOrdered(status);
+    }
+
+    @GetMapping("/overlap/organizer")
+    public List<CarPoolingResponseDto> findOverlappingForOrganizer(Long userId, Date from, Date to) {
+        return carPoolingService.findOverlappingForOrganizer(userId, from, to);
+    }
+
+    @GetMapping("/filter")
+    public List<CarPoolingResponseDto> filterByStatusDateVehicle(Long userId, CarPoolingStatus status, Date departure, Long vehicleId) {
+        return carPoolingService.filterByStatusDateVehicle(userId, status, departure, vehicleId);
+    }
+
+    @GetMapping("/overlap/vehicle")
+    public List<CarPoolingResponseDto> findOverlappingForVehicle(Long vehicleId, Date from, Date to) {
+        return carPoolingService.findOverlappingForVehicle(vehicleId, from, to);
+    }
+
+    @GetMapping("/status-date")
+    public List<CarPoolingResponseDto> getByStatusAndDepartureAfter(CarPoolingStatus status, Date date) {
+        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
+    }
+
+
+
+
+
+
+
+
+
+    /**
+     * Fetches all carpoolings from the repository and converts them to DTOs.
+     */
+    @GetMapping("/list")
+    public List<CarPoolingResponseDto> getAllCarpooling() {
+        return carPoolingService.getAllCarpooling();
+    }
+
+    /**
+     * Fetches a carpooling by its ID from the repository and converts it to a DTO.
+     */
+    @GetMapping("/{id}")
+    public CarPoolingResponseDto getCarPoolingById(@PathVariable Long id) {
+        CarPoolingResponseDto carPooling = carPoolingService.getCarPoolingById(id);
+        if (carPooling == null) {
+            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
+        }
+        return carPooling;
+    }
+
+
+
+    @Operation(summary = "Update a reservation by its ID", responses = {
+            @ApiResponse(responseCode = "200", description = "Carpooling updated"),
+            @ApiResponse(responseCode = "403", description = "access required"),
+            @ApiResponse(responseCode = "404", description = "No carpooling found"),
+            @ApiResponse(responseCode = "500", description = "Internal Serveur Error") })
+    @PatchMapping("/{id}")
+    public CarPoolingResponseDto updateCarPooling(@PathVariable Long id, @RequestBody CarPoolingCreateDto carPoolingCreateDto) throws RessourceNotFoundException{
+        CarPoolingResponseDto updated = carPoolingService.updateCarPooling(id, carPoolingCreateDto);
+        if (updated == null) {
+            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
+        }
+        return updated;
     }
 
 

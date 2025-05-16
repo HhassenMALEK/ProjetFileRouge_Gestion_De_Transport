@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.api.ouimouve.enumeration.VehicleCategory.MINI_CITADINE;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
@@ -47,7 +48,7 @@ public class ModelControllerTest {
         modelDto.setModelName("Model3");
         modelDto.setMark("Tesla");
         modelDto.setMotorType("Electric");
-        modelDto.setCategory(2);
+        modelDto.setCategory(MINI_CITADINE);
         modelDto.setCO2(0);
         modelDto.setPlacesModel(5);
         modelDto.setPhotoURL("http://example.com/photo.jpg");
@@ -109,7 +110,7 @@ public class ModelControllerTest {
     @Test
     void createModel_ShouldReturnCreatedModel() throws Exception {
         // Given
-        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":2,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
+        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":CITADINE_POLYVALENTE,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
         when(modelService.createModel(any(ModelDto.class))).thenReturn(modelDto);
 
         // When & Then
@@ -150,7 +151,7 @@ public class ModelControllerTest {
     @Test
     void updateModel_WithExistingId_ShouldReturnUpdatedModel() throws Exception {
         // Given
-        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":2,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
+        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":CITADINE_POLYVALENTE,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
         when(modelService.updateModel(anyLong(), any(ModelDto.class))).thenReturn(modelDto);
 
         // When & Then
@@ -166,7 +167,7 @@ public class ModelControllerTest {
     @Test
     void updateModel_WithNonExistingId_ShouldThrowException() throws Exception {
         // Given
-        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":2,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
+        String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":CITADINE_POLYVALENTE,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
         when(modelService.updateModel(anyLong(), any(ModelDto.class))).thenThrow(new RessourceNotFoundException("The model does not exist"));
 
         // When & Then

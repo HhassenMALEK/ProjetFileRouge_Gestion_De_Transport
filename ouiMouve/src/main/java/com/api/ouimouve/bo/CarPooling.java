@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class CarPooling {
     /** The date and time when the carpooling is scheduled to arrive. */
     @NotNull
     private Date arrival;
-
     /**
      * The status of the carpooling.
      */
