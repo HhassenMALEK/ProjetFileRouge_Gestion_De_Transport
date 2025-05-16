@@ -24,9 +24,12 @@ public class CarPoolingCreateDto {
     private Integer durationInMinutes;
     /** Distance of the carpooling in kilometers. */
     private Integer distance;
-
+    /** Adress where the carpooling starts. */
     private Long departureAddressId;
+    /** Adress where the carpooling ends. */
     private Long destinationAddressId;
+    /** vehicle used for the carpooling. */
     private Long vehicleId;
+    private Long organizerId;
 
 }

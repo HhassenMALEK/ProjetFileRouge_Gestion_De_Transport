@@ -46,12 +46,6 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     // Détail d’un covoiturage pour l’organisateur
     Optional<CarPooling> findByIdAndOrganizerId(Long id, Long organizerId);
 
-    // Vérifier chevauchement pour un utilisateur (création/modification) ==> a vérifier
-    List<CarPooling>findByOrganizerIdAndDepartureBetween(Long organizerId, Date departure, Date arrival);
-
-    // Vérifier chevauchement pour un véhicule ==> à vérifier
-    List<CarPooling> findByVehicleIdAndDepartureBetween(Long vehicleId, Date departure, Date arrival);
-
     // Filtrage par statut, date, véhicule
     List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
 
@@ -64,4 +58,75 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
 
     //find by status
     List<CarPooling> findByStatus(CarPoolingStatus status);
+
+
+    // Vérifier chevauchement pour un utilisateur (création/modification)
+    @Query("""
+    SELECT c FROM CarPooling c 
+    WHERE c.organizer.id = :organizerId 
+    AND ((c.departure <= :arrival AND c.arrival >= :departure))
+""")
+    List<CarPooling> findOverlappingByOrganizer(
+            @Param("organizerId") Long organizerId,
+            @Param("departure") Date departure,
+            @Param("arrival") Date arrival
+    );
+
+    //Vérifier chevauchement pour un véhicule
+    @Query("""
+    SELECT c FROM CarPooling c
+    WHERE c.vehicle.id = :vehicleId
+    AND c.departure < :end
+    AND c.arrival > :start
+""")
+    List<CarPooling> findOverlappingCarPoolingByVehicle(
+            @Param("vehicleId") Long vehicleId,
+            @Param("start") Date start,
+            @Param("end") Date end
+    );
+
+    @Query("""
+    SELECT c FROM CarPooling c 
+    WHERE c.vehicle.id = :vehicleId 
+    AND c.id <> :excludeId 
+    AND c.departure < :end 
+    AND c.arrival > :start
+""")
+    List<CarPooling> findOverlappingCarPoolingByVehicleExcludingId(
+            @Param("vehicleId") Long vehicleId,
+            @Param("start") Date start,
+            @Param("end") Date end,
+            @Param("excludeId") Long excludeId
+    );
+
+    @Query("""
+    SELECT c FROM CarPooling c 
+    WHERE c.organizer.id = :organizerId 
+    AND c.id <> :excludeId 
+    AND c.departure < :end 
+    AND c.arrival > :start
+""")
+    List<CarPooling> findOverlappingCarPoolingByOrganizer(
+            @Param("organizerId") Long organizerId,
+            @Param("start") Date start,
+            @Param("end") Date end,
+             @Param("excludeId") Long excludeId
+    );
+
+    @Query("""
+    SELECT c FROM CarPooling c
+    WHERE (:organizerId IS NULL OR c.organizer.id = :organizerId)
+    AND (:status IS NULL OR c.status = :status)
+    AND (:departure IS NULL OR c.departure = :departure)
+    AND (:vehicleId IS NULL OR c.vehicle.id = :vehicleId)
+""")
+    List<CarPooling> filterCarpoolings(
+            @Param("organizerId") Long organizerId,
+            @Param("status") CarPoolingStatus status,
+            @Param("departure") Date departure,
+            @Param("vehicleId") Long vehicleId
+    );
+
+
+
 }
