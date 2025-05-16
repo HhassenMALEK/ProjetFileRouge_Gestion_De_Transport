@@ -1,6 +1,7 @@
 package com.api.ouimouve.dto;
 
 import com.api.ouimouve.enumeration.CarPoolingStatus;
+import com.api.ouimouve.exception.InvalidRessourceException;
 import lombok.Data;
 
 import java.time.LocalTime;
@@ -18,11 +19,16 @@ public class CarPoolingDto {
     /** The date and time when the carpooling is scheduled to arrive. */
     private Date arrival;
     /** The time when the carpooling is scheduled to start. */
-    private LocalTime departureTime;
-    /** The status of the carpooling.*/
     private CarPoolingStatus status;
     /** Duration of the carpooling in minutes. */
     private Integer durationInMinutes;
     /** Distance of the carpooling in kilometers. */
     private Integer distance;
+
+    private Long departureAddressId;
+    private Long destinationAddressId;
+    private Long vehicleId;
+    private Long organizerId;
+
+
 }

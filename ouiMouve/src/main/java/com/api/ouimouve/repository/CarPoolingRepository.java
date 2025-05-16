@@ -53,22 +53,20 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     void deleteByIdAndStatus(Long id, CarPoolingStatus status);
 
     // Vérifier chevauchement pour un utilisateur (création/modification)
-//    @Query("SELECT c FROM CarPooling c WHERE c.organizer.id = :userId AND c.departure = :date AND c.departureTime = :time AND (:excludeId IS NULL OR c.id <> :excludeId)")
-    List<CarPooling> findOverlappingCarPoolingForUser(@Param("userId") Long userId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
+    List<CarPooling>findByOrganizerIdAndDepartureBetween(Long organizerId, Date departure, Date arrival);
 
     // Vérifier chevauchement pour un véhicule
-    @Query("SELECT c FROM CarPooling c WHERE c.vehicle.id = :vehicleId AND c.departure = :date AND c.departureTime = :time AND (:excludeId IS NULL OR c.id <> :excludeId)")
-    List<CarPooling> findOverlappingCarPoolingForVehicle(@Param("vehicleId") Long vehicleId, @Param("date") LocalDate date, @Param("time") LocalTime time, @Param("excludeId") Long excludeId);
+    List<CarPooling> findByVehicleIdAndDepartureBetween(Long vehicleId, Date departure, Date arrival);
 
 
     // Filtrage par statut, date, véhicule
     List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
-    List<CarPooling> findByOrganizerIdAndDeparture(Long userId, LocalDate departure);
+    List<CarPooling> findByOrganizerIdAndDeparture(Long userId, Date departure);
     List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
 
     // Filtrage combiné
     List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
-            Long userId, CarPoolingStatus status, LocalDate departure, Long vehicleId);
+            Long userId, CarPoolingStatus status, Date departure, Long vehicleId);
 
     // Liste par date
     List<CarPooling> findByDeparture(Date departure);

@@ -26,10 +26,6 @@ public class CarPooling {
     @NotNull
     private Date arrival;
 
-    /** The time when the carpooling is scheduled to start. */
-    @NotNull
-    private LocalTime departureTime;
-
     /**
      * The status of the carpooling.
      */

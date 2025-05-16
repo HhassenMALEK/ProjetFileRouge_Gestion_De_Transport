@@ -21,8 +21,8 @@ public class CarPoolingController {
      * Fetches all carpoolings from the repository and converts them to DTOs.
      */
     @GetMapping("/list")
-    public List<CarPoolingDto> getAllCarPoolings() {
-        return carPoolingService.getAllCarPoolings();
+    public List<CarPoolingDto> getAllCarpooling() {
+        return carPoolingService.getAllCarpooling();
     }
 
     /**
@@ -41,13 +41,12 @@ public class CarPoolingController {
      * Fetches all carpoolings with a specific status from the repository and converts them to DTOs.
      */
     @GetMapping("/status/{status}")
-    public List<CarPoolingDto> getCarPoolingsByStatus(@PathVariable CarPoolingStatus status) {
-        return carPoolingService.getCarPoolingsByStatus(status);
+    public List<CarPoolingDto> findByStatus(@PathVariable CarPoolingStatus status) {
+        return carPoolingService.getCarpoolingByStatus(status);
     }
 
     /**
-     * Fetches all carpoolings with departure after the given date from the repository and converts them to DTOs.
-     */
+     * Fetches all carpoolings with departure after the given date from the repository and converts them to DTO*/
     @GetMapping("/departureAfter/{date}")
     public List<CarPoolingDto> getCarPoolingsAfterDate(@PathVariable Date date) {
         return carPoolingService.getCarPoolingsAfterDate(date);
@@ -57,8 +56,8 @@ public class CarPoolingController {
      * getCarPoolingsByStatusAndDate
      */
     @GetMapping("/status/{status}/date/{date}")
-    public List<CarPoolingDto> getCarPoolingsByStatusAndDate(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
-        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
+    public List<CarPoolingDto> getCarpoolingByStatus(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
+        return carPoolingService.getCarpoolingByStatus(status);
     }
 
     /**
@@ -68,8 +67,8 @@ public class CarPoolingController {
      * @return CarPoolingDto
      */
     @PostMapping
-    public CarPoolingDto createCarPooling(@RequestBody CarPoolingDto carPoolingDto) {
-        return carPoolingService.createCarPooling(carPoolingDto);
+    public CarPoolingDto createCarPoColing(@RequestBody CarPoolingDto carPoolingDto) {
+        return carPoolingService.createCarpooling(carPoolingDto);
     }
 
     /**
@@ -88,8 +87,6 @@ public class CarPoolingController {
         return updated;
     }
 
-
-
     /**
      * delete a carpooling
      *
@@ -102,9 +99,42 @@ public class CarPoolingController {
         if (existing == null) {
             throw new RessourceNotFoundException("Carpooling not found with id: " + id);
         }
-        carPoolingService.deleteCarPooling(id);
+        carPoolingService.deleteCarpooling(id);
         return existing;
     }
+
+    @DeleteMapping("/in-progress/{id}")
+    public void deleteCarPoolingIfInProgress(@PathVariable Long id) {
+        carPoolingService.deleteIfInProgress(id);
+    }
+
+    @GetMapping("/status-ordered/{status}")
+    public List<CarPoolingDto> getCarpoolingsByStatusOrdered(@PathVariable CarPoolingStatus status) {
+        return carPoolingService.getCarPoolingsByStatusOrdered(status);
+    }
+
+    @GetMapping("/overlap/organizer")
+    public List<?> findOverlappingForOrganizer(Long userId, Date from, Date to) {
+        return carPoolingService.findOverlappingForOrganizer(userId, from, to);
+    }
+
+    @GetMapping("/filter")
+    public List<?> filterByStatusDateVehicle(Long userId, CarPoolingStatus status, Date departure, Long vehicleId) {
+        return carPoolingService.filterByStatusDateVehicle(userId, status, departure, vehicleId);
+    }
+
+    @GetMapping("/overlap/vehicle")
+    public List<?> findOverlappingForVehicle(Long vehicleId, Date from, Date to) {
+        return carPoolingService.findOverlappingForVehicle(vehicleId, from, to);
+    }
+
+    @GetMapping("/status-date")
+    public List<CarPoolingDto> getByStatusAndDepartureAfter(CarPoolingStatus status, Date date) {
+        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
+    }
+
+
+
 
 
 }

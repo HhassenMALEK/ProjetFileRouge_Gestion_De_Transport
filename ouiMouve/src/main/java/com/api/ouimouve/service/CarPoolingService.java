@@ -1,15 +1,21 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.dto.CarPoolingDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
+import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.CarPoolingMapper;
+import com.api.ouimouve.repository.AdressRepository;
 import com.api.ouimouve.repository.CarPoolingRepository;
+import com.api.ouimouve.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -20,43 +26,115 @@ public class CarPoolingService {
     private CarPoolingRepository carPoolingRepository;
     @Autowired
     CarPoolingMapper carPoolingMapper;
+    @Autowired
+    private AdressRepository adressRepository;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
-    // Add methods to handle CRUD operations for CarPooling entities
-    /**
-     * Retrieves all carpoolings.
-     *
-     * @return a list of CarPoolingDto
-     */
-    public List<CarPoolingDto> getAllCarPoolings() {
+
+  //findAll
+    public List<CarPoolingDto> getAllCarpooling() {
         return carPoolingRepository.findAll().stream()
                 .map(carPoolingMapper::toCarPoolingDto)
                 .collect(Collectors.toList());
     }
-
-    /**
-     * Retrieves a carpooling by its ID.
-     *
-     * @param id the ID of the carpooling
-     * @return the corresponding CarPoolingDto if found, otherwise null
-     */
+    //findById
     public CarPoolingDto getCarPoolingById(Long id) {
+        if (id == null) {
+            throw new RessourceNotFoundException("ID requis pour rechercher un covoiturage.");
+        }
+
         return carPoolingRepository.findById(id)
                 .map(carPoolingMapper::toCarPoolingDto)
-                .orElse(null);
+                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
     }
 
-    /**
-     * Retrieves all carpoolings with a specific status.
-     *
-     * @param status the status to filter by
-     * @return a list of CarPoolingDto
-     */
-    public List<CarPoolingDto> getCarPoolingsByStatus(CarPoolingStatus status) {
+    //findByStatus
+    public List<CarPoolingDto> getCarpoolingByStatus(CarPoolingStatus status) {
         return carPoolingRepository.findByStatus(status).stream()
                 .map(carPoolingMapper::toCarPoolingDto)
                 .collect(Collectors.toList());
     }
 
+
+    //Create CarPooling
+    public CarPoolingDto createCarpooling(CarPoolingDto dto) {
+        validateDto(dto);
+
+        CarPooling carPooling = carPoolingMapper.toEntity(dto);
+
+        carPooling.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
+
+        carPooling.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
+
+        carPooling.setOrganizer(userRepository.findById(dto.getOrganizerId())
+                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
+
+        return carPoolingMapper.toCarPoolingDto(carPoolingRepository.save(carPooling));
+    }
+
+    /**
+     * Met à jour un covoiturage existant.
+     */
+    public CarPoolingDto updateCarPooling(Long id, CarPoolingDto dto) {
+        if (id == null || dto == null) {
+            throw new InvalidRessourceException("Les données de mise à jour sont incomplètes.");
+        }
+
+        CarPooling entity = carPoolingRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
+
+        entity.setDeparture(dto.getDeparture());
+        entity.setArrival(dto.getArrival());
+        entity.setStatus(dto.getStatus());
+        entity.setDurationInMinutes(dto.getDurationInMinutes());
+        entity.setDistance(dto.getDistance());
+
+        entity.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
+
+        entity.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
+
+        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
+                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
+
+        return carPoolingMapper.toCarPoolingDto(carPoolingRepository.save(entity));
+    }
+
+    //delelte
+    public void deleteCarpooling(Long id) {
+        if (!carPoolingRepository.existsById(id)) {
+            throw new RessourceNotFoundException("Impossible de supprimer : covoiturage introuvable avec l’ID : " + id);
+        }
+        carPoolingRepository.deleteById(id);
+    }
+
+    //deleteIfInProgress
+    public void deleteIfInProgress(Long id) {
+        carPoolingRepository.deleteByIdAndStatus(id, CarPoolingStatus.IN_PROGRESS);
+    }
+
+    //filterByStatusDateVehicle
+    public List<CarPooling> filterByStatusDateVehicle(Long userId, CarPoolingStatus status, Date departure, Long vehicleId) {
+        return carPoolingRepository.findByOrganizerIdAndStatusAndDepartureAndVehicleId(userId, status, departure, vehicleId);
+    }
+
+    //findByStatusAndDepartureAfter
+    public List<CarPoolingDto> getCarPoolingsByStatusAndDate(CarPoolingStatus status, Date date) {
+        return carPoolingRepository.findByStatusAndDepartureAfter(status, date).stream()
+                .map(carPoolingMapper::toCarPoolingDto)
+                .collect(Collectors.toList());
+    }
+
+
+public List<CarPooling> findOverlappingForOrganizer(Long userId, Date from, Date to) {
+    return carPoolingRepository.findByOrganizerIdAndDepartureBetween(userId, from, to);
+}
     /**
      * Retrieves all carpoolings with departure after the given date.
      *
@@ -69,69 +147,46 @@ public class CarPoolingService {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Retrieves carpoolings by status and with departure after the given date.
-     *
-     * @param status the status to filter by
-     * @param date the minimum departure date
-     * @return a list of CarPoolingDto
-     */
-    public List<CarPoolingDto> getCarPoolingsByStatusAndDate(CarPoolingStatus status, Date date) {
-        return carPoolingRepository.findByStatusAndDepartureAfter(status, date).stream()
-                .map(carPoolingMapper::toCarPoolingDto)
-                .collect(Collectors.toList());
+    public List<CarPooling> findOverlappingForVehicle(Long vehicleId, Date from, Date to) {
+        return carPoolingRepository.findByVehicleIdAndDepartureBetween(vehicleId, from, to);
     }
 
-    /**
-     * Retrieves carpoolings by status ordered by departure date ascending.
-     *
-     * @param status the status to filter by
-     * @return a list of CarPoolingDto
-     */
     public List<CarPoolingDto> getCarPoolingsByStatusOrdered(CarPoolingStatus status) {
         return carPoolingRepository.findByStatusOrderByDepartureAsc(status).stream()
                 .map(carPoolingMapper::toCarPoolingDto)
                 .collect(Collectors.toList());
     }
 
-    /**
-     * creates a new carpooling.
-     *
-     * @param dto the CarPoolingDto to create
-     * the created CarPoolingDto
-     */
-    public CarPoolingDto createCarPooling(CarPoolingDto dto) {
-        return carPoolingMapper.toCarPoolingDto(carPoolingRepository.save(carPoolingMapper.toEntity(dto)));
+    //findByDepartureAfter
+    public List<CarPoolingDto> findByDepartureAfter(Date date) {
+        return carPoolingRepository.findByDepartureAfter(date).stream()
+                .map(carPoolingMapper::toCarPoolingDto)
+                .collect(Collectors.toList());
+    }
+    public Optional<CarPooling> findByIdAndOrganizer(Long id, Long organizerId) {
+        return carPoolingRepository.findByIdAndOrganizerId(id, organizerId);
     }
 
-    /**
-     * Updates an existing carpooling.
-     *
-     * @param id the ID of the carpooling to update
-     * @param dto the CarPoolingDto with updated information
-     * @return the updated CarPoolingDto
-     */
-    public CarPoolingDto updateCarPooling(Long id, CarPoolingDto dto) {
-        return carPoolingRepository.findById(id)
-                .map(carPooling -> {
-                    carPooling.setDeparture(dto.getDeparture());
-                    carPooling.setArrival(dto.getArrival());
-                    carPooling.setStatus(dto.getStatus());
-                    return carPoolingMapper.toCarPoolingDto(carPoolingRepository.save(carPooling));
-                })
-                .orElseThrow(() -> new RessourceNotFoundException("Carpooling not found with id: " + id));
+    public List<CarPooling> findByVehicleId(Long vehicleId) {
+        return carPoolingRepository.findByVehicleId(vehicleId);
     }
 
-    /**
-     * Deletes a carpooling by ID.
-     *
-     * @param id the ID of the carpooling to delete
-     */
-    public void deleteCarPooling(Long id) {
-        if (!carPoolingRepository.existsById(id)) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
+
+    private void validateDto(CarPoolingDto dto) {
+        if (dto.getDepartureAddressId() == null) {
+            throw new InvalidRessourceException("L'adresse de départ est obligatoire.");
         }
-        carPoolingRepository.deleteById(id);
+        if (dto.getDestinationAddressId() == null) {
+            throw new InvalidRessourceException("L'adresse de destination est obligatoire.");
+        }
+        if (dto.getVehicleId() == null) {
+            throw new InvalidRessourceException("Le véhicule est obligatoire.");
+        }
+        if (dto.getOrganizerId() == null) {
+            throw new InvalidRessourceException("L'organisateur est obligatoire.");
+        }
+
     }
+
 
 }
