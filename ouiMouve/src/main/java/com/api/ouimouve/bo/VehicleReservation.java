@@ -23,9 +23,6 @@ public class VehicleReservation {
 
 
 
-    @Column(nullable = false)
-    private long userID;
-
     /**
      * Start date of the reservation.
      */
