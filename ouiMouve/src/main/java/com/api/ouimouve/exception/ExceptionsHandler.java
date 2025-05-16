@@ -36,7 +36,18 @@ public class ExceptionsHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
 
-    /**
+    /** 
+     * Handles InvalidRequestException and returns a 400 Bad Request response.
+     *
+     * @param ex the InvalidRequestException
+     * @return ResponseEntity with a 400 status and the exception message
+     */
+    @ExceptionHandler(value = {
+        InvalidRequestException.class
+    })
+    public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    
      * Handles IllegalArgumentException and returns a 400 Bad Request response.
      *
      * @param ex the IllegalArgumentException
@@ -60,5 +71,6 @@ public class ExceptionsHandler {
     public ResponseEntity<String> handleReservationConflictException(ReservationConflictException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
 
 }
