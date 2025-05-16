@@ -1,15 +1,19 @@
 # Chap 6.1	Cas d’utilisation Liste des véhicules de service réservés
 -> Filtrer véhicule réservés d'un utilisateur -> GET api/reservation/list/user/{userId}
--> Filtrer véhicule réservés d'un utilisateur - multicritères statut/date/userid : API à créer
-===> Ou est ce que l'on gère les jointures sur les select : back ou front ?
+-> Filtrer véhicule réservés d'un utilisateur - multicritères statut/date/userid -> GET api/reservation/user/{userid}/filter  
+  ===> Ou est ce que l'on gère les jointures sur le select avec Site ?
 
 # Chap 6.2	Cas d’utilisation modifier une demande de véhicule de service
 -> Détail d'une réservation -> GET api/reservation/{id}
 -> Modifier une réservation -> PATCH api/reservation/{id}
+Fait : Vérifier que les dates modifiées du véhicule n’empiètent pas sur une autre réservation de ce véhicule ou à une réparation
+nouvelle résa date deb - date fin est une période libre
+    - Pas de réparation sur ces dates
+    - pas de réservation pré-existante sur ces dates 
 
-A REVOIR avec Mathis : Pour vérifier que la réservation du véhicule de service n’est pas rattachée 
+A faire: Vérifier que la réservation du véhicule de service n’est pas rattachée 
 à un covoiturage en cours pour cet utilisateur sur des nouvelles dates incompatibles
-Vérifier que les dates modifiées du véhicule n’empiètent pas sur une autre réservation de ce véhicule ou à une réparation
+
 
 # Chap 6.3 6.3	Cas d’utilisation annuler une demande de véhicule de service
 -> Supprimer  - > DELETE /api/reservation/{id} -- Ajouter test de non existence d'un covoit de cet utilisateur sur 
