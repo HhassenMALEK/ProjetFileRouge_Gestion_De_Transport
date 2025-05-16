@@ -1,19 +1,23 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.Reparation;
+import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.bo.Vehicle;
+import com.api.ouimouve.dto.ReparationCreateDto;
 import com.api.ouimouve.dto.ReparationDto;
+import com.api.ouimouve.dto.ReparationResponseDto;
+import com.api.ouimouve.dto.VehicleReservationDto;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import com.api.ouimouve.exception.RessourceNotFoundException;
-
 import com.api.ouimouve.mapper.ReparationMapper;
 import com.api.ouimouve.repository.ReparationRepository;
+import com.api.ouimouve.repository.VehicleRepository;
+import com.api.ouimouve.utils.Mails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
-
 import java.util.stream.Collectors;
 
 @Service
@@ -21,16 +25,22 @@ public class ReparationService {
     @Autowired
     private ReparationRepository reparationRepository;
     @Autowired
+    private VehicleRepository vehicleRepository;
+    @Autowired
     private ReparationMapper reparationMapper;
+    @Autowired
+    private ReservationService reservationService;
+
+
 
     // Add methods to handle CRUD operations for Reparation entities
     /**
      * Get all Reparations
      * @return a list of ReparationDto
      */
-    public List<ReparationDto>  getAllReparations(Long vehicleId) {
+    public List<ReparationResponseDto>  getAllReparations(Long vehicleId) {
         return reparationRepository.findByServiceVehicleId(vehicleId).stream()
-                .map(reparationMapper::toReparationDto)
+                .map(reparationMapper::toDto)
                 .collect(Collectors.toList());
     }
 
@@ -39,9 +49,9 @@ public class ReparationService {
      * @param id the ID of the Reparation
      * @return the ReparationDto if found, null otherwise
      */
-    public ReparationDto getReparationById(long id) {
+    public ReparationResponseDto getReparationById(long id) {
         return reparationRepository.findById(id)
-                .map(reparationMapper::toReparationDto)
+                .map(reparationMapper::toDto)
                 .orElse(null);
     }
 
@@ -50,8 +60,22 @@ public class ReparationService {
      * @param reparationDto the ReparationDto to create
      * @return the created ReparationDto
      */
-    public ReparationDto createReparation(ReparationDto reparationDto) {
-        return reparationMapper.toReparationDto(reparationRepository.save(reparationMapper.toReparation(reparationDto)));
+    public ReparationResponseDto createReparation(ReparationCreateDto reparationDto) {
+
+        //mapping DTO without the vehicle
+        Reparation reparation = reparationMapper.toEntity(reparationDto);
+
+        //check if the ServiceVehicle is present, so we can add his ID to this ReparationCreateDto
+        Optional<Vehicle> serviceVehicleOpt = vehicleRepository.findById(reparationDto.getVehicleId());
+
+        if (serviceVehicleOpt.isPresent()) {
+            ServiceVehicle serviceVehicle = (ServiceVehicle) serviceVehicleOpt.get();
+            reparation.setServiceVehicle(serviceVehicle);
+            reparation = reparationRepository.save(reparation);
+            return  reparationMapper.toDto(reparation);
+        }else{
+            throw new RessourceNotFoundException("Service Vehicle not found");
+        }
     }
 
     /**
@@ -60,8 +84,8 @@ public class ReparationService {
      * @param id the ID of the Reparation to delete
      * @return the deleted ReparationDto
      */
-    public ReparationDto deleteReparation(long id) {
-        ReparationDto reparationDto = getReparationById(id);
+    public ReparationResponseDto deleteReparation(long id) {
+        ReparationResponseDto reparationDto = getReparationById(id);
         // Check if the reparation exists before deleting
         if (reparationDto != null) {
             reparationRepository.deleteById(id);
@@ -75,16 +99,43 @@ public class ReparationService {
      * @param reparationDto the updated ReparationDto
      * @return the updated ReparationDto
      */
-    public ReparationDto updateReparation(long id, ReparationDto reparationDto) {
+    public ReparationResponseDto updateReparation(long id, ReparationCreateDto reparationDto) {
         // Check if the reparation exists before updating
+        Reparation reparationExisting = reparationRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Reparation not found"));
 
+        //check if the ServiceVehicle is present, so we can add his ID to this ReparationCreateDto
+        Optional<Vehicle> serviceVehicleOpt = vehicleRepository.findById(reparationDto.getVehicleId());
 
-        Optional <Reparation> reparationOpt = reparationRepository.findById(id);
-        if (reparationOpt.isPresent()) {
-            reparationRepository.save(reparationMapper.toReparation(reparationDto));
-            return reparationMapper.toReparationDto(reparationOpt.get());
+        if (serviceVehicleOpt.isPresent()) {
+            reparationExisting.setServiceVehicle((ServiceVehicle) serviceVehicleOpt.get());
+            reparationExisting.setStart(reparationDto.getStart());
+            reparationExisting.setEnd(reparationDto.getEnd());
+            reparationExisting.setMotive(reparationDto.getMotive());
+
+            //Saving changes elements
+            Reparation updated = reparationRepository.save(reparationExisting);
+            return reparationMapper.toDto(updated);
+
+        }else{
+            throw new RessourceNotFoundException("Service Vehicle not found");
         }
+    }
 
-        throw new RessourceNotFoundException("Reparation not found");
+    public boolean checkDateForReparation(ReparationDto reparationDto) {
+
+        boolean response =true;
+
+        List<VehicleReservationDto> vehicleReservation = reservationService.getAllReservationsByVehicle(reparationDto.getVehicleId());
+        for (VehicleReservationDto vehicleReservationDto : vehicleReservation){
+            if( vehicleReservationDto.getStart() == reparationDto.getStart() &&
+                    vehicleReservationDto.getEnd() == reparationDto.getEnd()){
+                response= false;
+                vehicleReservationDto.setStatus(VehicleStatus.DISABLED);
+                //Mails.sendMAilCarpoolingIsCanceledForReparation(Long.toString(vehicleReservationDto.getUserID()),"Canceled for reparation");
+                break;
+            }
+        }
+        return response;
     }
 }
