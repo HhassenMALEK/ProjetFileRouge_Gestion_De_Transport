@@ -106,7 +106,7 @@ public class CarPoolingService {
         return carPoolingMapper.toCarPoolingDto(carPoolingRepository.save(entity));
     }
 
-    //delelte
+    //delelte ==> revoir d'ajouter si existe et verifier les condition
     public void deleteCarpooling(Long id) {
         if (!carPoolingRepository.existsById(id)) {
             throw new RessourceNotFoundException("Impossible de supprimer : covoiturage introuvable avec l’ID : " + id);
@@ -114,7 +114,7 @@ public class CarPoolingService {
         carPoolingRepository.deleteById(id);
     }
 
-    //deleteIfInProgress
+    //deleteIfInProgress ==> à voir
     public void deleteIfInProgress(Long id) {
         carPoolingRepository.deleteByIdAndStatus(id, CarPoolingStatus.IN_PROGRESS);
     }

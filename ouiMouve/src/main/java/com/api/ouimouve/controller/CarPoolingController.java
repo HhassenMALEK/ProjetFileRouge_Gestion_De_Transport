@@ -92,6 +92,7 @@ public class CarPoolingController {
      *
      * @param id
      * @return CarPoolingDto
+     * ==> a vérifier
      */
     @DeleteMapping("/{id}")
     public CarPoolingDto deleteCarPooling(@PathVariable Long id) {
@@ -102,7 +103,7 @@ public class CarPoolingController {
         carPoolingService.deleteCarpooling(id);
         return existing;
     }
-
+// a vérifier
     @DeleteMapping("/in-progress/{id}")
     public void deleteCarPoolingIfInProgress(@PathVariable Long id) {
         carPoolingService.deleteIfInProgress(id);

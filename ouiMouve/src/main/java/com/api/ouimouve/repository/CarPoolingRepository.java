@@ -49,26 +49,22 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     // Détail d’un covoiturage pour l’organisateur
     Optional<CarPooling> findByIdAndOrganizerId(Long id, Long organizerId);
 
-    // Supprimer seulement si statut EN_COURS
+    // Supprimer seulement si statut EN_COURS ==> a voir
     void deleteByIdAndStatus(Long id, CarPoolingStatus status);
 
-    // Vérifier chevauchement pour un utilisateur (création/modification)
+    // Vérifier chevauchement pour un utilisateur (création/modification) ==> a vérifier
     List<CarPooling>findByOrganizerIdAndDepartureBetween(Long organizerId, Date departure, Date arrival);
 
-    // Vérifier chevauchement pour un véhicule
+    // Vérifier chevauchement pour un véhicule ==> à vérifier
     List<CarPooling> findByVehicleIdAndDepartureBetween(Long vehicleId, Date departure, Date arrival);
 
 
     // Filtrage par statut, date, véhicule
     List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
-    List<CarPooling> findByOrganizerIdAndDeparture(Long userId, Date departure);
+   // ==> a vérifier List<CarPooling> findByOrganizerIdAndDeparture(Long userId, Date departure);
     List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
 
     // Filtrage combiné
     List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
             Long userId, CarPoolingStatus status, Date departure, Long vehicleId);
-
-    // Liste par date
-    List<CarPooling> findByDeparture(Date departure);
-
 }
