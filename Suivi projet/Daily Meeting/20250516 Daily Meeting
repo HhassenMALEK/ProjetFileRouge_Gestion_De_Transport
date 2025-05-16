@@ -1,8 +1,9 @@
 # Daily Meeting Template du
 
 ## Réalisé
-- [Matis] mettre en place Spring security
--[Sebastien] ajouter application properties/dev/prod
+- [Matis] Spring security : génération des token JWT
+
+-[Sebastien] ajout application properties/dev/prod
              commencer à remplir la BD
 -[Joseph] creation reparationCreateDto/reparationResponseDto
 -[Hassen]
@@ -17,11 +18,13 @@
  -[Sebastien] remonte init.sql
  -[Joseph]
  -[Hassen] faire evoluer le diagrame de classe.
+
 [Tous] faire un pull request pour partir sur une seule version(dev)
+         mettre des autorisations " admin "
 ## Autres Points
-- [Matis]
+- [Matis]  Contrainte : reprend à 15h
  -[Sebastien]
  -[Joseph]
  -[Hassen]
-reprendre a 15h
+
 # Esprit du jour de l'équipe
