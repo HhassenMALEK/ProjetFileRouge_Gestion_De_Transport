@@ -31,36 +31,52 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
      */
     List<CarPooling> findByStatusAndDepartureAfter(CarPoolingStatus status, Date date);
 
-    // Liste par statut et tri par date
+    /**
+     * Finds all carpoolings with the specified status, ordered by departure time.
+     *
+     * @param status the status of the carpooling
+     * @return a list of matching carpoolings, ordered by departure time
+     */
     List<CarPooling> findByStatusOrderByDepartureAsc(CarPoolingStatus status);
 
-    //List des covoiturages aprés une date
+    /**
+     * Finds all carpoolings with a departure date after a given date.
+     *
+     * @param date the date to compare with departure time
+     * @return a list of matching carpoolings
+     */
     List<CarPooling> findByDepartureAfter(Date date);
 
-    // Liste des covoiturages organisés par un utilisateur
+    /**
+     * Finds all carpoolings with the specified status and departure date after a given date.
+     *
+     * @param status the status of the carpooling
+     * @param date   the date to compare with departure time
+     * @return a list of matching carpoolings
+     */
     List<CarPooling> findByOrganizerId(Long userId);
 
-    // Liste par véhicule
+    /**
+     * Finds all carrpoolings associated with a specific vehicle.
+     * @param vehicleId the ID of the vehicle.
+     * @return list of carpoolings associated with the vehicle.
+     */
     List<CarPooling> findByVehicleId(Long vehicleId);
 
-    // Détail d’un covoiturage pour l’organisateur
-    Optional<CarPooling> findByIdAndOrganizerId(Long id, Long organizerId);
-
-    // Filtrage par statut, date, véhicule
-    List<CarPooling> findByOrganizerIdAndStatus(Long userId, CarPoolingStatus status);
-
-   // ==> a vérifier List<CarPooling> findByOrganizerIdAndDeparture(Long userId, Date departure);
-    List<CarPooling> findByOrganizerIdAndVehicleId(Long userId, Long vehicleId);
-
-    // Filtrage combiné
-    List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
-            Long userId, CarPoolingStatus status, Date departure, Long vehicleId);
-
-    //find by status
+    /**
+     * Finds a carpooling by status.
+     * @param status the status of the carpooling
+     * @return an optional containing the carpooling if found, empty otherwise
+     */
     List<CarPooling> findByStatus(CarPoolingStatus status);
 
 
-    // Vérifier chevauchement pour un utilisateur (création/modification)
+    /** Finds overlapping carpoolings for organizer.
+     * @param organizerId the ID of the organizer
+     * @param departure   the start date
+     * @param arrival     the end date
+     * @return a list of overlapping carpoolings
+     */
     @Query("""
     SELECT c FROM CarPooling c 
     WHERE c.organizer.id = :organizerId 
@@ -72,19 +88,39 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("arrival") Date arrival
     );
 
-    //Vérifier chevauchement pour un véhicule
+    /**
+     * Finds overlapping carpoolings for a given vehicle.
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @return a list of overlapping carpoolings
+     */
     @Query("""
     SELECT c FROM CarPooling c
     WHERE c.vehicle.id = :vehicleId
     AND c.departure < :end
     AND c.arrival > :start
 """)
+    /**find over lapping carpooling by vehicle
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @return a list of overlapping carpoolings
+     */
     List<CarPooling> findOverlappingCarPoolingByVehicle(
             @Param("vehicleId") Long vehicleId,
             @Param("start") Date start,
             @Param("end") Date end
     );
 
+    /**
+     * Finds overlapping carpoolings for a given vehicle excluding a specific ID.
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @param excludeId the ID to exclude from the results
+     * @return a list of overlapping carpoolings
+     */
     @Query("""
     SELECT c FROM CarPooling c 
     WHERE c.vehicle.id = :vehicleId 
@@ -99,6 +135,14 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("excludeId") Long excludeId
     );
 
+    /**
+     * Finds overlapping carpoolings for a given organizer excluding a specific ID.
+     * @param organizerId the ID of the organizer
+     * @param start       the start date
+     * @param end         the end date
+     * @param excludeId   the ID to exclude from the results
+     * @return a list of overlapping carpoolings
+     */
     @Query("""
     SELECT c FROM CarPooling c 
     WHERE c.organizer.id = :organizerId 
@@ -113,6 +157,13 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
              @Param("excludeId") Long excludeId
     );
 
+    /** Filter carpoolings based on multiple criteria.
+     * @param organizerId the ID of the organizer (optional)
+     * @param status      the status of the carpooling (optional)
+     * @param departure   the departure date (optional)
+     * @param vehicleId   the ID of the vehicle (optional)
+     * @return a list of carpoolings matching the criteria
+     */
     @Query("""
     SELECT c FROM CarPooling c
     WHERE (:organizerId IS NULL OR c.organizer.id = :organizerId)

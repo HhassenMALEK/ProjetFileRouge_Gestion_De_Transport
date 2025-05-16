@@ -17,6 +17,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Service class for managing carpooling operations.
+ * Provides methods to create, update, delete, and retrieve carpooling information.
+ */
 @Service
 public class CarPoolingService {
     @Autowired
@@ -33,13 +37,21 @@ public class CarPoolingService {
     private VehicleRepository vehicleRepository;
 
 
-  //findAll
+    /**
+     * Retrieves all carpoolings.
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> getAllCarpooling() {
         return carPoolingRepository.findAll().stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
-    //findById
+
+    /**
+     * Retrieves a carpooling by its ID.
+     * @param the ID of the carpooling
+     * @return the CarPoolingResponseDto
+     */
     public CarPoolingResponseDto getCarPoolingById(Long id) {
         if (id == null) {
             throw new RessourceNotFoundException("ID requis pour rechercher un covoiturage.");
@@ -50,14 +62,22 @@ public class CarPoolingService {
                 .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
     }
 
-    //findByStatus
+    /**
+     * Retrieves carpoolings by their status.
+     * @param status the status of the carpooling
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> getCarpoolingByStatus(CarPoolingStatus status) {
         return carPoolingRepository.findByStatus(status).stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
-    /** Creates a new carpooling. */
+    /**
+     * Creates a new carpooling entry.
+     * @param dto containing carpooling details.
+     * @return the created carpooling entry.
+     */
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
         validateDto(dto);
         // Vérification date et heure
@@ -93,7 +113,12 @@ public class CarPoolingService {
         return carPoolingMapper.toResponseDto(carPoolingRepository.save(carPooling));
     }
 
-   /** update Carpooling.  */
+    /**
+     * Updates an existing carpooling entry.
+     * @param id the ID of the carpooling to update
+     * @param dto the updated carpooling details
+     * @return the updated carpooling entry
+     */
     public CarPoolingResponseDto updateCarPooling(Long id, CarPoolingCreateDto dto) {
         validateDto(dto);
 
@@ -138,7 +163,10 @@ public class CarPoolingService {
         return carPoolingMapper.toResponseDto(carPoolingRepository.save(entity));
     }
 
-    /** delete Carpooling.  */
+    /**
+     * Deletes a carpooling entry by its ID.
+     * @param id the ID of the carpooling entry
+     */
     public void deleteCarpooling(Long id) {
         CarPooling carPooling = carPoolingRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
@@ -151,7 +179,12 @@ public class CarPoolingService {
     }
 
 
-    //findByStatusAndDepartureAfter
+    /**
+     * Retrieves carpoolings by their status and with departure after a given date.
+     * @param status the status of the carpooling
+     * @param date the date to filter from
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> getCarPoolingsByStatusAndDate(CarPoolingStatus status, Date date) {
         return carPoolingRepository.findByStatusAndDepartureAfter(status, date).stream()
                 .map(carPoolingMapper::toResponseDto)
@@ -170,33 +203,58 @@ public class CarPoolingService {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * Retrieves carpoolings by their status, ordered by departure time.
+     * @param status the status of the carpooling
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> getCarPoolingsByStatusOrdered(CarPoolingStatus status) {
         return carPoolingRepository.findByStatusOrderByDepartureAsc(status).stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
-    /** find after departure */
+    /**
+     * Retrieves carpoolings scheduled after a given date.
+     * @param date the date to filter from
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> findByDepartureAfter(Date date) {
         return carPoolingRepository.findByDepartureAfter(date).stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
-    /** find by Organizer */
+    /**
+     * Retrieves carpoolings by their organizer ID.
+     * @param organizerId the ID of the organizer
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> findByOrganizerId(Long organizerId) {
         return carPoolingRepository.findByOrganizerId(organizerId).stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
- /** find by vehicle */
+
+    /**
+     * Retrieves carpoolings by their vehicle ID.
+     * @param vehicleId the ID of the vehicle
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> findByVehicleId(Long vehicleId) {
         return carPoolingRepository.findByVehicleId(vehicleId).stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Filters carpoolings by organizer ID, status, departure date, and vehicle ID.
+     * @param organizerId the ID of the organizer
+     * @param status the status of the carpooling
+     * @param departure the departure date
+     * @param vehicleId the ID of the vehicle
+     * @return a list of CarPoolingResponseDto
+     */
     public List<CarPoolingResponseDto> filterByStatusDateVehicle(
             Long organizerId,
             CarPoolingStatus status,
@@ -209,7 +267,10 @@ public class CarPoolingService {
                 .collect(Collectors.toList());
     }
 
-
+    /**
+     * Validates the CarPoolingCreateDto object.
+     * @param dto the CarPoolingCreateDto object to validate
+     */
     private void validateDto(CarPoolingCreateDto dto) {
         if (dto.getDepartureAddressId() == null) {
             throw new InvalidRessourceException("L'adresse de départ est obligatoire.");
@@ -226,6 +287,13 @@ public class CarPoolingService {
 
     }
 
+    /**
+     * Validates that there are no overlapping carpoolings for the given vehicle.
+     * @param vehicleId the id of  the vehicle
+     * @param start the start date
+     * @param end the end date
+     * @param excludeId the ID to exclude from the check
+     */
     private void validateNoVehicleOverlap(Long vehicleId, Date start, Date end, Long excludeId) {
         var conflicts = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(vehicleId, start, end, excludeId);
         if (!conflicts.isEmpty()) {
@@ -233,16 +301,17 @@ public class CarPoolingService {
         }
     }
 
+    /**
+     * Validates that there are no overlapping carpoolings for the given organizer.
+     * @param organizerId the id of the organizer
+     * @param start the start date
+     * @param end the end date
+     * @param excludeId the ID to exclude from the check
+     */
     private void validateNoOrganizerOverlap(Long organizerId, Date start, Date end, Long excludeId) {
         List<CarPooling> conflicts = carPoolingRepository.findOverlappingCarPoolingByOrganizer(organizerId, start, end, excludeId);
         if (!conflicts.isEmpty()) {
             throw new InvalidRessourceException("Vous avez déjà un covoiturage prévu sur ce créneau.");
         }
     }
-
-
-
-
-
-
 }
