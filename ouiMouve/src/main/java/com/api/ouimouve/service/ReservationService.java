@@ -32,17 +32,33 @@ public class ReservationService {
     private ReparationRepository reparationRepository;
 
 
+    /**
+     * Get all reservations for a specific vehicle.
+     * @param vehicleId
+     * @return
+     */
     public List<VehicleReservationDto> getAllReservationsByVehicle(Long vehicleId) {
         return reservationRepository.findByServiceVehicleId(vehicleId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Get all reservations for a specific user.
+     * @param userId
+     * @return
+     */
     public List<VehicleReservationDto> getAllReservationsByUser(Long userId) {
         return reservationRepository.findByUserId(userId).stream()
                 .map(reservationMapper::toVehicleReservationDto)
                 .collect(Collectors.toList());
     }
+
+    /**
+     * Get a reservation by its ID.
+     * @param id
+     * @return
+     */
     public VehicleReservationDto getReservationById(long id) {
         return reservationRepository.findById(id)
                 .map(reservationMapper::toVehicleReservationDto)
@@ -86,6 +102,11 @@ public class ReservationService {
                reservationRepository.save(reservationMapper.toVehicleReservation(reservationDto)));
    }
 
+    /**
+     * Delete a reservation by its ID.
+     * @param id
+     * @return
+     */
     public VehicleReservationDto deleteReservation(long id) {
         VehicleReservationDto reservationDto = getReservationById(id);
         if (reservationDto != null) {
@@ -94,6 +115,13 @@ public class ReservationService {
         return reservationDto;
     }
 
+    /**
+     * Get all reservations for a specific user, filtered by start date and status.
+     * @param userId
+     * @param start
+     * @param status
+     * @return
+     */
     public List<VehicleReservationDto> getAllReservationsByUserAndFilterByStartDateAndStatus(Long userId, Date start, VehicleStatus status) {
         List<VehicleReservation> reservations = reservationRepository.findByUserWithFilters(userId, start, status);
         return reservations.stream()
@@ -101,13 +129,56 @@ public class ReservationService {
                 .collect(Collectors.toList());
           }
 
+    /**
+     * Update an existing vehicle reservation after checking for availability.
+     * This method verifies that no other reservations or repairs overlap with the new period.
+     * The original reservation being updated is excluded from overlap checks.
+     *
+     * @param id the ID of the reservation to update
+     * @param reservationDto the updated reservation data
+     * @return the updated reservation DTO
+     * @throws ReservationConflictException if there is a reservation or repair conflict
+     * @throws RessourceNotFoundException if the reservation is not found
+     */
     public VehicleReservationDto updateReservation(long id, VehicleReservationCreateDto reservationDto) {
+        // Check if the reservation exists
         Optional<VehicleReservation> reservationOpt = reservationRepository.findById(id);
-        if (reservationOpt.isPresent()) {
-            reservationRepository.save(reservationMapper.toVehicleReservation(reservationDto));
-            return reservationMapper.toVehicleReservationDto(reservationOpt.get());
+        if (reservationOpt.isEmpty()) {
+            throw new RessourceNotFoundException("Reservation not found");
         }
 
-        throw new RessourceNotFoundException("Reparation not found");
+        // Find any reservations that overlap with the requested period
+        List<VehicleReservation> overlappingReservations = reservationRepository.findOverlappingReservations(
+                reservationDto.getServiceVehicleId(),
+                reservationDto.getStart(),
+                reservationDto.getEnd());
+
+        // Exclude the current reservation from the overlap check
+        overlappingReservations = overlappingReservations.stream()
+                .filter(reservation -> reservation.getId() != id)
+                .toList();
+
+        // Check if there are any other overlapping reservations
+        if (!overlappingReservations.isEmpty()) {
+            throw new ReservationConflictException("Vehicle already booked for this period");
+        }
+
+        // Check for overlapping repairs
+        List<Reparation> overlappingReparations = reparationRepository.findOverlappingReparations(
+                reservationDto.getServiceVehicleId(),
+                reservationDto.getStart(),
+                reservationDto.getEnd());
+
+        // Check if there are any overlapping repairs
+        if (!overlappingReparations.isEmpty()) {
+            throw new ReservationConflictException("Vehicle scheduled for repair during this period");
+        }
+
+        // Create an updated reservation with the existing ID
+        VehicleReservation updatedReservation = reservationMapper.toVehicleReservation(reservationDto);
+        updatedReservation.setId(id);
+
+        // Save and return the updated reservation
+        return reservationMapper.toVehicleReservationDto(reservationRepository.save(updatedReservation));
     }
 }
