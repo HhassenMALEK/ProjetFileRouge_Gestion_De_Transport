@@ -83,5 +83,10 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
+    public UserDto getUserByEmail(String email) {
+        return userMapper.toDtoWithoutPassword(userRepository
+                .findByEmail(email)
+                .orElse(null));
+    }
 
 }
