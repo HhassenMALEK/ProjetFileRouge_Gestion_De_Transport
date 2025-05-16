@@ -61,4 +61,7 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     // Filtrage combiné
     List<CarPooling> findByOrganizerIdAndStatusAndDepartureAndVehicleId(
             Long userId, CarPoolingStatus status, Date departure, Long vehicleId);
+
+    //find by status
+    List<CarPooling> findByStatus(CarPoolingStatus status);
 }

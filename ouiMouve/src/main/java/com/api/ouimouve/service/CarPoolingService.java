@@ -79,10 +79,6 @@ public class CarPoolingService {
      * Met à jour un covoiturage existant.
      */
     public CarPoolingResponseDto updateCarPooling(Long id, CarPoolingCreateDto dto) {
-        if (id == null || dto == null) {
-            throw new InvalidRessourceException("Les données de mise à jour sont incomplètes.");
-        }
-
         CarPooling entity = carPoolingRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
 
@@ -97,7 +93,7 @@ public class CarPoolingService {
 
         entity.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
                 .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
-        //utlisateur qui fait la requette a trouver
+        //s'assurer que c'est l'organisateur qui fait la requette ""SecurityContextHolder ?
 //        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
 //                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
 
@@ -112,10 +108,6 @@ public class CarPoolingService {
         carPoolingRepository.deleteById(id);
     }
 
-    //deleteIfInProgress ==> à voir
-    public void deleteIfInProgress(Long id) {
-        carPoolingRepository.deleteByIdAndStatus(id, CarPoolingStatus.IN_PROGRESS);
-    }
 
     //filterByStatusDateVehicle
     public List<CarPoolingResponseDto> filterByStatusDateVehicle(Long userId, CarPoolingStatus status, Date departure, Long vehicleId) {
