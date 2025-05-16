@@ -1,12 +1,11 @@
 ###USER
 
 #Chapitre 3.2 Authentification
-Bouton valider authentification -> API à créer, requête POST vers une fonction login (spring security)
-Rôle -> GET /api/users/{id} extraction du rôle dans l'objet retourné si il existe -> Utilisateur inconnu
+Bouton valider authentification -> POST /api/auth/login renvoie un token jwt avec le rôle et l'id de l'utilisateur
 Voir comment stocker le role et l'id avec angular pour la manipulation dans tous les objets
 
 #Chapitre 3.3 Créer un compte
-Bouton Valider -> POST /api/users -> mail existant ou mot de passe pas conforme -> afficher l'erreur
+Bouton Valider -> POST /api/auth/register l'api retourne une liste d'erreurs si les contraintes d'unicité ne sont pas respectés
 
 #Chapitre 3.7 Gestion de compte
 Profil utilisateur -> GET /api/users/{user_id}
