@@ -1,13 +1,10 @@
 package com.api.ouimouve.service;
 
-import com.api.ouimouve.bo.Adress;
 import com.api.ouimouve.dto.AdressDto;
 import com.api.ouimouve.mapper.AdressMapper;
 import com.api.ouimouve.repository.AdressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class AdressService {
@@ -34,7 +31,9 @@ public class AdressService {
      * @return an adress
      */
     public AdressDto getSiteAdressByLabelAndCity(String label, String city){
-        return adressRepository.findAdressByLabelAndCity(label,city);
+        return adressMapper.toAdressDto(
+                adressRepository.findAdressByLabelAndCity(label, city)
+        );
 
     }
 
@@ -45,7 +44,9 @@ public class AdressService {
      * @return
      */
     public AdressDto getAdressByLatXAndLatY(float latX, float longY){
-        return adressRepository.findAdressByLatXAndLatY(latX,longY);
+        return adressMapper.toAdressDto(
+                adressRepository.findAdressByLatXAndLongY(latX, longY)
+        );
 
     }
 

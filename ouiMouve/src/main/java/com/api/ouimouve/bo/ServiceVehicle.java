@@ -28,14 +28,14 @@ public class ServiceVehicle extends Vehicle {
     private List<VehicleReservation> vehicleReservations;
 
     @ManyToOne
-    @JoinColumn(name = "model_id", nullable = false)
+    @JoinColumn(name = "model_id", nullable = true)
     private Model model;
 
     @ManyToOne
-    @JoinColumn(name = "site_id", nullable = false)
+    @JoinColumn(name = "site_id", nullable = true)
     private Site site;
 
-    @OneToMany (mappedBy = "serviceVehicle", fetch = FetchType.LAZY)
+    @OneToMany (mappedBy = "serviceVehicle")
     private List<Reparation> reparations;
 
 }
