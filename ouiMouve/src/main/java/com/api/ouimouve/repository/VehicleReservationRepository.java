@@ -27,4 +27,19 @@ public interface VehicleReservationRepository extends JpaRepository<VehicleReser
             @Param("userId") Long userId,
             @Param("start") Date start,
             @Param("status") VehicleStatus status);
+
+    /**
+     * Find all reservations that overlap with the given period for a specific vehicle.
+     *
+     * @param vehicleId the ID of the vehicle
+     * @param start the start date of the period
+     * @param end the end date of the period
+     * @return a list of overlapping reservations
+     */
+    @Query("SELECT vr FROM VehicleReservation vr WHERE vr.serviceVehicle.id = :vehicleId " +
+           "AND vr.start < :end AND vr.end > :start")
+    List<VehicleReservation> findOverlappingReservations(
+            @Param("vehicleId") Long vehicleId,
+            @Param("start") Date start,
+            @Param("end") Date end);
 }

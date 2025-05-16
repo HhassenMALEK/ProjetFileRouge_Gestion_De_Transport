@@ -18,10 +18,10 @@ import java.util.Date;
 public class VehicleReservationDto {
     private long id;
 
-    @JsonIgnoreProperties({"vehicleReservations", "reparations", "carPoolings","model"})
+    @JsonIgnoreProperties({"vehicleReservations", "reparations", "carPoolings","model","site"})
     private ServiceVehicle serviceVehicle;
 
-    @JsonIgnoreProperties({"personalVehicles"})
+    @JsonIgnoreProperties({"personalVehicles", "carPoolingReservations", "vehicleReservations","organizedCarPoolings"})
     private User user;
     private Date start;
     private Date end;
