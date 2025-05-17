@@ -13,7 +13,7 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Mapper pour convertir entre objets Reservation et ReservationDto.
+ *  Mapper for converting between VehicleReservation entities and their DTO representations.
  */
 @Mapper(componentModel = "spring")
 public abstract class VehicleReservationMapper {
