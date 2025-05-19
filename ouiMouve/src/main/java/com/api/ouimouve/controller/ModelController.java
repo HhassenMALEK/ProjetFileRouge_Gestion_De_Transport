@@ -4,6 +4,7 @@ import com.api.ouimouve.dto.ModelCreateDto;
 import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.exception.RessourceNotFoundException;
+import com.api.ouimouve.mapper.ModelMapper;
 import com.api.ouimouve.service.ModelService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -18,6 +19,8 @@ import java.util.List;
 public class ModelController {
     @Autowired
     private ModelService modelService;
+    @Autowired
+    private ModelMapper modelMapper;
 
     /**
      * Get all models
@@ -117,7 +120,8 @@ public class ModelController {
             @ApiResponse(responseCode = "404", description = "No model found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     public ModelDto updateModel(@PathVariable long id, @Valid @RequestBody ModelCreateDto modelDto) throws RessourceNotFoundException {
-        ModelDto updatedModel = modelService.updateModel(id, modelDto);
+        ModelDto modelToModify = modelMapper.toModelDto(modelMapper.toModel(modelDto));
+        ModelDto updatedModel = modelService.updateModel(id, modelToModify);
         if (updatedModel == null) {
             throw new RessourceNotFoundException("The model does not exist");
         }
@@ -136,6 +140,7 @@ public class ModelController {
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
     public ModelDto createModel( @Valid @RequestBody ModelCreateDto modelDto) {
-        return modelService.createModel(modelDto);
+        ModelDto modelToModify = modelMapper.toModelDto(modelMapper.toModel(modelDto));
+        return modelService.createModel(modelToModify);
     }
 }

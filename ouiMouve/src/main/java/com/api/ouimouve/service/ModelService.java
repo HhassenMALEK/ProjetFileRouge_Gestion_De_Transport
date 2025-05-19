@@ -1,7 +1,6 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.Model;
-import com.api.ouimouve.dto.ModelCreateDto;
 import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.exception.RessourceNotFoundException;
@@ -59,7 +58,7 @@ public class ModelService {
      * @param modelDto the ModelDto to create
      * @return the created ModelDto
      */
-    public ModelDto createModel(ModelCreateDto modelDto) {
+    public ModelDto createModel(ModelDto modelDto) {
         Model model = modelMapper.toModel(modelDto);
         model = modelRepository.save(model);
         return modelMapper.toModelDto(model);
@@ -84,7 +83,7 @@ public class ModelService {
      * @param modelDto the new model data
      * @return the updated ModelDto
      */
-    public ModelDto updateModel(long id, ModelCreateDto modelDto) {
+    public ModelDto updateModel(long id, ModelDto modelDto) {
         Optional<Model> modelOpt = modelRepository.findById(id);
         if (modelOpt.isPresent()) {
             modelRepository.save(modelMapper.toModel(modelDto));
