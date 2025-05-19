@@ -1,5 +1,6 @@
 package com.api.ouimouve.controller;
 
+import com.api.ouimouve.dto.ModelCreateDto;
 import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.ModelService;
@@ -152,7 +153,7 @@ public class ModelControllerTest {
     void updateModel_WithExistingId_ShouldReturnUpdatedModel() throws Exception {
         // Given
         String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":CITADINE_POLYVALENTE,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
-        when(modelService.updateModel(anyLong(), any(ModelDto.class))).thenReturn(modelDto);
+        when(modelService.updateModel(anyLong(), any(ModelCreateDto.class))).thenReturn(modelDto);
 
         // When & Then
         mockMvc.perform(patch("/api/model/1")
@@ -168,7 +169,7 @@ public class ModelControllerTest {
     void updateModel_WithNonExistingId_ShouldThrowException() throws Exception {
         // Given
         String modelJson = "{\"modelName\":\"Model3\",\"mark\":\"Tesla\",\"motorType\":\"Electric\",\"category\":CITADINE_POLYVALENTE,\"co2\":0,\"placesModel\":5,\"photoURL\":\"http://example.com/photo.jpg\"}";
-        when(modelService.updateModel(anyLong(), any(ModelDto.class))).thenThrow(new RessourceNotFoundException("The model does not exist"));
+        when(modelService.updateModel(anyLong(), any(ModelCreateDto.class))).thenThrow(new RessourceNotFoundException("The model does not exist"));
 
         // When & Then
         mockMvc.perform(patch("/api/model/999")
@@ -230,7 +231,7 @@ public class ModelControllerTest {
                     "\"category\":2,\"co2\":0,\"placesModel\":5," +
                     "\"photoURL\":\"" + url + "\"}";
 
-            when(modelService.createModel(any(ModelDto.class))).thenReturn(modelDto);
+            when(modelService.createModel(any(ModelCreateDto.class))).thenReturn(modelDto);
 
             mockMvc.perform(post("/api/model")
                             .contentType(MediaType.APPLICATION_JSON)

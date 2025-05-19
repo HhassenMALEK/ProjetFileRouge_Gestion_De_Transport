@@ -2,6 +2,7 @@ package com.api.ouimouve.bo;
 
 import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.enumeration.VehicleStatus;
+import com.api.ouimouve.validation.ValidMaxNbSeats;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -60,10 +61,10 @@ public class Model {
     private Integer CO2;
 
     /**
-     * Number of places in the model.
+     * Number of seats in the model.
      */
-    @Column(nullable = false)
-    private Integer placesModel;
+    @Column(name = "seats_model", nullable = false)
+    private Integer seatsModel;
 
     /**
      * Relationship with the Service Vehicle entity.

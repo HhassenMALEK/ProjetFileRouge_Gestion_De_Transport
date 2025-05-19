@@ -3,6 +3,7 @@ package com.api.ouimouve.mapper;
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.User;
 import com.api.ouimouve.bo.VehicleReservation;
+import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.dto.VehicleReservationCreateDto;
 import com.api.ouimouve.dto.VehicleReservationDto;
 import com.api.ouimouve.repository.UserRepository;

@@ -21,5 +21,5 @@ public class VehicleDto {
     /**
      * Number of seats available in the vehicle.
      */
-    private Integer places;
+    private Integer seats;
 }

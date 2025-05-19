@@ -2,6 +2,7 @@ package com.api.ouimouve.dto;
 
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.enumeration.VehicleCategory;
+import com.api.ouimouve.validation.ValidMaxNbSeats;
 import com.api.ouimouve.validation.ValidPhotoURL;
 import lombok.Data;
 
@@ -23,6 +24,8 @@ public class ModelCreateDto {
     private String motorType;
     private VehicleCategory category;
     private Integer CO2;
-    private Integer placesModel;
+
+    @ValidMaxNbSeats(12)
+    private Integer seatsModel;
 
 }
