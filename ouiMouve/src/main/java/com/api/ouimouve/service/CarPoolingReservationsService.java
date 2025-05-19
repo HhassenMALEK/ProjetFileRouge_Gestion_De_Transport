@@ -112,7 +112,7 @@ public class CarPoolingReservationsService {
      * @return true if there are available seats, false otherwise
      */
     public boolean noAvailableSeats(CarPoolingReservationsResponseDTO dto) {
-        int availableSeats = dto.getCarPooling().getVehicle().getPlaces();
+        int availableSeats = dto.getCarPooling().getVehicle().getSeats();
         int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPooling().getId());
         return availableSeats <= reservedSeats;
     }
@@ -124,7 +124,7 @@ public class CarPoolingReservationsService {
     public boolean noAvailableSeats(CarPoolingReservationsCreateDTO dto) {
         // Récupérer les informations du covoiturage à partir du carPoolingId
         CarPoolingResponseDto carPooling = carPoolingService.getCarPoolingById(dto.getCarPoolingId());
-        int availableSeats = carPooling.getVehicle().getPlaces();
+        int availableSeats = carPooling.getVehicle().getSeats();
         int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPoolingId());
 
         return availableSeats <= reservedSeats;
