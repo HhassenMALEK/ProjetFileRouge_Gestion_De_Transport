@@ -21,55 +21,6 @@ import java.util.Optional;
 public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
 
 
-
-    /**
-     * Finds all carpoolings with the specified status and departure date after a given date.
-     *
-     * @param status the status of the carpooling
-     * @param date   the date to compare with departure time
-     * @return a list of matching carpoolings
-     */
-    List<CarPooling> findByStatusAndDepartureAfter(CarPoolingStatus status, Date date);
-
-    /**
-     * Finds all carpoolings with the specified status, ordered by departure time.
-     *
-     * @param status the status of the carpooling
-     * @return a list of matching carpoolings, ordered by departure time
-     */
-    List<CarPooling> findByStatusOrderByDepartureAsc(CarPoolingStatus status);
-
-    /**
-     * Finds all carpoolings with a departure date after a given date.
-     *
-     * @param date the date to compare with departure time
-     * @return a list of matching carpoolings
-     */
-    List<CarPooling> findByDepartureAfter(Date date);
-
-    /**
-     * Finds all carpoolings with the specified status and departure date after a given date.
-     *
-     * @param status the status of the carpooling
-     * @param date   the date to compare with departure time
-     * @return a list of matching carpoolings
-     */
-    List<CarPooling> findByOrganizerId(Long userId);
-
-    /**
-     * Finds all carrpoolings associated with a specific vehicle.
-     * @param vehicleId the ID of the vehicle.
-     * @return list of carpoolings associated with the vehicle.
-     */
-    List<CarPooling> findByVehicleId(Long vehicleId);
-
-    /**
-     * Finds a carpooling by status.
-     * @param status the status of the carpooling
-     * @return an optional containing the carpooling if found, empty otherwise
-     */
-    List<CarPooling> findByStatus(CarPoolingStatus status);
-
     /**
      * Finds overlapping carpoolings for a given vehicle.
      * @param vehicleId the ID of the vehicle
@@ -161,7 +112,5 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("endDate") Date endDate,
             @Param("vehicleId") Long vehicleId
     );
-
-
 
 }

@@ -73,67 +73,6 @@ public class CarPoolingController {
     }
 
     /**
-     * Retrieves carpoolings by their status.
-     * @param status the status to filter by.
-     * @return list of carpoolings with the specified status.
-     */
-    @GetMapping("/status/{status}")
-    public List<CarPoolingResponseDto> getByStatus(@PathVariable CarPoolingStatus status) {
-        return carPoolingService.getCarpoolingByStatus(status);
-    }
-
-    /**
-     * Retrieves carpoolings by status and with departure after a given date.
-     * @param status the status to filter by.
-     * @param date the date to filter from.
-     * @return list of matching carpoolings.
-     */
-    @GetMapping("/status/{status}/after/{date}")
-    public List<CarPoolingResponseDto> getByStatusAndDate(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
-        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
-    }
-
-    /**
-     * Retrieves carpoolings scheduled after a given date.
-     * @param date the date to filter from.
-     * @return list of future carpoolings.
-     */
-    @GetMapping("/departure-after/{date}")
-    public List<CarPoolingResponseDto> getByDepartureAfter(@PathVariable @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date date) {
-        return carPoolingService.getCarPoolingsAfterDate(date);
-    }
-
-    /**
-     * Retrieves carpoolings by status, ordered by departure time.
-     * @param status the status to filter by.
-     * @return ordered list of carpoolings with the specified status.
-     */
-    @GetMapping("/status-ordered/{status}")
-    public List<CarPoolingResponseDto> getCarpoolingsByStatusOrdered(@PathVariable CarPoolingStatus status) {
-        return carPoolingService.getCarPoolingsByStatusOrdered(status);
-    }
-
-    /**
-     * Retrieves carpoolings by vehicle ID.
-     * @param vehicleId the ID of the vehicle.
-     * @return list of carpoolings using the specified vehicle.
-     */
-    @GetMapping("/vehicle/{vehicleId}")
-    public List<CarPoolingResponseDto> getByVehicle(@PathVariable Long vehicleId) {
-        return carPoolingService.findByVehicleId(vehicleId);
-    }
-
-    /**
-     * Retrieves carpoolings organized by a specific user.
-     * @param organizerId the ID of the organizer.
-     * @return list of carpoolings organized by the specified user.
-     */
-    @GetMapping("/organizer/{organizerId}")
-    public List<CarPoolingResponseDto> getByOrganizer(@PathVariable Long organizerId) {
-        return carPoolingService.findByOrganizerId(organizerId);
-    }
-
-    /**
      * Filters carpoolings based on optional criteria such as organizer ID, status, departure date, and vehicle ID.
      * All parameters are optional; if none are provided, all carpoolings are returned.
      *

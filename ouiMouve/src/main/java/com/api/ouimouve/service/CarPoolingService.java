@@ -26,16 +26,13 @@ public class CarPoolingService {
     @Autowired
     private CarPoolingRepository carPoolingRepository;
     @Autowired
-    CarPoolingMapper carPoolingMapper;
+    private CarPoolingMapper carPoolingMapper;
     @Autowired
     private AdressRepository adressRepository;
-    @Autowired
-    private UserService userService;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private VehicleRepository vehicleRepository;
-
 
     /**
      * Retrieves all carpoolings.
@@ -49,7 +46,7 @@ public class CarPoolingService {
 
     /**
      * Retrieves a carpooling by its ID.
-     * @param the ID of the carpooling
+     * @param id the ID of the carpooling
      * @return the CarPoolingResponseDto
      */
     public CarPoolingResponseDto getCarPoolingById(Long id) {
@@ -59,18 +56,7 @@ public class CarPoolingService {
 
         return carPoolingRepository.findById(id)
                 .map(carPoolingMapper::toResponseDto)
-                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
-    }
-
-    /**
-     * Retrieves carpoolings by their status.
-     * @param status the status of the carpooling
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> getCarpoolingByStatus(CarPoolingStatus status) {
-        return carPoolingRepository.findByStatus(status).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
+                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l'ID : " + id));
     }
 
     /**
@@ -79,25 +65,11 @@ public class CarPoolingService {
      * @return the created carpooling entry.
      */
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
-        validateDto(dto);
-        validateDateAndTime(dto.getDeparture(), dto.getArrival());
-        checkOverlaps(dto.getVehicleId(), dto.getOrganizerId(), dto.getDeparture(), dto.getArrival(), -1L);
-        CarPooling carPooling = new CarPooling();
-        carPooling.setDeparture(dto.getDeparture());
-        carPooling.setArrival(dto.getArrival());
-        carPooling.setStatus(dto.getStatus());
-        carPooling.setDistance(dto.getDistance());
-        carPooling.setDurationInMinutes(dto.getDurationInMinutes());
-       // CarPooling carPooling = carPoolingMapper.toEntity(dto);
-        carPooling.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
-        carPooling.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
-        carPooling.setVehicle(vehicleRepository.findById(dto.getVehicleId())
-                .orElseThrow(() -> new RessourceNotFoundException("Véhicule introuvable")));
-        //utlisateur qui fait la requette a trouver
-        carPooling.setOrganizer(userRepository.findById(dto.getOrganizerId())
-                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
+        validateCarPooling(dto, null);
+
+        CarPooling carPooling = carPoolingMapper.toEntity(dto);
+        populateEntityReferences(carPooling, dto);
+
         return carPoolingMapper.toResponseDto(carPoolingRepository.save(carPooling));
     }
 
@@ -108,27 +80,20 @@ public class CarPoolingService {
      * @return the updated carpooling entry
      */
     public CarPoolingResponseDto updateCarPooling(Long id, CarPoolingCreateDto dto) {
-        validateDto(dto);
-        validateDateAndTime(dto.getDeparture(), dto.getArrival());
+        validateCarPooling(dto, id);
 
         CarPooling entity = carPoolingRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
+                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l'ID : " + id));
 
-        checkOverlaps(dto.getVehicleId(), dto.getOrganizerId(), dto.getDeparture(), dto.getArrival(), id);
-
+        // Mise à jour des propriétés de base
         entity.setDeparture(dto.getDeparture());
         entity.setArrival(dto.getArrival());
         entity.setStatus(dto.getStatus());
         entity.setDurationInMinutes(dto.getDurationInMinutes());
         entity.setDistance(dto.getDistance());
-        entity.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
-        entity.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
-        entity.setVehicle(vehicleRepository.findById(dto.getVehicleId())
-                .orElseThrow(() -> new RessourceNotFoundException("Véhicule introuvable")));
-        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
-                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
+
+        // Mise à jour des références
+        populateEntityReferences(entity, dto);
 
         return carPoolingMapper.toResponseDto(carPoolingRepository.save(entity));
     }
@@ -139,7 +104,7 @@ public class CarPoolingService {
      */
     public void deleteCarpooling(Long id) {
         CarPooling carPooling = carPoolingRepository.findById(id)
-                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l’ID : " + id));
+                .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l'ID : " + id));
 
         // Vérifie si la date de départ est passée
         if (carPooling.getDeparture() != null && !carPooling.getDeparture().after(new Date())) {
@@ -149,83 +114,7 @@ public class CarPoolingService {
     }
 
     /**
-     * Retrieves carpoolings by their status and with departure after a given date.
-     * @param status the status of the carpooling
-     * @param date the date to filter from
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> getCarPoolingsByStatusAndDate(CarPoolingStatus status, Date date) {
-        return carPoolingRepository.findByStatusAndDepartureAfter(status, date).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieves all carpoolings with departure after the given date.
-     *
-     * @param date the departure date filter
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> getCarPoolingsAfterDate(Date date) {
-        return carPoolingRepository.findByDepartureAfter(date).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieves carpoolings by their status, ordered by departure time.
-     * @param status the status of the carpooling
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> getCarPoolingsByStatusOrdered(CarPoolingStatus status) {
-        return carPoolingRepository.findByStatusOrderByDepartureAsc(status).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieves carpoolings scheduled after a given date.
-     * @param date the date to filter from
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> findByDepartureAfter(Date date) {
-        return carPoolingRepository.findByDepartureAfter(date).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieves carpoolings by their organizer ID.
-     * @param organizerId the ID of the organizer
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> findByOrganizerId(Long organizerId) {
-        return carPoolingRepository.findByOrganizerId(organizerId).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-    /**
-     * Retrieves carpoolings by their vehicle ID.
-     * @param vehicleId the ID of the vehicle
-     * @return a list of CarPoolingResponseDto
-     */
-    public List<CarPoolingResponseDto> findByVehicleId(Long vehicleId) {
-        return carPoolingRepository.findByVehicleId(vehicleId).stream()
-                .map(carPoolingMapper::toResponseDto)
-                .collect(Collectors.toList());
-    }
-
-
-    /**
-     * Filters carpoolings based on optional criteria:
-     * organizer ID, status, departure time range (start and end date), and vehicle ID.
-     * <p>
-     * If only a start date is provided, the filter will include all carpoolings
-     * scheduled on that day (from 00:00:00 to 23:59:59).
-     * If both start and end dates are provided, the method ensures the full day range
-     * is covered for each bound.
-     *
+     * Filters carpoolings based on optional criteria.
      * @param organizerId the ID of the organizer (optional)
      * @param status the status of the carpooling (optional)
      * @param startDate the start of the departure date range (optional)
@@ -255,40 +144,22 @@ public class CarPoolingService {
     }
 
     /**
-     * Converts the given date to the start of the day (00:00:00) in the system default time zone.
-     *
-     * @param date the original date
-     * @return a new Date object set to 00:00:00 of the same day
+     * Validates all aspects of a carpooling entry.
+     * @param dto the carpooling data to validate
+     * @param excludeId ID to exclude from overlap checks (for updates)
      */
-    private Date truncateToStartOfDay(Date date) {
-        return Date.from(date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .atStartOfDay(ZoneId.systemDefault())
-                .toInstant());
+    private void validateCarPooling(CarPoolingCreateDto dto, Long excludeId) {
+        validateRequiredFields(dto);
+        validateDateLogic(dto);
+        validateDateAndTime(dto.getDeparture());
+        checkOverlaps(dto.getVehicleId(), dto.getOrganizerId(), dto.getDeparture(), dto.getArrival(), excludeId);
     }
 
     /**
-     * Converts the given date to the end of the day (23:59:59) in the system default time zone.
-     *
-     * @param date the original date
-     * @return a new Date object set to 23:59:59 of the same day
+     * Validate required fields in the DTO.
+     * @param dto the DTO to validate
      */
-    private Date toEndOfDay(Date date) {
-        return Date.from(date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .atTime(23, 59, 59)
-                .atZone(ZoneId.systemDefault())
-                .toInstant());
-    }
-
-
-    /**
-     * Validates the CarPoolingCreateDto object.
-     * @param dto the CarPoolingCreateDto object to validate
-     */
-    private void validateDto(CarPoolingCreateDto dto) {
+    private void validateRequiredFields(CarPoolingCreateDto dto) {
         if (dto.getDepartureAddressId() == null) {
             throw new InvalidRessourceException("L'adresse de départ est obligatoire.");
         }
@@ -301,13 +172,22 @@ public class CarPoolingService {
         if (dto.getOrganizerId() == null) {
             throw new InvalidRessourceException("L'organisateur est obligatoire.");
         }
+        if (dto.getDepartureAddressId().equals(dto.getDestinationAddressId())) {
+            throw new InvalidRessourceException("L'adresse de départ et d'arrivée ne peuvent pas être identiques.");
+        }
+    }
+
+    /**
+     * Validate date logic (arrival after departure, duration matches, etc.)
+     * @param dto the DTO to validate
+     */
+    private void validateDateLogic(CarPoolingCreateDto dto) {
         if (dto.getArrival().before(dto.getDeparture())) {
             throw new InvalidRessourceException("La date d'arrivée doit être postérieure à la date de départ.");
         }
         if (dto.getDeparture().equals(dto.getArrival())) {
             throw new InvalidRessourceException("La date de départ et d'arrivée ne peuvent pas être identiques.");
         }
-
         if (dto.getDurationInMinutes() != null) {
             long expected = (dto.getArrival().getTime() - dto.getDeparture().getTime()) / 60000;
             if (expected != dto.getDurationInMinutes()) {
@@ -317,37 +197,10 @@ public class CarPoolingService {
     }
 
     /**
-     * Validates that there are no overlapping carpoolings for the given vehicle.
-     * @param vehicleId the id of  the vehicle
-     * @param start the start date
-     * @param end the end date
-     * @param excludeId the ID to exclude from the check
+     * Validates date and time (must be in the future and between 00:00 and 23:59).
+     * @param departure the departure date to validate
      */
-    private void validateNoVehicleOverlap(Long vehicleId, Date start, Date end, Long excludeId) {
-        var conflicts = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(vehicleId, start, end, excludeId);
-        if (!conflicts.isEmpty()) {
-            throw new InvalidRessourceException("Le véhicule sélectionné est déjà utilisé sur un autre créneau.");
-        }
-    }
-
-    /**
-     * Validates that there are no overlapping carpoolings for the given organizer.
-     * @param organizerId the id of the organizer
-     * @param start the start date
-     * @param end the end date
-     * @param excludeId the ID to exclude from the check
-     */
-    private void validateNoOrganizerOverlap(Long organizerId, Date start, Date end, Long excludeId) {
-        List<CarPooling> conflicts = carPoolingRepository.findOverlappingCarPoolingByOrganizer(organizerId, start, end, excludeId);
-        if (!conflicts.isEmpty()) {
-            throw new InvalidRessourceException("Vous avez déjà un covoiturage prévu sur ce créneau.");
-        }
-    }
-
-    /**
-     * Validates date and time departure  (doit être dans le futur et entre 00:00 et 23:59).
-     */
-    private void validateDateAndTime(Date departure, Date arrival) {
+    private void validateDateAndTime(Date departure) {
         if (departure.before(new Date())) {
             throw new InvalidRessourceException("La date de départ doit être ultérieure à aujourd'hui.");
         }
@@ -358,17 +211,72 @@ public class CarPoolingService {
     }
 
     /**
-     * Vérifie les chevauchements de créneaux pour un véhicule et un organisateur.
+     * Check for overlapping schedules for both vehicle and organizer.
+     * @param vehicleId the vehicle ID to check
+     * @param organizerId the organizer ID to check
+     * @param start the start date of the carpooling
+     * @param end the end date of the carpooling
+     * @param excludeId the ID to exclude from the check (for updates)
      */
     private void checkOverlaps(Long vehicleId, Long organizerId, Date start, Date end, Long excludeId) {
-        var vehicleConflicts = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(vehicleId, start, end, excludeId);
+        // Vérification des conflits de véhicule
+        List<CarPooling> vehicleConflicts = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(
+                vehicleId, start, end, excludeId);
         if (!vehicleConflicts.isEmpty()) {
             throw new InvalidRessourceException("Le véhicule est déjà réservé sur ce créneau.");
         }
-        var userConflicts = carPoolingRepository.findOverlappingCarPoolingByOrganizer(organizerId, start, end, excludeId);
+
+        // Vérification des conflits d'organisateur
+        List<CarPooling> userConflicts = carPoolingRepository.findOverlappingCarPoolingByOrganizer(
+                organizerId, start, end, excludeId);
         if (!userConflicts.isEmpty()) {
-            throw new InvalidRessourceException("L’organisateur a déjà un covoiturage prévu sur ce créneau.");
+            throw new InvalidRessourceException("L'organisateur a déjà un covoiturage prévu sur ce créneau.");
         }
     }
 
+    /**
+     * Populates entity references from a DTO.
+     * @param entity the entity to populate
+     * @param dto the source DTO
+     */
+    private void populateEntityReferences(CarPooling entity, CarPoolingCreateDto dto) {
+        entity.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
+
+        entity.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
+
+        entity.setVehicle(vehicleRepository.findById(dto.getVehicleId())
+                .orElseThrow(() -> new RessourceNotFoundException("Véhicule introuvable")));
+
+        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
+                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
+    }
+
+    /**
+     * Converts the given date to the start of the day (00:00:00).
+     * @param date the original date
+     * @return a new Date object set to 00:00:00 of the same day
+     */
+    private Date truncateToStartOfDay(Date date) {
+        return Date.from(date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atStartOfDay(ZoneId.systemDefault())
+                .toInstant());
+    }
+
+    /**
+     * Converts the given date to the end of the day (23:59:59).
+     * @param date the original date
+     * @return a new Date object set to 23:59:59 of the same day
+     */
+    private Date toEndOfDay(Date date) {
+        return Date.from(date.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate()
+                .atTime(23, 59, 59)
+                .atZone(ZoneId.systemDefault())
+                .toInstant());
+    }
 }

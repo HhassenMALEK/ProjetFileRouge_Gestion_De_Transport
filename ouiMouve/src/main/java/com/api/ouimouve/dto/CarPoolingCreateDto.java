@@ -1,7 +1,6 @@
 package com.api.ouimouve.dto;
 
 import com.api.ouimouve.enumeration.CarPoolingStatus;
-import jakarta.annotation.Nullable;
 import lombok.Data;
 
 import java.util.Date;
@@ -12,7 +11,6 @@ import java.util.Date;
 @Data
 public class CarPoolingCreateDto {
     /** Unique identifier for the carpooling. */
-    @Nullable
     private Long id;
     /** The date and time when the carpooling is scheduled to start. */
     private Date departure;
