@@ -9,8 +9,12 @@ import java.util.List;
 
 @Repository
 public interface SiteRepository extends JpaRepository<Site, Long> {
-    // Custom query methods can be defined here if needed
-    // For example, find by name or other attributes
+    /**
+     * Find all sites by name.
+     *
+     * @param name the name of the site
+     * @return a list of sites with the specified name
+     */
     List<Site> findAllByName(String name);
 
 }
