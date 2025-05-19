@@ -26,10 +26,15 @@ public class CarPoolingResponseDto {
     /** Distance of the carpooling in kilometers. */
     private Integer distance;
 
+    /** Adress where the carpooling starts. */
     private AdressDto departureAddress ;
+    /** Adress where the carpooling ends. */
     private AdressDto destinationAddress;
 
     //pour voir l'objet carpooling comme un arbre
+    /** vehicle used for the carpooling. */
     @JsonIgnore
     private Vehicle vehicle;
+    /** User who organizes the carpooling. */
+    private Long organizerId;
 }
