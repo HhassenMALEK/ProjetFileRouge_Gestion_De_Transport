@@ -1,0 +1,35 @@
+# Daily Meeting Template du 19 Juin
+
+## Réalisé
+-[Mathis] Modif sur user & sur Jwt & sur contexte utilisateur
+-[Sebastien] Mise en place des tests métiers pour Model et ServiceVehicleReservation 
+-[Joseph] Reparation en cours
+-[Hassen] CarPooling presque terminé : requête d'existence carpooling d'un suer sur une date +  recherche sur date 
+
+  
+## À Faire 
+- [] refacto sur CarPooling 
+- [] Adress a faire 
+- [] Site à faire
+- [] Non fait faire pour Véhicle/ServiceVehicle les APIS :
+      - Create et update (avec control sur su numéro d'immat) et pas d'existence d'un autre Vercle avec le même numéro d'immat
+      - Liste des véhicules disponibles sur site /date début/date de fin
+      - Détail d'un Véhicule de service
+      - Delete Véhicule si non présent dans Rerservation et covoiturage
+      
+- [] mise en oeuvre du role Admin : pour les API ajouter un VS, Supprimer un VS, toutes les APIs réparation et toutes les API model
+- [] vérifier que l'utilisateur ne puisse pas modifier les covoiturage, véhicule,.. qui ne lui appartienent pas 
+- [] calcul de durée des carpooling - appel externe (à priori dans le front) 
+
+ - [] Faire des tests unitaires automatisés 
+ -[Hassen] vontrole le diagrame de classe
+ - [] regrouper les docs qui donnent toutes les APIs a utiliser ?
+
+
+## Autres Points
+- [] 
+ -[]
+ -[]
+ -[]
+
+# Esprit du jour de l'équipe
