@@ -18,9 +18,5 @@ public class ReparationResponseDto {
     private Date start;
     private Date end;
     private String motive;
-    private Long vehicleId;
-    private String vehicleModelMark;
-    private String vehicleModelName;
-    private String vehicleImmatriculation;
-    private String vehicleSiteName;
+    private ServiceVehicleDto vehicle;
 }

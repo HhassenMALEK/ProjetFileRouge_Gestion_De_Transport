@@ -18,3 +18,4 @@ INSERT INTO car_pooling_reservations (id, date, status, user_id, carpooling_id) 
 (3, '2023-11-16 09:12:00', 'BOOKED', 2, 2),
 (4, '2023-11-16 11:05:00', 'BOOKED', 2, 3),
 (5, '2023-11-16 13:30:00', 'BOOKED', 2, 3);
+

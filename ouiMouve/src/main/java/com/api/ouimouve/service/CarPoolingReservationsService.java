@@ -126,6 +126,7 @@ public class CarPoolingReservationsService {
         CarPoolingResponseDto carPooling = carPoolingService.getCarPoolingById(dto.getCarPoolingId());
         int availableSeats = carPooling.getVehicle().getPlaces();
         int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPoolingId());
+
         return availableSeats <= reservedSeats;
     }
 }

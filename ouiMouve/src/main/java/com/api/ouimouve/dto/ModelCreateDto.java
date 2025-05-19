@@ -14,17 +14,18 @@ import java.util.List;
  * It contains all fields corresponding to the Model entity.
  */
 @Data
-public class ModelDto {
+public class ModelCreateDto {
     private long id;
     private String modelName;
     private String mark;
+
+    @ValidPhotoURL
     private String photoURL;
     private String motorType;
     private VehicleCategory category;
     private Integer CO2;
 
+    @ValidMaxNbSeats(12)
     private Integer seatsModel;
 
-
-    private List<ServiceVehicleDto> serviceVehicles;
 }
