@@ -86,4 +86,9 @@ public class ExceptionsHandler {
         ValidationErrorResponse errorResponse = new ValidationErrorResponse();
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmptyListException.class)
+    public ResponseEntity<String> handleEmptyListException(EmptyListException ex) {
+        return ResponseEntity.status(HttpStatus.OK).body(ex.getMessage());
+    }
 }

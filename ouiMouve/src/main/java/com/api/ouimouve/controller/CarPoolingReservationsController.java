@@ -3,6 +3,7 @@ package com.api.ouimouve.controller;
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
+import com.api.ouimouve.exception.EmptyListException;
 import com.api.ouimouve.exception.InvalidRequestException;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
@@ -20,8 +21,13 @@ public class CarPoolingReservationsController {
     private CarPoolingReservationsService carPoolingReservationsService;
 
     @GetMapping("/list/{userId}")
-    public List<CarPoolingReservationsResponseDTO> getAllCarPoolingReservations(@PathVariable Long userId) {
-        return carPoolingReservationsService.getAllReservationsByUserId(userId);
+    public List<CarPoolingReservationsResponseDTO> getAllCarPoolingReservations(@PathVariable Long userId) throws EmptyListException {
+        List<CarPoolingReservationsResponseDTO> reservations = carPoolingReservationsService.getAllReservationsByUserId(userId);
+        if (reservations.isEmpty()) {
+            throw new EmptyListException("You currently have no reservations.");
+        } else {
+            return reservations;
+        }
     }
     @GetMapping("/{id}")
     public CarPoolingReservationsResponseDTO getCarPoolingReservation(@PathVariable Long id) throws RessourceNotFoundException {
