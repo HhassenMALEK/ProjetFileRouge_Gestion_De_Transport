@@ -4,7 +4,6 @@ import com.api.ouimouve.bo.Reparation;
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.Vehicle;
 import com.api.ouimouve.dto.ReparationCreateDto;
-import com.api.ouimouve.dto.ReparationDto;
 import com.api.ouimouve.dto.ReparationResponseDto;
 import com.api.ouimouve.dto.VehicleReservationDto;
 import com.api.ouimouve.enumeration.VehicleStatus;
@@ -12,7 +11,6 @@ import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.ReparationMapper;
 import com.api.ouimouve.repository.ReparationRepository;
 import com.api.ouimouve.repository.VehicleRepository;
-import com.api.ouimouve.utils.Mails;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,17 +63,24 @@ public class ReparationService {
         //mapping DTO without the vehicle
         Reparation reparation = reparationMapper.toEntity(reparationDto);
 
-        //check if the ServiceVehicle is present, so we can add his ID to this ReparationCreateDto
-        Optional<Vehicle> serviceVehicleOpt = vehicleRepository.findById(reparationDto.getVehicleId());
+//        if(checkDateForReparation(reparation)) {
 
-        if (serviceVehicleOpt.isPresent()) {
-            ServiceVehicle serviceVehicle = (ServiceVehicle) serviceVehicleOpt.get();
-            reparation.setServiceVehicle(serviceVehicle);
-            reparation = reparationRepository.save(reparation);
-            return  reparationMapper.toDto(reparation);
-        }else{
-            throw new RessourceNotFoundException("Service Vehicle not found");
-        }
+            //check if the ServiceVehicle is present, so we can add his ID to this ReparationCreateDto
+            Optional<Vehicle> serviceVehicleOpt = vehicleRepository.findById(reparationDto.getVehicleId());
+
+            if (serviceVehicleOpt.isPresent()) {
+                ServiceVehicle serviceVehicle = (ServiceVehicle) serviceVehicleOpt.get();
+                reparation.setServiceVehicle(serviceVehicle);
+                reparation = reparationRepository.save(reparation);
+                return reparationMapper.toDto(reparation);
+            } else {
+                throw new RessourceNotFoundException("Service Vehicle not found");
+            }
+//        } else{
+//            String body = "your reservation is cancelled, cause reparation of this vehicle"+ reparation.getServiceVehicle().getImmatriculation();
+//
+//            Mails.sendMAilCarpoolingIsCanceledForReparation()
+//        }
     }
 
     /**
@@ -122,17 +127,16 @@ public class ReparationService {
         }
     }
 
-    public boolean checkDateForReparation(ReparationDto reparationDto) {
+    public boolean checkDateForReparation(Reparation reparation) {
 
         boolean response =true;
 
-        List<VehicleReservationDto> vehicleReservation = reservationService.getAllReservationsByVehicle(reparationDto.getVehicleId());
+        List<VehicleReservationDto> vehicleReservation = reservationService.getAllReservationsByVehicle(reparation.getServiceVehicle().getId());
         for (VehicleReservationDto vehicleReservationDto : vehicleReservation){
-            if( vehicleReservationDto.getStart() == reparationDto.getStart() &&
-                    vehicleReservationDto.getEnd() == reparationDto.getEnd()){
+            if( vehicleReservationDto.getStart() == reparation.getStart() &&
+                    vehicleReservationDto.getEnd() == reparation.getEnd()){
                 response= false;
                 vehicleReservationDto.setStatus(VehicleStatus.DISABLED);
-                //Mails.sendMAilCarpoolingIsCanceledForReparation(Long.toString(vehicleReservationDto.getUserID()),"Canceled for reparation");
                 break;
             }
         }
