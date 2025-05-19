@@ -133,7 +133,7 @@ public class ModelRepositoryTest {
         model.setMotorType("Electric");
         model.setCategory(MICRO_URBANE);
         model.setCO2(0);
-        model.setPlacesModel(5);
+        model.setSeatsModel(5);
         model.setPhotoURL("http://example.com/photo.jpg");
         return model;
     }

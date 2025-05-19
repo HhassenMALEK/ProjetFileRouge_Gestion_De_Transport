@@ -50,7 +50,7 @@ public class ModelServiceTest {
         model.setMotorType("Electric");
         model.setCategory(MINI_CITADINE);
         model.setCO2(0);
-        model.setPlacesModel(5);
+        model.setSeatsModel(5);
         model.setPhotoURL("http://example.com/photo.jpg");
 
         modelDto = new ModelDto();
@@ -60,7 +60,7 @@ public class ModelServiceTest {
         modelDto.setMotorType("Electric");
         modelDto.setCategory(CITADINE_POLYVALENTE);
         modelDto.setCO2(0);
-        modelDto.setPlacesModel(5);
+        modelDto.setSeatsModel(5);
         modelDto.setPhotoURL("http://example.com/photo.jpg");
 
         models = new ArrayList<>();
@@ -79,7 +79,7 @@ public class ModelServiceTest {
         // Then
         assertThat(result).isNotNull();
         assertThat(result).hasSize(1);
-        assertThat(result.get(0)).isEqualTo(modelDto);
+        assertThat(result.getFirst()).isEqualTo(modelDto);
         verify(modelRepository, times(1)).findAll();
     }
 
