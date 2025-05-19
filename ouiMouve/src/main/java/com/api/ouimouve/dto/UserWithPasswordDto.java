@@ -2,6 +2,9 @@ package com.api.ouimouve.dto;
 
 import lombok.Data;
 
+/**
+ * Data Transfer Object (DTO) for User with password.
+ */
 @Data
 public class UserWithPasswordDto {
     private Long id;

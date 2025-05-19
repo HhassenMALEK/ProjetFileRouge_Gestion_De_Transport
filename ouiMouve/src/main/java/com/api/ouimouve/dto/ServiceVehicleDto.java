@@ -38,4 +38,6 @@ public class ServiceVehicleDto extends VehicleDto {
     private String siteName;
     
     private String immatriculation;
+
+    private ModelDto model;
 }

@@ -19,7 +19,6 @@ public abstract class CarPoolingReservationsMapper {
     @Autowired
     private CarPoolingReservationsRepository repository;
     // Entité vers DTO de réponse (lecture)
-    @Mapping(target = "user", source = "user")
     @Mapping(target = "carPooling", source = "carPooling")
     public abstract CarPoolingReservationsResponseDTO toResponseDTO(CarPoolingReservations entity);
 
