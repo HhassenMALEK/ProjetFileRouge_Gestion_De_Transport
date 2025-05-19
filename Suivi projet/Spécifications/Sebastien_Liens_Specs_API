@@ -6,17 +6,14 @@
 # Chap 6.2	Cas d’utilisation modifier une demande de véhicule de service
 -> Détail d'une réservation -> GET api/reservation/{id}
 -> Modifier une réservation -> PATCH api/reservation/{id}
-Fait : Vérifier que les dates modifiées du véhicule n’empiètent pas sur une autre réservation de ce véhicule ou à une réparation
-nouvelle résa date deb - date fin est une période libre
-    - Pas de réparation sur ces dates
-    - pas de réservation pré-existante sur ces dates 
 
 A faire: Vérifier que la réservation du véhicule de service n’est pas rattachée 
 à un covoiturage en cours pour cet utilisateur sur des nouvelles dates incompatibles
 
 
 # Chap 6.3 6.3	Cas d’utilisation annuler une demande de véhicule de service
--> Supprimer  - > DELETE /api/reservation/{id} -- Ajouter test de non existence d'un covoit de cet utilisateur sur 
+-> Supprimer  - > DELETE /api/reservation/{id} 
+-- Ajouter test de non existence d'un covoit de cet utilisateur sur 
 la meme période
 
 # Chap 6.4	Cas d’utilisation rechercher un véhicule de service
@@ -24,7 +21,7 @@ la meme période
 prendre en compte le statut du véhicule de service et réparation (à voir avec Joseph)
 
 # Chap 6.5	6.5	Cas d’utilisation réserver un véhicule de service
--> Filtrer aucun véhicule réservé par cet utilisateur sur la même période - API à créer
+-> Filtrer aucun véhicule réservé par cet utilisateur sur la même période : Utiliser empty sur getAllReservationsByUserAndFilterByStartDateAndStatus 
 -> Créer une réservation ->  POST API/réservation
 
 # Chap 7 7.1	Cas d’utilisation Liste des véhicules de services
@@ -52,12 +49,12 @@ et existence d'un véhicule avec la même immat
 
 # Chap 7.8	Cas d’utilisation Gérer les modèles des véhicules de services
 -> Liste des modèles sans filtre : GET Api/model/list
--> Filtrer par catégorie : API à créer
+-> Filtrer par catégorie :  GET api/model/category/{category] 
 -> Bouton Supprimer  - > DELETE /api/model/{id} -- Ajouter test de non existence dans réservation
 
 # Chap 7.9 Ajouter un modèle
--> Ajout -> POST API/model -- Ajouter controle 12 places max
+-> Ajout -> POST API/model 
 
 # Chap 7.10 Modifier un modèle
 -> Détail d'un modèle : GET api/model/{id]
--> Ajout -> PATCH API/model/{id} -- Ajouter controle 12 places max
+-> Ajout -> PATCH API/model/{id} 
