@@ -1,7 +1,6 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.bo.CarPooling;
-import com.api.ouimouve.bo.User;
+
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import lombok.Data;
 
@@ -14,8 +13,7 @@ import java.util.Date;
 public class CarPoolingReservationsResponseDTO {
     private long id;
     private Date date;
-    private User user;
-    private CarPooling carPooling;
+    private CarPoolingResponseDto carPooling;
     private CarPoolingReservationStatus status;
     private Integer participantCount;
 }
