@@ -15,21 +15,21 @@ public interface ReparationMapper {
 
 
     //Mapping Reparation -> ReparationResponseDto
-    @Mapping(target = "vehicleId", source = "serviceVehicle.id")
-    @Mapping(target = "vehicleImmatriculation", source = "serviceVehicle.immatriculation")
-    @Mapping(target = "vehicleModelMark", source = "serviceVehicle.model.mark")
-    @Mapping(target = "vehicleModelName", source = "serviceVehicle.model.mark")
-    @Mapping(target = "vehicleSiteName", source = "serviceVehicle.site.name")
-//    @Mapping(source = "serviceVehicle.model.mark", target = "vehicleModelMark")
-//    @Mapping(source = "serviceVehicle.model.name", target = "vehicleModelName")
-//    @Mapping(source = "serviceVehicle.immatriculation", target = "vehicleImmatriculation")
-//    @Mapping(source = "serviceVehicle.site.name", target = "vehicleSiteName")
-     ReparationResponseDto toDto(Reparation reparation);
+
+    @Mapping(target ="vehicle.id", source = "serviceVehicle.id")
+    @Mapping(target ="vehicle.immatriculation", source = "serviceVehicle.immatriculation")
+    @Mapping(target ="vehicle.modelMark", source = "serviceVehicle.model.mark")
+    @Mapping(target ="vehicle.modelName", source = "serviceVehicle.model.modelName")
+    @Mapping(target ="vehicle.siteName", source = "serviceVehicle.site.name")
+    @Mapping(target ="vehicle.status", source = "serviceVehicle.status")
+
+    ReparationResponseDto toDto(Reparation reparation);
 
     // Mapping ReparationCreateDto -> Reparation
     // ignored because manual add in the service, before saving
     @Mapping(target = "serviceVehicle", ignore = true)
     Reparation toEntity(ReparationCreateDto dto);
+
 
 
 

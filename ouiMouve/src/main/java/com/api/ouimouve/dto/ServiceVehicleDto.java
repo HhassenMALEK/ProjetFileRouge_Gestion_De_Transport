@@ -36,4 +36,6 @@ public class ServiceVehicleDto extends VehicleDto {
      * Name of the site (optional, for display purposes).
      */
     private String siteName;
+    
+    private String immatriculation;
 }
