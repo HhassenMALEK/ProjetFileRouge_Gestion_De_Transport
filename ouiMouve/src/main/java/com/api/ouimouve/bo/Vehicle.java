@@ -29,10 +29,10 @@ public class Vehicle {
     private String immatriculation;
 
     /**
-     * number of place of this vehicle
+     * number of seat of this vehicle
      */
     @Column(nullable = false)
-    private Integer places;
+    private Integer seats;
 
     /**
      * relationship with the Carpooling

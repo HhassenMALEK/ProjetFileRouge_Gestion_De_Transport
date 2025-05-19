@@ -7,8 +7,8 @@ import java.util.Date;
 
 @Data
 public class VehicleReservationCreateDto {
-    private Long serviceVehicleId;  // ID du véhicule de service
-    private Long userId;            // Juste l'ID utilisateur
+    private Long serviceVehicleId;
+    private Long userId;
     private Date start;
     private Date end;
     private VehicleStatus status;

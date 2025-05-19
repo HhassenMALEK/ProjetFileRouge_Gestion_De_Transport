@@ -3,6 +3,7 @@ package com.api.ouimouve.mapper;
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.User;
 import com.api.ouimouve.bo.VehicleReservation;
+import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.dto.VehicleReservationCreateDto;
 import com.api.ouimouve.dto.VehicleReservationDto;
 import com.api.ouimouve.repository.UserRepository;
@@ -13,7 +14,7 @@ import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Mapper pour convertir entre objets Reservation et ReservationDto.
+ *  Mapper for converting between VehicleReservation entities and their DTO representations.
  */
 @Mapper(componentModel = "spring")
 public abstract class VehicleReservationMapper {
