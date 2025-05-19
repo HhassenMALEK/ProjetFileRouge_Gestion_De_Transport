@@ -139,7 +139,8 @@ public class CarPoolingController {
      *
      * @param organizerId optional ID of the organizer (user)
      * @param status optional status of the carpooling (e.g., PENDING, VALIDATED)
-     * @param departure optional departure date to filter
+     * @param startDate optional departure date to filter
+     * @param endDate   optional arrival date to filter
      * @param vehicleId optional ID of the vehicle
      * @return list of carpoolings matching the provided filters
      */
@@ -147,9 +148,10 @@ public class CarPoolingController {
     public List<CarPoolingResponseDto> filterByCriteria(
             @RequestParam(required = false) Long organizerId,
             @RequestParam(required = false) CarPoolingStatus status,
-            @RequestParam(required = false) Date departure,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date endDate,
             @RequestParam(required = false) Long vehicleId
     ) {
-        return carPoolingService.filterByStatusDateVehicle(organizerId, status, departure, vehicleId);
+        return carPoolingService.filterByStatusDateVehicle(organizerId, status, startDate, endDate, vehicleId);
     }
 }

@@ -57,19 +57,5 @@ public abstract class CarPoolingMapper {
     @Mapping(target = "vehicle", ignore = true) // pour éviter de charger tout un arbre d’objet inutile
     public abstract CarPoolingResponseDto toResponseDto(CarPooling entity);
 
-    /**
-     * Post-processing step to enrich the response DTO with derived data.
-     * In this case, calculates the duration in minutes from departure and arrival if not already set.
-     *
-     * @param dto the DTO being enriched
-     * @param entity the original entity used to compute additional values
-     */
-    @AfterMapping
-    protected void enrichResponse(@MappingTarget CarPoolingResponseDto dto, CarPooling entity) {
-        if (dto.getDurationInMinutes() == null && entity.getDeparture() != null && entity.getArrival() != null) {
-            long duration = (entity.getArrival().getTime() - entity.getDeparture().getTime()) / (1000 * 60);
-            dto.setDurationInMinutes((int) duration);
-        }
-    }
 
 }
