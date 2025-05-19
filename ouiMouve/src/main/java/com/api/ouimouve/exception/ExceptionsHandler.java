@@ -75,12 +75,21 @@ public class ExceptionsHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
 
-
+    /**
+     * Handles UniqueConstraintsExceptions and returns a 409 Conflict response.
+     * @param ex the UniqueConstraintsExceptions
+     * @return ResponseEntity with a 409 status and the list of field errors
+     */
     @ExceptionHandler(UniqueConstraintsExceptions.class)
     public ResponseEntity<List<ValidationErrorResponse.FieldError>> handleUniqueConstraintViolation(UniqueConstraintsExceptions ex) {
         return new ResponseEntity<>(ex.getErrors(), HttpStatus.CONFLICT);
     }
 
+    /**
+     * Handles UserException and returns a 400 Bad Request response.
+     * @param ex the UserException
+     * @return ResponseEntity with a 400 status and an empty ValidationErrorResponse
+     */
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ValidationErrorResponse> handleUserException(UserException ex) {
         ValidationErrorResponse errorResponse = new ValidationErrorResponse();

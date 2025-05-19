@@ -8,6 +8,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+/**
+ * AuthContext is a utility class that provides methods to get the current authenticated user.
+ */
 @Service
 public class AuthContext {
 
