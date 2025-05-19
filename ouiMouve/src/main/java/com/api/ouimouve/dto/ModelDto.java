@@ -1,12 +1,7 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.enumeration.VehicleCategory;
-import com.api.ouimouve.validation.ValidMaxNbSeats;
-import com.api.ouimouve.validation.ValidPhotoURL;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * Data Transfer Object (DTO) for Model.
@@ -25,6 +20,4 @@ public class ModelDto {
 
     private Integer seatsModel;
 
-
-    private List<ServiceVehicleDto> serviceVehicles;
 }

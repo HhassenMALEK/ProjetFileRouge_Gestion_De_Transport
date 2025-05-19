@@ -7,13 +7,8 @@ import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.dto.ServiceVehicleDto;
 import com.api.ouimouve.repository.ModelRepository;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Mapper interface for converting between Model and ModelDto objects.
@@ -37,25 +32,24 @@ public abstract class ModelMapper {
     /**
      * Converts a Model entity to a ModelDto
      */
-    @Mapping(target = "serviceVehicles", source = "serviceVehicles", qualifiedByName = "serviceVehiclesToDtos")
     public abstract ModelDto toModelDto(Model model);
 
-    /**
-     * Converts a list of ServiceVehicle entities to a list of ServiceVehicleDto objects.
-     *
-     * @param serviceVehicles List of ServiceVehicle entities to convert
-     * @return List of ServiceVehicleDto objects
-     */
-    @Named("serviceVehiclesToDtos")
-    protected List<ServiceVehicleDto> mapServiceVehiclesToDtos(List<ServiceVehicle> serviceVehicles) {
-        if (serviceVehicles == null) {
-            return Collections.emptyList();
-        }
-
-        return serviceVehicles.stream()
-                .map(this::mapServiceVehicleToDto)
-                .collect(Collectors.toList());
-    }
+//    /**
+//     * Converts a list of ServiceVehicle entities to a list of ServiceVehicleDto objects.
+//     *
+//     * @param serviceVehicles List of ServiceVehicle entities to convert
+//     * @return List of ServiceVehicleDto objects
+//     */
+//    @Named("serviceVehiclesToDtos")
+//    protected List<ServiceVehicleDto> mapServiceVehiclesToDtos(List<ServiceVehicle> serviceVehicles) {
+//        if (serviceVehicles == null) {
+//            return Collections.emptyList();
+//        }
+//
+//        return serviceVehicles.stream()
+//                .map(this::mapServiceVehicleToDto)
+//                .collect(Collectors.toList());
+//    }
 
     /**
      * Converts a single ServiceVehicle entity to a ServiceVehicleDto object.
