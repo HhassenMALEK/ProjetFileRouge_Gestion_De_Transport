@@ -24,6 +24,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Collections;
 
+/**
+ * AuthController is a REST controller that handles authentication-related operations.
+ */
 @Slf4j
 @RestController
 @RequestMapping("/api/auth")
@@ -41,6 +44,11 @@ public class AuthController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    /**
+     * Handles user login.
+     * @param request the login request containing email and password
+     * @return a ResponseEntity containing the authentication token
+     */
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest request) {
         authenticationManager.authenticate(
@@ -63,6 +71,11 @@ public class AuthController {
 
         return ResponseEntity.ok(new AuthResponse(token));
     }
+    /**
+     * Handles user registration.
+     * @param request the registration request containing user details
+     * @return a ResponseEntity containing the authentication token or validation errors
+     */
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
         log.info("Tentative d'inscription pour l'utilisateur: {}", request.getEmail());

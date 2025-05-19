@@ -7,6 +7,10 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * ValidationErrorResponse is a class that represents the response for validation errors.
+ * It contains a status code and a list of field errors.
+ */
 @Data
 @NoArgsConstructor
 public class ValidationErrorResponse {

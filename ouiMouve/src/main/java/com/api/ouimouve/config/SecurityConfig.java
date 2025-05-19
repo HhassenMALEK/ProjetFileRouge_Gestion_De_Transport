@@ -18,6 +18,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * SecurityConfig is a configuration class that sets up the security for the application.
+ * It configures authentication, authorization, and JWT token handling.
+ */
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity

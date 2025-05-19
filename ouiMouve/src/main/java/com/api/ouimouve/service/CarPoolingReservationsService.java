@@ -1,7 +1,9 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.bo.CarPoolingReservations;
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
+import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.mapper.CarPoolingReservationsMapper;
 import com.api.ouimouve.repository.CarPoolingReservationsRepository;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -17,6 +20,8 @@ public class CarPoolingReservationsService {
     private CarPoolingReservationsRepository carPoolingReservationsRepository;
     @Autowired
     private CarPoolingReservationsMapper carPoolingReservationsMapper;
+    @Autowired
+    private CarPoolingService carPoolingService;
 //    /**
 //     * Legacy method to get all CarPoolingReservations, not used in the current implementation
 //     * Get all CarPoolingReservations
@@ -69,18 +74,19 @@ public class CarPoolingReservationsService {
     /**
      * Update an existing CarPoolingReservations
      * @param id the id of the CarPoolingReservations to update
-     * @param carPoolingReservations the updated CarPoolingReservationsResponseDTO
      * @return the updated CarPoolingReservationsResponseDTO
      */
-    public CarPoolingReservationsResponseDTO updateReservation(Long id, CarPoolingReservationsCreateDTO carPoolingReservations) {
-        if (carPoolingReservationsRepository.existsById(id)) {
-            return carPoolingReservationsMapper.toResponseDTO(
-                    carPoolingReservationsRepository.save(
-                            carPoolingReservationsMapper.toEntity(carPoolingReservations)
-                    )
-            );
+    public CarPoolingReservationsResponseDTO updateReservation(Long id, CarPoolingReservationStatus status) {
+        Optional<CarPoolingReservations> reservation = carPoolingReservationsRepository.findById(id);
+        if (reservation.isPresent()) {
+            CarPoolingReservations existingReservation = reservation.get();
+            // Mettre à jour les champs de l'entité existante
+            existingReservation.setStatus(status);
+            // Enregistrer l'entité mise à jour
+            return carPoolingReservationsMapper.toResponseDTO(carPoolingReservationsRepository.save(existingReservation));
+        } else {
+            return null;
         }
-        return null;
     }
     // Pas utilisé pour l'instant
 //    /**
@@ -105,12 +111,21 @@ public class CarPoolingReservationsService {
      * @param dto the CarPoolingReservationsResponseDTO
      * @return true if there are available seats, false otherwise
      */
+    public boolean noAvailableSeats(CarPoolingReservationsResponseDTO dto) {
+        int availableSeats = dto.getCarPooling().getVehicle().getPlaces();
+        int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPooling().getId());
+        return availableSeats <= reservedSeats;
+    }
+    /**
+     * Boolean indicating if there is any available seats in the vehicle
+     * @param dto the CarPoolingReservationsCreateDTO
+     * @return true if there are available seats, false otherwise
+     */
     public boolean noAvailableSeats(CarPoolingReservationsCreateDTO dto) {
-        CarPoolingReservationsResponseDTO responseDTO = carPoolingReservationsMapper
-                .toResponseDTO(carPoolingReservationsMapper
-                        .toEntity(dto));
-        int availableSeats = responseDTO.getCarPooling().getVehicle().getPlaces();
-        int reservedSeats = countParticipantsByCarPoolingId(responseDTO.getCarPooling().getId());
+        // Récupérer les informations du covoiturage à partir du carPoolingId
+        CarPoolingResponseDto carPooling = carPoolingService.getCarPoolingById(dto.getCarPoolingId());
+        int availableSeats = carPooling.getVehicle().getPlaces();
+        int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPoolingId());
         return availableSeats <= reservedSeats;
     }
 }
