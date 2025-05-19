@@ -109,7 +109,7 @@ public class CarPoolingReservationsService {
         CarPoolingReservationsResponseDTO responseDTO = carPoolingReservationsMapper
                 .toResponseDTO(carPoolingReservationsMapper
                         .toEntity(dto));
-        int availableSeats = responseDTO.getCarPooling().getVehicle().getPlaces();
+        int availableSeats = responseDTO.getCarPooling().getVehicle().getSeats();
         int reservedSeats = countParticipantsByCarPoolingId(responseDTO.getCarPooling().getId());
         return availableSeats <= reservedSeats;
     }

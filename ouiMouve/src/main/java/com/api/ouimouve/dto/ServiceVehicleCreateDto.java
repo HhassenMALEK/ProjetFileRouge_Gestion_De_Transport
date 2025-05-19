@@ -10,7 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ServiceVehicleDto extends VehicleDto {
+public class ServiceVehicleCreateDto extends VehicleDto {
     /**
      * Current status of the service vehicle.
      */
@@ -21,6 +21,10 @@ public class ServiceVehicleDto extends VehicleDto {
      */
     private Long modelId;
 
+    /**
+     * Name of the model (optional, for display purposes).
+     */
+    private String modelName;
 
     /**
      * Brand of the model (optional, for display purposes).
@@ -36,6 +40,4 @@ public class ServiceVehicleDto extends VehicleDto {
      * Name of the site (optional, for display purposes).
      */
     private String siteName;
-    
-    private String immatriculation;
 }
