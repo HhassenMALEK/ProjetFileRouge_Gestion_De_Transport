@@ -5,17 +5,13 @@ import com.api.ouimouve.dto.PersonalVehicleCreateDto;
 import com.api.ouimouve.dto.PersonalVehicleDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
-import com.api.ouimouve.exception.UniqueConstraintsExceptions;
 import com.api.ouimouve.mapper.VehicleMapper;
 import com.api.ouimouve.repository.PersonalVehicleRepository;
-import com.api.ouimouve.repository.UserRepository;
-import com.api.ouimouve.repository.VehicleRepository;
 import com.api.ouimouve.utils.AuthContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service for managing personal vehicles.
@@ -31,9 +27,6 @@ public class PersonalVehicleService {
     private VehicleService vehicleService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private AuthContext authContext;
 
     @Autowired
@@ -47,8 +40,8 @@ public class PersonalVehicleService {
      */
     public PersonalVehicleDto getPersonalVehicleById(Long id) {
         return personalVehicleRepository.findById(id)
-                .map(vehicle -> vehicleMapper.toDto((PersonalVehicle) vehicle))
-                .orElse(null);
+                .map(vehicle -> vehicleMapper.toDto(vehicle))
+                .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found"));
     }
 
 
@@ -57,9 +50,14 @@ public class PersonalVehicleService {
      * @return List of personal vehicles owned by the user
      */
     public List<PersonalVehicleDto> getPersonalVehiclesByUserId() {
-        return personalVehicleRepository.findByUserId(authContext.getCurrentUser().getId()).stream()
+        List<PersonalVehicleDto> vehicles = personalVehicleRepository.findByUserId(authContext.getCurrentUser().getId()).stream()
                 .map(vehicle -> vehicleMapper.toDto(vehicle))
-                .collect(Collectors.toList());
+                .toList();
+        if (vehicles.isEmpty()) {
+            throw new RessourceNotFoundException("No personal vehicles found for this user");
+        } else {
+            return vehicles;
+        }
     }
 
     /**
@@ -96,6 +94,8 @@ public class PersonalVehicleService {
         }
         // TODO: Si véhicule réservé ou dans un covoit, on ne peut pas modifier le nombre de places
         dto.setUserId(authContext.getCurrentUser().getId());
+        dto.setSeats(vehicle.getSeats());
+        dto.setId(id);
         vehicle = vehicleMapper.toEntity(dto);
         return vehicleMapper.toDto(personalVehicleRepository.save(vehicle));
     }
