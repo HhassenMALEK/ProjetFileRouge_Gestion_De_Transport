@@ -6,6 +6,7 @@ import com.api.ouimouve.bo.Vehicle;
 import com.api.ouimouve.dto.*;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.Named;
 import org.mapstruct.SubclassMapping;
 
 @Mapper(componentModel = "spring", uses = {UserMapper.class, ModelMapper.class, SiteMapper.class})
@@ -21,7 +22,7 @@ public interface VehicleMapper {
     Vehicle toEntityPolymorphic(VehicleDto dto);
 
     @SubclassMapping(source = PersonalVehicle.class, target = PersonalVehicleDto.class)
-    @SubclassMapping(source = ServiceVehicle.class, target = ServiceVehicleDto.class)
+    @SubclassMapping(source = ServiceVehicle.class, target = ServiceVehicleDto.class, qualifiedByName = "serviceVehicleToDto")
     VehicleDto toDtoPolymorphic(Vehicle vehicle);
 
     // PersonalVehicle mappings
@@ -32,7 +33,9 @@ public interface VehicleMapper {
     PersonalVehicle toEntity(PersonalVehicleCreateDto dto);
 
     // ServiceVehicle mappings
+
     ServiceVehicle toEntity(ServiceVehicleDto dto);
+    @Named("serviceVehicleToDto")
     ServiceVehicleDto toDto(ServiceVehicle entity);
 
     @Mapping(source = "modelId", target = "model.id")
