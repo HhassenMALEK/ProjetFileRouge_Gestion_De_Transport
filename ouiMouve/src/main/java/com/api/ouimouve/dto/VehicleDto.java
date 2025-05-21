@@ -1,5 +1,6 @@
 package com.api.ouimouve.dto;
 
+import com.api.ouimouve.validation.ValidImmatriculation;
 import lombok.Data;
 
 /**
@@ -16,10 +17,12 @@ public class VehicleDto {
     /**
      * License plate number of the vehicle.
      */
+    @ValidImmatriculation
     private String immatriculation;
 
     /**
      * Number of seats available in the vehicle.
      */
     private Integer seats;
+
 }
