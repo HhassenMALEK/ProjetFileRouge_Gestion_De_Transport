@@ -5,6 +5,7 @@ import com.api.ouimouve.dto.ServiceVehicleDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.ServiceVehicleService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,12 +24,12 @@ public class ServiceVehicleController {
 
 
     @PostMapping
-    public ServiceVehicleDto createServiceVehicle(@RequestBody ServiceVehicleCreateDto serviceVehicleDto) throws InvalidRessourceException {
+    public ServiceVehicleDto createServiceVehicle(@RequestBody @Valid ServiceVehicleCreateDto serviceVehicleDto) throws InvalidRessourceException {
         return serviceVehicleService.createServiceVehicle(serviceVehicleDto);
     }
 
     @PutMapping("/{id}")
-    public ServiceVehicleDto updateServiceVehicle(@PathVariable Long id, @RequestBody ServiceVehicleCreateDto serviceVehicleDto) throws RessourceNotFoundException {
+    public ServiceVehicleDto updateServiceVehicle(@PathVariable Long id, @RequestBody @Valid ServiceVehicleCreateDto serviceVehicleDto) throws RessourceNotFoundException {
         return serviceVehicleService.updateServiceVehicle(id, serviceVehicleDto);
     }
 
