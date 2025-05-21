@@ -9,11 +9,12 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class PersonalVehicleCreateDto extends VehicleDto {
+public class PersonalVehicleDto extends VehicleDto {
     /**
      * Color of the personal vehicle.
      */
     private String color;
+
     /**
      * Additional description of the personal vehicle.
      */
@@ -22,5 +23,5 @@ public class PersonalVehicleCreateDto extends VehicleDto {
     /**
      * ID of the user who owns this personal vehicle.
      */
-    private Long userId;
+    private UserDto user;
 }
