@@ -1,14 +1,17 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.Site;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import com.api.ouimouve.mapper.AdressMapper;
 import com.api.ouimouve.dto.SiteCreateDto;
 import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.SiteMapper;
-//import com.api.ouimouve.repository.ServiceVehicleRepository;
+import com.api.ouimouve.repository.ServiceVehicleRepository;
 import com.api.ouimouve.repository.SiteRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
  * This includes validation, creation, update, deletion, and transformation to/from DTOs.
  */
 @Service
+@Transactional
 public class SiteService {
 
     /**
@@ -43,8 +47,8 @@ public class SiteService {
     @Autowired
     private AdressMapper adressMapper;
 
-    // @Autowired
-    // private ServiceVehicleRepository serviceVehicleRepository;
+     @Autowired
+     private ServiceVehicleRepository serviceVehicleRepository;
 
     /**
      * Retrieves all sites stored in the system.
@@ -83,16 +87,10 @@ public class SiteService {
         validateSite(dto);
         Site site = siteMapper.toSite(dto);
         populateEntityReferences(site, dto);
-
-        // Optional vehicle association (currently commented out)
-        // if (dto.getVehicleIds() != null && !dto.getVehicleIds().isEmpty()) {
-        //     List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
-        //             .map(id -> serviceVehicleRepository.findById(id)
-        //                 .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + id)))
-        //             .collect(Collectors.toList());
-        //     site.setVehiclesServices(vehicles);
-        // }
-
+        // Association centralisée des véhicules
+        if (dto.getVehicleIds() != null && !dto.getVehicleIds().isEmpty()) {
+            associateVehiclesWithSite(site, dto.getVehicleIds());
+        }
         return siteMapper.toSiteResponseDto(siteRepository.save(site));
     }
 
@@ -113,28 +111,34 @@ public class SiteService {
         populateEntityReferences(site, dto);
 
         // Optional vehicle update logic (currently commented out)
-        // if (dto.getVehicleIds() != null) {
-        //     List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
-        //             .map(vid -> serviceVehicleRepository.findById(vid)
-        //                 .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + vid)))
-        //             .collect(Collectors.toList());
-        //     site.setVehiclesServices(vehicles);
-        // }
-
+         if (dto.getVehicleIds() != null) {
+             List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
+                     .map(vid -> serviceVehicleRepository.findById(vid)
+                         .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + vid)))
+                     .collect(Collectors.toList());
+             site.setVehiclesServices(vehicles);
+         }
         return siteMapper.toSiteResponseDto(siteRepository.save(site));
     }
 
-    /**
-     * Deletes a site by its ID.
-     *
-     * @param id the ID of the site to delete.
-     * @return the deleted site as a SiteResponseDto.
-     * @throws RessourceNotFoundException if the site does not exist.
-     */
     public SiteResponseDto deleteSite(Long id) {
-        SiteResponseDto dto = getSiteById(id);
-        siteRepository.deleteById(id);
-        return dto;
+        // Recherche du site ou exception
+        Site site = siteRepository.findById(id)
+                .orElseThrow(() -> new RessourceNotFoundException("Site not found with ID: " + id));
+        // Récupération des véhicules liés
+        List<ServiceVehicle> vehicles = serviceVehicleRepository.findAllBySite_Id(id);
+        // Vérifie si l’un des véhicules n’est pas ENABLED
+        boolean hasUnavailableVehicles = vehicles.stream()
+                .anyMatch(vehicle -> vehicle.getStatus() != VehicleStatus.ENABLED);
+        if (hasUnavailableVehicles) {
+            throw new InvalidRessourceException("Impossible de supprimer ce site : un ou plusieurs véhicules sont réservés ou désactivés.");
+        }
+        // Dissocie les véhicules avant suppression (bonne pratique JPA si cascade absente)
+        vehicles.forEach(vehicle -> vehicle.setSite(null));
+        serviceVehicleRepository.saveAll(vehicles);
+        // Suppression du site
+        siteRepository.delete(site);
+        return siteMapper.toSiteResponseDto(site);
     }
 
     /**
@@ -148,11 +152,9 @@ public class SiteService {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             throw new InvalidRessourceException("Site name is required.");
         }
-
         if (dto.getAdressId() == null) {
             throw new InvalidRessourceException("Address ID is required.");
         }
-        // This will throw if the address does not exist
         adressService.getAdressById(dto.getAdressId());
     }
 
@@ -164,8 +166,15 @@ public class SiteService {
      * @throws RessourceNotFoundException if the address does not exist.
      */
     private void populateEntityReferences(Site site, SiteCreateDto dto) {
-        // Convertir l'AdressDto en Adress avant de l'assigner
         site.setAdress(adressMapper.toAdress(adressService.getAdressById(dto.getAdressId())));
+    }
+    private void associateVehiclesWithSite(Site site, List<Long> vehicleIds) {
+        List<ServiceVehicle> vehicles = vehicleIds.stream()
+                .map(id -> serviceVehicleRepository.findById(id)
+                        .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + id)))
+                .collect(Collectors.toList());
+        vehicles.forEach(v -> v.setSite(site));
+        site.setVehiclesServices(vehicles);
     }
 
 }

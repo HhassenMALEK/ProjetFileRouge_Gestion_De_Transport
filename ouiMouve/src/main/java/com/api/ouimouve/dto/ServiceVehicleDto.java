@@ -29,7 +29,8 @@ public class ServiceVehicleDto extends VehicleDto {
     /**
      * ID of the site where this vehicle is located.
      */
-    private SiteDto site;
+    //Modifier par Hassen
+    private SiteResponseDto site;
 
 
     /**
