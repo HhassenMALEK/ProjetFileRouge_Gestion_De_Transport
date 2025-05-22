@@ -47,8 +47,11 @@ public class SiteService {
     @Autowired
     private AdressMapper adressMapper;
 
-     @Autowired
-     private ServiceVehicleRepository serviceVehicleRepository;
+    /**
+     * Service for managing vehicle-related data.
+     */
+    @Autowired
+    private ServiceVehicleRepository serviceVehicleRepository;
 
     /**
      * Retrieves all sites stored in the system.
@@ -80,11 +83,11 @@ public class SiteService {
      *
      * @param dto the data used to create the new site.
      * @return the created Site as a SiteResponseDto.
-     * @throws InvalidRessourceException if validation fails.
+     * @throws InvalidRessourceException  if validation fails.
      * @throws RessourceNotFoundException if the referenced address is not found.
      */
     public SiteResponseDto createSite(SiteCreateDto dto) {
-        validateSite(dto);
+        validateSite(dto, null);
         Site site = siteMapper.toSite(dto);
         populateEntityReferences(site, dto);
         // Association centralisée des véhicules
@@ -101,23 +104,23 @@ public class SiteService {
      * @param dto the updated site data.
      * @return the updated Site as a SiteResponseDto.
      * @throws RessourceNotFoundException if the site or referenced address does not exist.
-     * @throws InvalidRessourceException if validation fails.
+     * @throws InvalidRessourceException  if validation fails.
      */
     public SiteResponseDto updateSite(Long id, SiteCreateDto dto) {
-        validateSite(dto);
+        validateSite(dto, id);
         Site site = siteRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Site not found with ID: " + id));
         site.setName(dto.getName());
         populateEntityReferences(site, dto);
 
         // Optional vehicle update logic (currently commented out)
-         if (dto.getVehicleIds() != null) {
-             List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
-                     .map(vid -> serviceVehicleRepository.findById(vid)
-                         .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + vid)))
-                     .collect(Collectors.toList());
-             site.setVehiclesServices(vehicles);
-         }
+        if (dto.getVehicleIds() != null) {
+            List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
+                    .map(vid -> serviceVehicleRepository.findById(vid)
+                            .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + vid)))
+                    .collect(Collectors.toList());
+            site.setVehiclesServices(vehicles);
+        }
         return siteMapper.toSiteResponseDto(siteRepository.save(site));
     }
 
@@ -145,10 +148,10 @@ public class SiteService {
      * Validates the data received for site creation or update.
      *
      * @param dto the DTO to validate.
-     * @throws InvalidRessourceException if required fields are missing or invalid.
+     * @throws InvalidRessourceException  if required fields are missing or invalid.
      * @throws RessourceNotFoundException if referenced address does not exist.
      */
-    private void validateSite(SiteCreateDto dto) {
+    private void validateSite(SiteCreateDto dto, Long siteId) {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             throw new InvalidRessourceException("Site name is required.");
         }
@@ -156,6 +159,16 @@ public class SiteService {
             throw new InvalidRessourceException("Address ID is required.");
         }
         adressService.getAdressById(dto.getAdressId());
+
+        // Vérifier l'unicité du nom + adresseId
+        siteRepository.findByNameAndAdressId(dto.getName(), dto.getAdressId())
+                .ifPresent(existing -> {
+                    // Si on est en update, il faut ignorer le site lui-même
+                    if (siteId == null || !existing.getId().equals(siteId)) {
+                        throw new InvalidRessourceException("This site already exists!");
+                    }
+                });
+
     }
 
     /**
@@ -168,13 +181,25 @@ public class SiteService {
     private void populateEntityReferences(Site site, SiteCreateDto dto) {
         site.setAdress(adressMapper.toAdress(adressService.getAdressById(dto.getAdressId())));
     }
+
     private void associateVehiclesWithSite(Site site, List<Long> vehicleIds) {
         List<ServiceVehicle> vehicles = vehicleIds.stream()
-                .map(id -> serviceVehicleRepository.findById(id)
-                        .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + id)))
+                .map(id -> {
+                    ServiceVehicle vehicle = serviceVehicleRepository.findById(id)
+                            .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + id));
+
+                    // Vérifier si le véhicule est déjà assigné à un autre site
+                    if (vehicle.getSite() != null && !vehicle.getSite().getId().equals(site.getId())) {
+                        throw new InvalidRessourceException("Vehicle with ID " + id + " is already assigned to another site.");
+                    }
+
+                    return vehicle;
+                })
                 .collect(Collectors.toList());
+
         vehicles.forEach(v -> v.setSite(site));
         site.setVehiclesServices(vehicles);
     }
+
 
 }

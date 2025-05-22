@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface SiteRepository extends JpaRepository<Site, Long> {
@@ -16,5 +17,5 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
      * @return a list of sites with the specified name
      */
     List<Site> findAllByName(String name);
-
+    Optional<Site> findByNameAndAdressId(String name, Long adressId);
 }
