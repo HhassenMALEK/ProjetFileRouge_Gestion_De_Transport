@@ -23,14 +23,29 @@ import java.util.stream.Collectors;
  */
 @Service
 public class CarPoolingService {
+    /**
+     * Repository for carpooling-related data access.
+     */
     @Autowired
     private CarPoolingRepository carPoolingRepository;
+    /**
+     * Mapper for converting between CarPooling entity and DTOs.
+     */
     @Autowired
     private CarPoolingMapper carPoolingMapper;
+    /**
+     * Repository for address-related data access.
+     */
     @Autowired
     private AdressRepository adressRepository;
+    /**
+     * Repository for user-related data access.
+     */
     @Autowired
     private UserRepository userRepository;
+    /**
+     * Repository for vehicle-related data access.
+     */
     @Autowired
     private VehicleRepository vehicleRepository;
 

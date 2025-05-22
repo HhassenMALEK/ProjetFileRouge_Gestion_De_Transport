@@ -36,7 +36,7 @@ public abstract class CarPoolingMapper {
      * Converts a CarPoolingCreateDto into a CarPooling entity.
      * Only IDs are mapped here, assuming that associations will be resolved later in the service layer.
      *
-     * @param dto the DTO containing the raw input from the client
+     * @param dto the Dto containing the raw input from the client
      * @return the mapped CarPooling entity (with reference IDs only)
      */
     @Mapping(target = "departureAdress.id", source = "departureAddressId")
