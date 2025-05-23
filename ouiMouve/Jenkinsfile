@@ -7,6 +7,7 @@ pipeline {
         IMAGE_NAME = 'ouimouve-image'
         CONTAINER_NAME = 'ouimouve-container-prod'
         JAVA_TOOL_OPTIONS = '-Dfile.encoding=UTF-8'
+        SONARQUBE_ENV = 'SonarQube'
     }
 
     stages {
@@ -24,6 +25,23 @@ pipeline {
                 }
             }
         }
+        stage('Analyse Sonar'){
+            steps {
+                script {
+                    try {
+                        dir('ouiMouve') {
+                        //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
+                        withSonarQubeEnv() {
+                            sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge'"
+                            //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
+                        }
+                    } catch (Exception e) {
+                        error "Échec de l'analyse Sonar : ${e.message}"
+                    }
+                }
+            }
+        }
+
     }
     post {
         success {
