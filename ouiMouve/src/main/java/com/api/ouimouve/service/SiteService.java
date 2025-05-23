@@ -114,14 +114,14 @@ public class SiteService {
         site.setName(dto.getName());
         populateEntityReferences(site, dto);
 
-        // Optional vehicle update logic (currently commented out)
+        // Utiliser la même méthode que pour la création
         if (dto.getVehicleIds() != null) {
-            List<ServiceVehicle> vehicles = dto.getVehicleIds().stream()
-                    .map(vid -> serviceVehicleRepository.findById(vid)
-                            .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found with ID: " + vid)))
-                    .collect(Collectors.toList());
-            site.setVehiclesServices(vehicles);
+            // D'abord dissocier les véhicules actuels
+            site.getVehiclesServices().forEach(v -> v.setSite(null));
+            // Puis associer les nouveaux véhicules
+            associateVehiclesWithSite(site, dto.getVehicleIds());
         }
+
         return siteMapper.toSiteResponseDto(siteRepository.save(site));
     }
 
