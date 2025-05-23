@@ -1,0 +1,63 @@
+pipeline {
+    agent any
+    tools {
+            jdk 'JDK21'
+    }
+    environment {
+        IMAGE_NAME = 'ouimouve-image'
+        CONTAINER_NAME = 'ouimouve-container-prod'
+        JAVA_TOOL_OPTIONS = '-Dfile.encoding=UTF-8'
+        SONARQUBE_ENV = 'SonarEnv'
+
+    }
+
+    stages {
+
+        stage('Lancer test automatique'){
+            steps {
+                script {
+                    try {
+                        dir('ouiMouve') {
+                            sh 'mvn clean compile test -Dspring.profiles.active=test'
+                        }
+                    } catch (Exception e) {
+                        error "Échec de l'exécution des tests Maven : ${e.message}"
+                    }
+                }
+            }
+        }
+        stage('Analyse Sonar'){
+            steps {
+                script {
+                    try {
+                        dir('ouiMouve') {
+                            withSonarQubeEnv("${env.SONARQUBE_ENV}") {
+                            sh '''
+                                mvn sonar:sonar \
+                                    -Dsonar.projectKey=Projet-Fil-Rouge \
+                                    -Dsonar.projectName='Projet Fil Rouge' \
+                                    -Dsonar.host.url=http://host.docker.internal:9000 \
+
+                            '''
+                            }
+                        }
+                    } catch (Exception e) {
+                        error "Échec de l'analyse Sonar : ${e.message}"
+                    }
+                }
+            }
+        }
+
+    }
+    post {
+        success {
+            echo "Pipeline terminé avec succès : l'application est déployée sur http://localhost:8081"
+        }
+        failure {
+            echo "Le pipeline a échoué, veuillez consulter les logs pour plus de détails"
+        }
+        always {
+            echo "Fin de l'exécution du pipeline"
+        }
+    }
+}

@@ -1,6 +1,6 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.validation.ValidPhotoURL;
+import com.api.ouimouve.enumeration.VehicleCategory;
 import lombok.Data;
 
 /**
@@ -13,11 +13,11 @@ public class ModelDto {
     private long id;
     private String modelName;
     private String mark;
-
-    @ValidPhotoURL
     private String photoURL;
     private String motorType;
-    private Integer category;
+    private VehicleCategory category;
     private Integer CO2;
-    private Integer placesModel;
+
+    private Integer seatsModel;
+
 }

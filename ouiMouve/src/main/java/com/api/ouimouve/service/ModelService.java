@@ -2,6 +2,7 @@ package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.Model;
 import com.api.ouimouve.dto.ModelDto;
+import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.ModelMapper;
 import com.api.ouimouve.repository.ModelRepository;
@@ -39,6 +40,17 @@ public class ModelService {
         return modelRepository.findById(id)
                 .map(modelMapper::toModelDto)
                 .orElse(null);
+    }
+
+    /**
+     * Get all models by category
+     * @param category the mark of the model
+     * @return a list of ModelDto
+     */
+    public List<ModelDto> GetAllModelsByCategory(VehicleCategory category) {
+        return modelRepository.findByCategory(category).stream()
+                .map(modelMapper::toModelDto)
+                .collect(Collectors.toList());
     }
 
     /**

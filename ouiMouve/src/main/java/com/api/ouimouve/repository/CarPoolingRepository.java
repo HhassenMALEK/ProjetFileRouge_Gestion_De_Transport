@@ -3,10 +3,15 @@ package com.api.ouimouve.repository;
 import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository interface for managing CarPooling entities.
@@ -15,38 +20,97 @@ import java.util.List;
 @Repository
 public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
 
-    /**
-     * Finds all carpoolings with the specified status.
-     *
-     * @param status the status of the carpooling
-     * @return a list of car poolings with the specified status
-     */
-    List<CarPooling> findByStatus(CarPoolingStatus status);
 
     /**
-     * Finds all carpoolings scheduled to depart after the specified date
-     *
-     * @param date the date to compare with departure time
-     * @return a list of carpoolings with departure dates after the specified date
+     * Finds overlapping carpoolings for a given vehicle.
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @return a list of overlapping carpoolings
      */
-    List<CarPooling> findByDepartureAfter(Date date);
+    @Query("""
+    SELECT c FROM CarPooling c
+    WHERE c.vehicle.id = :vehicleId
+    AND c.departure < :end
+    AND c.arrival > :start
+""")
+    /**find over lapping carpooling by vehicle
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @return a list of overlapping carpoolings
+     */
+    List<CarPooling> findOverlappingCarPoolingByVehicle(
+            @Param("vehicleId") Long vehicleId,
+            @Param("start") Date start,
+            @Param("end") Date end
+    );
 
     /**
-     * Finds all carpoolings with the specified status and departure date after a given date.
-     *
-     * @param status the status of the carpooling
-     * @param date   the date to compare with departure time
-     * @return a list of matching carpoolings
+     * Finds overlapping carpoolings for a given vehicle excluding a specific ID.
+     * @param vehicleId the ID of the vehicle
+     * @param start     the start date
+     * @param end       the end date
+     * @param excludeId the ID to exclude from the results
+     * @return a list of overlapping carpoolings
      */
-    List<CarPooling> findByStatusAndDepartureAfter(CarPoolingStatus status, Date date);
+    @Query("""
+    SELECT c FROM CarPooling c 
+    WHERE c.vehicle.id = :vehicleId 
+    AND c.id <> :excludeId 
+    AND c.departure < :end 
+    AND c.arrival > :start
+""")
+    List<CarPooling> findOverlappingCarPoolingByVehicleExcludingId(
+            @Param("vehicleId") Long vehicleId,
+            @Param("start") Date start,
+            @Param("end") Date end,
+            @Param("excludeId") Long excludeId
+    );
 
     /**
-     * Finds all carpoolings ordered by departure time ascending for a given status.
-     *
-     * @param status the status of the carpooling
-     * @return an ordered list of carpoolings
+     * Finds overlapping carpoolings for a given organizer excluding a specific ID.
+     * @param organizerId the ID of the organizer
+     * @param start       the start date
+     * @param end         the end date
+     * @param excludeId   the ID to exclude from the results
+     * @return a list of overlapping carpoolings
      */
-    List<CarPooling> findByStatusOrderByDepartureAsc(CarPoolingStatus status);
+    @Query("""
+    SELECT c FROM CarPooling c 
+    WHERE c.organizer.id = :organizerId 
+    AND c.id <> :excludeId 
+    AND c.departure < :end 
+    AND c.arrival > :start
+""")
+    List<CarPooling> findOverlappingCarPoolingByOrganizer(
+            @Param("organizerId") Long organizerId,
+            @Param("start") Date start,
+            @Param("end") Date end,
+             @Param("excludeId") Long excludeId
+    );
 
+    /** Filter carpoolings based on multiple criteria.
+     * @param organizerId the ID of the organizer (optional)
+     * @param status      the status of the carpooling (optional)
+     * @param departure   the departure date (optional)
+     * @param vehicleId   the ID of the vehicle (optional)
+     * @return a list of carpoolings matching the criteria
+     */
+    @Query("""
+    SELECT c FROM CarPooling c
+    WHERE (:organizerId IS NULL OR c.organizer.id = :organizerId)
+    AND (:status IS NULL OR c.status = :status)
+   AND (:startDate IS NULL OR c.departure >= :startDate)
+   AND (:endDate IS NULL OR c.departure <= :endDate)
+    AND (:vehicleId IS NULL OR c.vehicle.id = :vehicleId)
+""")
+    List<CarPooling> filterCarpoolings(
+            @Param("organizerId") Long organizerId,
+            @Param("status") CarPoolingStatus status,
+            @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate,
+            @Param("vehicleId") Long vehicleId
+    );
 
 }
