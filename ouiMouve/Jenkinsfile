@@ -16,7 +16,7 @@ pipeline {
                 script {
                     try {
                         dir('ouiMouve') {
-                            sh 'mvn clean compile test -Dspring.profiles.active=dev'
+                            sh 'mvn clean compile test -Dspring.profiles.active=test'
                         }
                     } catch (Exception e) {
                         error "Échec de l'exécution des tests Maven : ${e.message}"
