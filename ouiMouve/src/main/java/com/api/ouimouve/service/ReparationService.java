@@ -120,17 +120,17 @@ public class ReparationService {
         }
     }
 
-    /**
-     * check if a reparation already exists during reserving a carpooling
-     * @return response
-     */
-    public boolean checkDateForReparation(CarPoolingReservations carPoolingReservations) {
-
-        List<Reparation> reparation = reparationRepository.findOverlappingReparations(carPoolingReservations.getCarPooling().getVehicle().getId()
-        ,carPoolingReservations.getCarPooling().getDeparture(),carPoolingReservations.getCarPooling().getArrival());
-
-        return reparation.isEmpty();
-    }
+//    /**
+//     * check if a reparation already exists during reserving a carpooling
+//     * @return response
+//     */
+//    public boolean checkDateForReparation(CarPoolingReservations carPoolingReservations) {
+//
+//        List<Reparation> reparation = reparationRepository.findOverlappingReparations(carPoolingReservations.getCarPooling().getVehicle().getId()
+//        ,carPoolingReservations.getCarPooling().getDeparture(),carPoolingReservations.getCarPooling().getArrival());
+//
+//        return reparation.isEmpty();
+//    }
 
     /**
      * check if a reparation already exists during reserving a carpooling
