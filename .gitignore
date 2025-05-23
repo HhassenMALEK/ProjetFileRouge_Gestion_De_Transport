@@ -1,3 +1,7 @@
 Diagrammes/
 Suivi projet/
 
+
+# IntelliJ
+.idea/
+*.iml

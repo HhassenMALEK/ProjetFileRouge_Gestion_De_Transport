@@ -126,7 +126,7 @@ public class CarPoolingReservationsRepositoryTest {
         entityManager.flush();
 
         // When
-        List<CarPoolingReservations> foundReservations = carPoolingReservationsRepository.findByUserIdAndDateAfter(user1.getId(), Date.from(Instant.now().minusSeconds(3600)));
+        List<CarPoolingReservations> foundReservations = carPoolingReservationsRepository.findByUserIdAndDateAfter(user1.getId(), new Date());
 
         // Then
         assertThat(foundReservations).hasSize(2);
