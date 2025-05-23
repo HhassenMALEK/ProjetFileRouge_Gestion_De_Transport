@@ -24,6 +24,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -56,7 +57,7 @@ public class CarPoolingReservationsServiceTest {
 
         reservation = new CarPoolingReservations();
         reservation.setId(1L);
-        reservation.setDate(new Date());
+        reservation.setDate(new Date()); // La date exacte ici n'est pas critique pour ce test spécifique
         reservation.setStatus(CarPoolingReservationStatus.BOOKED);
         reservation.setUser(user);
         reservation.setCarPooling(carPooling);
@@ -66,7 +67,7 @@ public class CarPoolingReservationsServiceTest {
         vehicle.setSeats(4);
         vehicle.setUser(user);
 
-        carPoolingDto = new CarPoolingResponseDto(); // Supposition de structure
+        carPoolingDto = new CarPoolingResponseDto();
         carPoolingDto.setId(1L);
         carPoolingDto.setVehicle(vehicle);
 
@@ -88,17 +89,23 @@ public class CarPoolingReservationsServiceTest {
     @Test
     void getAllReservationsByUserId_ShouldReturnListOfResponseDtos() {
         // Given
-        List<CarPoolingReservations> reservations = Collections.singletonList(reservation);
-        when(carPoolingReservationsRepository.findByUserId(1L)).thenReturn(reservations);
-        when(carPoolingReservationsMapper.toResponseDTO(any(CarPoolingReservations.class))).thenReturn(responseDto);
+        List<CarPoolingReservations> reservationsFromRepo = Collections.singletonList(reservation);
+        // Utilisez doReturn(...).when(...) et any(Date.class) pour le paramètre de date
+        doReturn(reservationsFromRepo)
+                .when(carPoolingReservationsRepository)
+                .findByUserIdAndDateAfter(eq(1L), any(Date.class));
+
+        // Assurez-vous que le mapper est mocké pour retourner le DTO attendu
+        when(carPoolingReservationsMapper.toResponseDTO(reservation)).thenReturn(responseDto);
 
         // When
         List<CarPoolingReservationsResponseDTO> result = carPoolingReservationsService.getAllReservationsByUserId(1L);
 
         // Then
         assertThat(result).isNotNull().hasSize(1);
-        assertThat(result.get(0)).isEqualTo(responseDto);
-        verify(carPoolingReservationsRepository, times(1)).findByUserId(1L);
+        assertThat(result.getFirst()).isEqualTo(responseDto);
+        // Utilisez any(Date.class) également dans la vérification
+        verify(carPoolingReservationsRepository, times(1)).findByUserIdAndDateAfter(eq(1L), any(Date.class));
         verify(carPoolingReservationsMapper, times(1)).toResponseDTO(reservation);
     }
 
@@ -121,6 +128,7 @@ public class CarPoolingReservationsServiceTest {
     void getReservation_WithNonExistingId_ShouldReturnNull() {
         // Given
         when(carPoolingReservationsRepository.findById(99L)).thenReturn(Optional.empty());
+        // Si le service appelle toResponseDTO(null), alors ce mock est correct.
         when(carPoolingReservationsMapper.toResponseDTO(null)).thenReturn(null);
 
 
@@ -130,7 +138,8 @@ public class CarPoolingReservationsServiceTest {
         // Then
         assertThat(result).isNull();
         verify(carPoolingReservationsRepository, times(1)).findById(99L);
-        verify(carPoolingReservationsMapper, times(1)).toResponseDTO(null);
+        // Vérifier que toResponseDTO(null) est appelé
+        verify(carPoolingReservationsMapper, times(1)).toResponseDTO( (CarPoolingReservations) null );
     }
 
     @Test
@@ -212,9 +221,8 @@ public class CarPoolingReservationsServiceTest {
     @Test
     void noAvailableSeats_WithResponseDTO_WhenSeatsAvailable_ShouldReturnFalse() {
         // Given
-        responseDto.getCarPooling().getVehicle().setSeats(5); // 5 sièges au total
-        // countParticipantsByCarPoolingId sera appelé, mockons son comportement sous-jacent
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        responseDto.getCarPooling().getVehicle().setSeats(5);
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(responseDto);
@@ -226,8 +234,8 @@ public class CarPoolingReservationsServiceTest {
     @Test
     void noAvailableSeats_WithResponseDTO_WhenNoSeatsAvailable_ShouldReturnTrue() {
         // Given
-        responseDto.getCarPooling().getVehicle().setSeats(3); // 3 sièges au total
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        responseDto.getCarPooling().getVehicle().setSeats(3);
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(responseDto);
@@ -239,8 +247,8 @@ public class CarPoolingReservationsServiceTest {
     @Test
     void noAvailableSeats_WithResponseDTO_WhenMoreReservedThanAvailable_ShouldReturnTrue() {
         // Given
-        responseDto.getCarPooling().getVehicle().setSeats(2); // 2 sièges au total
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        responseDto.getCarPooling().getVehicle().setSeats(2);
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(responseDto.getCarPooling().getId(), CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(responseDto);
@@ -254,9 +262,9 @@ public class CarPoolingReservationsServiceTest {
     void noAvailableSeats_WithCreateDTO_WhenSeatsAvailable_ShouldReturnFalse() {
         // Given
         createDto.setCarPoolingId(1L);
-        carPoolingDto.getVehicle().setSeats(5); // 5 sièges au total
+        carPoolingDto.getVehicle().setSeats(5);
         when(carPoolingService.getCarPoolingById(1L)).thenReturn(carPoolingDto);
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(createDto);
@@ -270,9 +278,9 @@ public class CarPoolingReservationsServiceTest {
     void noAvailableSeats_WithCreateDTO_WhenNoSeatsAvailable_ShouldReturnTrue() {
         // Given
         createDto.setCarPoolingId(1L);
-        carPoolingDto.getVehicle().setSeats(3); // 3 sièges au total
+        carPoolingDto.getVehicle().setSeats(3);
         when(carPoolingService.getCarPoolingById(1L)).thenReturn(carPoolingDto);
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(createDto);
@@ -286,9 +294,9 @@ public class CarPoolingReservationsServiceTest {
     void noAvailableSeats_WithCreateDTO_WhenMoreReservedThanAvailable_ShouldReturnTrue() {
         // Given
         createDto.setCarPoolingId(1L);
-        carPoolingDto.getVehicle().setSeats(2); // 2 sièges au total
+        carPoolingDto.getVehicle().setSeats(2);
         when(carPoolingService.getCarPoolingById(1L)).thenReturn(carPoolingDto);
-        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3); // 3 sièges réservés
+        when(carPoolingReservationsRepository.countByCarPoolingIdAndStatus(1L, CarPoolingReservationStatus.BOOKED)).thenReturn(3);
 
         // When
         boolean result = carPoolingReservationsService.noAvailableSeats(createDto);

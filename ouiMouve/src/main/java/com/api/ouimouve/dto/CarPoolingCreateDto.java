@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Dto for CarPooling entity.
+ * Dto used to create a CarPooling.
  */
 @Data
 public class CarPoolingCreateDto {
@@ -30,5 +30,4 @@ public class CarPoolingCreateDto {
     private Long vehicleId;
     /** organizer of the carpooling. */
     private Long organizerId;
-
 }

@@ -8,6 +8,10 @@ import lombok.Data;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Entity representing a carpooling trip.
+ * Mapped to a database table using JPA annotations.
+ */
 @Entity
 @Data
 public class CarPooling {
@@ -25,9 +29,7 @@ public class CarPooling {
     @NotNull
     private Date arrival;
 
-    /**
-     * The status of the carpooling.
-     */
+    /** The status of the carpooling (e.g., PENDING, VALIDATED, CANCELLED). */
     @NotNull
     @Enumerated(EnumType.STRING)
     private CarPoolingStatus status;
@@ -40,14 +42,12 @@ public class CarPooling {
     @NotNull
     private Integer distance;
 
-
-
-    /** Adress where the carpooling starts. */
+    /** Address where the carpooling starts. */
     @ManyToOne
     @JoinColumn(name = "departure_address_id", nullable = false)
     private Adress departureAdress;
 
-    /** Adress where the carpooling ends. */
+    /** Address where the carpooling ends. */
     @ManyToOne
     @JoinColumn(name = "destination_address_id", nullable = false)
     private Adress destinationAdress;

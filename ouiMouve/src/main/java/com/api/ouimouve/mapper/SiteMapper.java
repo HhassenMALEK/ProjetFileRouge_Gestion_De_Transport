@@ -1,35 +1,48 @@
 package com.api.ouimouve.mapper;
 
 import com.api.ouimouve.bo.Site;
-import com.api.ouimouve.dto.SiteDto;
-import org.mapstruct.Mapper;
-import org.mapstruct.factory.Mappers;
+import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.dto.SiteCreateDto;
+import com.api.ouimouve.dto.SiteResponseDto;
+import com.api.ouimouve.mapper.AdressMapper;
+import org.mapstruct.*;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
- * Mapper interface for converting between Site and SiteDto objects.
+ * Mapper interface for Site.
+ * this interface uses MapStruct to generate the implementation for mapping between
+ * Site entity and SiteCreateDto/SiteResponseDto.
  */
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {AdressMapper.class})// cette dirctive indique à MapStruct d'utiliser AdressMapper
 public interface SiteMapper {
 
     /**
-     * Create an instance of the SiteMapper
+     * convert SiteCreateDto to Site entity
+     * @param dto the Dto containing the raw input from the client
+     * @return the mapped Site entity (with reference IDs only)
      */
-    SiteMapper MAPPER = Mappers.getMapper(SiteMapper.class);
+    @Mapping(source = "adressId", target = "adress.id")
+    @Mapping(target = "vehiclesServices", ignore = true)
+    Site toSite(SiteCreateDto dto);
 
     /**
-     * Convert a SiteDto to a Site object.
-     *
-     * @param siteDto the SiteDto to convert
-     * @return the converted Site object
+     * Convert a Site entity into a SiteResponseDto.
+     * includes the AdressMapper for adress mapping.
      */
-    Site toSite(SiteDto siteDto);
+    // AdressMapper s'en occupe
+    @Mapping(source = "adress", target = "adress")
+    // Extrait uniquement les IDs des véhicules pour alléger le DTO et éviter les références circulaires @Mapping(target = "vehicleIds", expression = "java(mapVehicleIds(site.getVehiclesServices()))")
+    SiteResponseDto toSiteResponseDto(Site site);
 
     /**
-     * Convert a Site object to a SiteDto.
-     *
-     * @param site the Site object to convert
-     * @return the converted SiteDto
+     * Trnsforme a list of ServiceVehicle into a list of Long IDs.
      */
-    SiteDto toSiteDto(Site site);
-
+    default List<Long> mapVehicleIds(List<ServiceVehicle> vehicles) {
+        if (vehicles == null) return null;
+        return vehicles.stream()
+                .map(ServiceVehicle::getId)
+                .collect(Collectors.toList());
+    }
 }
