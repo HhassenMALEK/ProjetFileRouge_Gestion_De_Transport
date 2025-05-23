@@ -63,7 +63,7 @@ pipeline {
                         sh '''
                             git config user.email "h.hassen.malek@gmail.com"
                             git config user.name "HhassenMALEK"
-                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/HhassenMALEK/ProjetFileRouge_Gestion_De_Transport.git'
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/HhassenMALEK/ProjetFileRouge_Gestion_De_Transport.git
                             git checkout main
                             git pull origin main 
                             git merge origin/dev --no-ff -m "merge automatique de dev vers main"
