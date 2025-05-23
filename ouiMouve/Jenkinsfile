@@ -49,15 +49,16 @@ pipeline {
         }
         stage('Merge vers Main') {
             steps {
-                def choix = input (
-                     message :' Voulez-vous faire un merge vers Main ?',
-                    parameters : [
-                       choice(name: 'Confirmation', choices: ['Oui', 'Non'], description: 'Confirmer le merge')
-                    ]
-                )
-                if (choix != 'Oui') {
+                script {
+                    def choix = input (
+                         message :' Voulez-vous faire un merge vers Main ?',
+                        parameters : [
+                           choice(name: 'Confirmation', choices: ['Oui', 'Non'], description: 'Confirmer le merge')
+                        ]
+                    )
+                    if (choix != 'Oui') {
                         error "Merge annulé par l'utilisateur."
-                } else {
+                    } else {
                     sh '''
                         git checkout main
                         git pull origin main 
@@ -65,9 +66,10 @@ pipeline {
                         git push origin main
                         echo "Merge effectué avec succès"
                     '''
-                }
-            }    
-        }    
+                    }
+                }    
+            }  
+        }
 
     }
     post {
