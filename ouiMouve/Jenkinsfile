@@ -30,10 +30,11 @@ pipeline {
                 script {
                     try {
                         dir('ouiMouve') {
-                        //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
-                        withSonarQubeEnv() {
-                            sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge'"
-                            //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
+                            //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
+                            withSonarQubeEnv() {
+                                sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge'"
+                                //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
+                            }
                         }
                     } catch (Exception e) {
                         error "Échec de l'analyse Sonar : ${e.message}"
