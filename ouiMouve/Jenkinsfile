@@ -50,7 +50,7 @@ pipeline {
         stage('Merge vers Main') {
             steps {
                 def choix = input (
-                     message :' Voulez-vous faire un merge vers Main ?'
+                     message :' Voulez-vous faire un merge vers Main ?',
                     parameters : [
                        choice(name: 'Confirmation', choices: ['Oui', 'Non'], description: 'Confirmer le merge')
                     ]
