@@ -13,7 +13,7 @@ pipeline {
 
     stages {
 
-        stage('Lancer test automatique'){
+        stage('Exécuter les test unitaires et intégration de Jacoco'){
             steps {
                 script {
                     try {
@@ -27,7 +27,7 @@ pipeline {
                 }
             }
         }
-        stage('Analyse Sonar'){
+        stage('Effectuer une analyse de qualité et de sécurtité du code avec SonarQube et analyse de la couverture du code'){
             steps {
                 script {
                     try {
@@ -51,7 +51,7 @@ pipeline {
                 }
             }
         }
-        stage('Merge vers Main') {
+        stage('Merge des changements sur la branche main') {
             steps {
                 script {
                     def choix = input (
