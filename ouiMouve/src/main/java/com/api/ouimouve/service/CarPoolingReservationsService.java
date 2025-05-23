@@ -10,6 +10,8 @@ import com.api.ouimouve.repository.CarPoolingReservationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -43,7 +45,7 @@ public class CarPoolingReservationsService {
      * @return a list of CarPoolingReservationsResponseDTO
      */
     public List<CarPoolingReservationsResponseDTO> getAllReservationsByUserId(Long userId) {
-        return carPoolingReservationsRepository.findByUserId(userId)
+        return carPoolingReservationsRepository.findByUserIdAndDateAfter(userId, Date.from(Instant.now()))
                 .stream()
                 .map(carPoolingReservationsMapper::toResponseDTO)
                 .collect(Collectors.toList());

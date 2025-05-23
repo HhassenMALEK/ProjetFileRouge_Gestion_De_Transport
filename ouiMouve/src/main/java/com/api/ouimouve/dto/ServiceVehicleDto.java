@@ -19,8 +19,7 @@ public class ServiceVehicleDto extends VehicleDto {
     /**
      * ID of the model associated with this service vehicle.
      */
-    private Long modelId;
-
+    private ModelDto model;
 
     /**
      * Brand of the model (optional, for display purposes).
@@ -30,7 +29,8 @@ public class ServiceVehicleDto extends VehicleDto {
     /**
      * ID of the site where this vehicle is located.
      */
-    private Long siteId;
+    private SiteDto site;
+
 
     /**
      * Name of the site (optional, for display purposes).
@@ -39,5 +39,5 @@ public class ServiceVehicleDto extends VehicleDto {
     
     private String immatriculation;
 
-    private ModelDto model;
+
 }

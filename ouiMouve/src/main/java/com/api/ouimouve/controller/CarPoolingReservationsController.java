@@ -59,7 +59,7 @@ public class CarPoolingReservationsController {
     @PutMapping("/cancel/{resId}")
     public CarPoolingReservationsResponseDTO cancelReservation(@PathVariable Long resId) throws RessourceNotFoundException, InvalidRequestException {
         Optional<CarPoolingReservationsResponseDTO> reservation = Optional.ofNullable(carPoolingReservationsService.getReservation(resId));
-        // Check if the reservation exists
+                           //        // Check if the reservation exists
         if (reservation.isEmpty()) {
             throw new RessourceNotFoundException("The requested reservation does not exist, it might have been deleted by the organizer.");
         }

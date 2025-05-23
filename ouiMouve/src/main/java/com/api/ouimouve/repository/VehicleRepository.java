@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Repository interface for managing Reparation entities.
@@ -17,4 +18,5 @@ import java.util.List;
  */
 @Repository
 public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
+    Optional<Vehicle> findByImmatriculation(String immatriculation);
 }
