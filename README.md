@@ -9,12 +9,12 @@
 
 --> Le dossier VisualParadigm contient les diagrammes UML de l'application
 
-
+ 
 
 ## Le dossier Suivi Projet contient : 
-
+ 
 --> Le dossier Daily Meeting : on y retrouve les fichiers des résumés des Daily Meeting
-
+ 
 
 ## Le dossiers Spécifications contient:
 
