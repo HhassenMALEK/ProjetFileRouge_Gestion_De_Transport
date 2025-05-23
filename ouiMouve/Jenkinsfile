@@ -59,13 +59,18 @@ pipeline {
                     if (choix != 'Oui') {
                         error "Merge annulé par l'utilisateur."
                     } else {
-                    sh '''
-                        git checkout main
-                        git pull origin main 
-                        git merge origin/dev --no-ff -m "merge automatique de dev vers main"
-                        git push origin main
-                        echo "Merge effectué avec succès"
-                    '''
+                    withCredentials([usernamePassword(credentialsId: 'GitHub_Pat', usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD')]) {    
+                        sh '''
+                            git config user.email "h.hassen.malek@gmail.com"
+                            git config user.name "HhassenMALEK"
+                            git remote set-url origin https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/HhassenMALEK/ProjetFileRouge_Gestion_De_Transport.git
+                            git checkout main
+                            git pull origin main 
+                            git merge origin/dev --no-ff -m "merge automatique de dev vers main"
+                            git push origin main
+                            echo "Merge effectué avec succès"
+                            '''
+                        }
                     }
                 }    
             }  
