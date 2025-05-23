@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -89,7 +90,7 @@ public class CarPoolingReservationsServiceTest {
     void getAllReservationsByUserId_ShouldReturnListOfResponseDtos() {
         // Given
         List<CarPoolingReservations> reservations = Collections.singletonList(reservation);
-        when(carPoolingReservationsRepository.findByUserId(1L)).thenReturn(reservations);
+        when(carPoolingReservationsRepository.findByUserIdAndDateAfter(1L,Date.from(Instant.now().minusSeconds(3600) )) ).thenReturn(reservations);
         when(carPoolingReservationsMapper.toResponseDTO(any(CarPoolingReservations.class))).thenReturn(responseDto);
 
         // When
@@ -98,7 +99,7 @@ public class CarPoolingReservationsServiceTest {
         // Then
         assertThat(result).isNotNull().hasSize(1);
         assertThat(result.get(0)).isEqualTo(responseDto);
-        verify(carPoolingReservationsRepository, times(1)).findByUserId(1L);
+        verify(carPoolingReservationsRepository, times(1)).findByUserIdAndDateAfter(1L,Date.from(Instant.now().minusSeconds(3600) ) );
         verify(carPoolingReservationsMapper, times(1)).toResponseDTO(reservation);
     }
 
