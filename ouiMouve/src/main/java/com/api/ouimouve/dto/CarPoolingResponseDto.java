@@ -9,7 +9,7 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- * Dto for CarPooling entity.
+ * Dto used to return carpooling information to the client.
  */
 @Data
 public class CarPoolingResponseDto {
@@ -31,7 +31,7 @@ public class CarPoolingResponseDto {
     /** Adress where the carpooling ends. */
     private AdressDto destinationAddress;
 
-    //pour voir l'objet carpooling comme un arbre
+
     /** vehicle used for the carpooling. */
     @JsonIgnore
     private Vehicle vehicle;
