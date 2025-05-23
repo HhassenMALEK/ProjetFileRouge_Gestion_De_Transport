@@ -61,9 +61,9 @@ pipeline {
                     } else {
                     sh '''
                         git checkout main
-                        git pull origin/main 
+                        git pull origin main 
                         git merge origin/dev --no-ff -m "merge automatique de dev vers main"
-                        git push origin/main
+                        git push origin main
                         echo "Merge effectué avec succès"
                     '''
                     }
