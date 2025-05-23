@@ -32,8 +32,15 @@ pipeline {
                         dir('ouiMouve') {
                             //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
                             withSonarQubeEnv() {
-                                sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge'
-                                        -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=hfr-vke3QDP3dta_xyg"
+                            sh '''
+                                mvn sonar:sonar \
+                                    -Dsonar.projectKey=Projet-Fil-Rouge \
+                                    -Dsonar.projectName='Projet Fil Rouge' \
+                                    -Dsonar.host.url=http://host.docker.internal:9000 \
+                                    -Dsonar.login=admin \
+                                    -Dsonar.password=hfr-vke3QDP3dta_xyg
+                            '''
+                                //sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge' -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=hfr-vke3QDP3dta_xyg"
                                 //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 '
                             }
                         }
