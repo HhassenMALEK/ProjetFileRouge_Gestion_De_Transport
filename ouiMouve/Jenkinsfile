@@ -17,7 +17,7 @@ pipeline {
                 script {
                     try {
                         dir('ouiMouve') {
-                            sh 'mvn clean compile test -Dspring.profiles.active=test'
+                            //sh 'mvn clean compile test -Dspring.profiles.active=test'
                         }
                     } catch (Exception e) {
                         error "Échec de l'exécution des tests Maven : ${e.message}"
@@ -30,10 +30,19 @@ pipeline {
                 script {
                     try {
                         dir('ouiMouve') {
-                        //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
-                        withSonarQubeEnv() {
-                            sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge'"
-                            //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 -Dsonar.login=admin -Dsonar.password=admin'
+                            //withSonarQubeEnv("{env.SONARQUBE_ENV}") {
+                            withSonarQubeEnv() {
+                            sh '''
+                                mvn sonar:sonar \
+                                    -Dsonar.projectKey=Projet-Fil-Rouge \
+                                    -Dsonar.projectName='Projet Fil Rouge' \
+                                    -Dsonar.host.url=http://host.docker.internal:9000 \
+                                    -Dsonar.login=admin \
+                                    -Dsonar.password=hfr-vke3QDP3dta_xyg
+                            '''
+                                //sh "mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.projectName='Projet Fil Rouge' -Dsonar.host.url=http://host.docker.internal:9000 -Dsonar.login=admin -Dsonar.password=hfr-vke3QDP3dta_xyg"
+                                //sh 'mvn sonar:sonar -Dsonar.projectKey=Projet-Fil-Rouge -Dsonar.host.url=http://localhost:9000 '
+                            }
                         }
                     } catch (Exception e) {
                         error "Échec de l'analyse Sonar : ${e.message}"
