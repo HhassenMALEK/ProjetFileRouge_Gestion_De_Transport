@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 /**
  * Service class responsible for all business logic related to Site entities.
@@ -128,19 +129,27 @@ public class SiteService {
         // Recherche du site ou exception
         Site site = siteRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Site not found with ID: " + id));
+
         // Récupération des véhicules liés
         List<ServiceVehicle> vehicles = serviceVehicleRepository.findAllBySite_Id(id);
-        // Vérifie si l’un des véhicules n’est pas ENABLED
+
+        // Vérifie si l'un des véhicules n'est pas ENABLED
         boolean hasUnavailableVehicles = vehicles.stream()
                 .anyMatch(vehicle -> vehicle.getStatus() != VehicleStatus.ENABLED);
         if (hasUnavailableVehicles) {
             throw new InvalidRessourceException("Impossible de supprimer ce site : un ou plusieurs véhicules sont réservés ou désactivés.");
         }
-        // Dissocie les véhicules avant suppression (bonne pratique JPA si cascade absente)
+
+        // Dissocie les véhicules avant suppression
         vehicles.forEach(vehicle -> vehicle.setSite(null));
         serviceVehicleRepository.saveAll(vehicles);
+
+        // Important: vider également la liste des véhicules dans l'objet site
+        site.setVehiclesServices(new ArrayList<>());
+
         // Suppression du site
         siteRepository.delete(site);
+
         return siteMapper.toSiteResponseDto(site);
     }
 
@@ -197,7 +206,9 @@ public class SiteService {
                 })
                 .collect(Collectors.toList());
 
+        // Définir la relation bidirectionnelle
         vehicles.forEach(v -> v.setSite(site));
+        serviceVehicleRepository.saveAll(vehicles);
         site.setVehiclesServices(vehicles);
     }
 
