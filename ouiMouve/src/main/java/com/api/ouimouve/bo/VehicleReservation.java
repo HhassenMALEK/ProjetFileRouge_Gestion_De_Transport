@@ -6,58 +6,36 @@ import lombok.Data;
 
 import java.util.Date;
 
-/**
-    * Represents a vehicle reservation.
+/**    Represents a vehicle reservation.
     * This class is used to store information about a vehicle reservation, including the start and end dates,
-    * the motive for the reservation, and the associated vehicle ID.
-    */
+    * the motive for the reservation, and the associated vehicle ID.*/
 @Entity
 @Data
 public class VehicleReservation {
-    /**
-     * Unique identifier for the reservation.
-     */
+    /** Unique identifier for the reservation. */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
-
-    @Column(nullable = false)
-    private long userID;
-
-    /**
-     * Start date of the reservation.
-     */
-    @Column(nullable = false)
-    private Date start;
-
-    /**
-     * End date of the reservation.
-     */
-    @Column(nullable = false)
-    private Date end;
-
-
-    /**
-     * Motive for the reservation.
-     * Possible values: "business", "personal", "other".
-     */
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private VehicleStatus status;
-
-    /**
-     * Vehicle ID associated with the reservation.
-     */
+    /**Vehicle ID associated with the reservation */
     @ManyToOne
     @JoinColumn(name = "service_vehicle_id", nullable = false)
     private ServiceVehicle serviceVehicle;
 
-    /**
-     * User ID associated with the reservation.
-     */
+    /** User ID associated with the reservation. */
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
+
+    /** Start date of the reservation.*/
+    @Column(nullable = false)
+    private Date start;
+
+    /** End date of the reservation */
+    @Column(nullable = false)
+    private Date end;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private VehicleStatus status;
 }

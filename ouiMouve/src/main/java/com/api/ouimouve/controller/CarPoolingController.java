@@ -1,111 +1,96 @@
 package com.api.ouimouve.controller;
 
-
-import com.api.ouimouve.dto.CarPoolingDto;
+import com.api.ouimouve.dto.CarPoolingCreateDto;
+import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
-import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.CarPoolingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.List;
-
+/**
+ * Controller for managing carpooling operations.
+ * Provides endpoints for creating, updating, deleting, and retrieving carpooling information.
+ */
 @RestController
 @RequestMapping("/api/carpooling")
 public class CarPoolingController {
+
     @Autowired
     private CarPoolingService carPoolingService;
 
     /**
-     * Fetches all carpoolings from the repository and converts them to DTOs.
-     */
-    @GetMapping("/list")
-    public List<CarPoolingDto> getAllCarPoolings() {
-        return carPoolingService.getAllCarPoolings();
-    }
-
-    /**
-     * Fetches a carpooling by its ID from the repository and converts it to a DTO.
-     */
-    @GetMapping("/{id}")
-    public CarPoolingDto getCarPoolingById(@PathVariable Long id) {
-        CarPoolingDto carPooling = carPoolingService.getCarPoolingById(id);
-        if (carPooling == null) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
-        }
-        return carPooling;
-    }
-
-    /**
-     * Fetches all carpoolings with a specific status from the repository and converts them to DTOs.
-     */
-    @GetMapping("/status/{status}")
-    public List<CarPoolingDto> getCarPoolingsByStatus(@PathVariable CarPoolingStatus status) {
-        return carPoolingService.getCarPoolingsByStatus(status);
-    }
-
-    /**
-     * Fetches all carpoolings with departure after the given date from the repository and converts them to DTOs.
-     */
-    @GetMapping("/departureAfter/{date}")
-    public List<CarPoolingDto> getCarPoolingsAfterDate(@PathVariable Date date) {
-        return carPoolingService.getCarPoolingsAfterDate(date);
-    }
-
-    /**
-     * getCarPoolingsByStatusAndDate
-     */
-    @GetMapping("/status/{status}/date/{date}")
-    public List<CarPoolingDto> getCarPoolingsByStatusAndDate(@PathVariable CarPoolingStatus status, @PathVariable Date date) {
-        return carPoolingService.getCarPoolingsByStatusAndDate(status, date);
-    }
-
-    /**
-     * create a carpooling
-     *
-     * @param carPoolingDto
-     * @return CarPoolingDto
+     * Creates a new carpooling entry.
+     * @param dto containing carpooling details.
+     * @return the created carpooling entry.
      */
     @PostMapping
-    public CarPoolingDto createCarPooling(@RequestBody CarPoolingDto carPoolingDto) {
-        return carPoolingService.createCarPooling(carPoolingDto);
+    public CarPoolingResponseDto createCarPooling(@RequestBody CarPoolingCreateDto dto) {
+        return carPoolingService.createCarpooling(dto);
     }
 
     /**
-     * update a carpooling
-     *
-     * @param id
-     * @param carPoolingDto
-     * @return CarPoolingDto
+     * Updates an existing carpooling entry.
+     * @param id the ID of the carpooling to update.
+     * @param dto the updated carpooling details.
+     * @return the updated carpooling entry.
      */
-    @PutMapping("/{id}")
-    public CarPoolingDto updateCarPooling(@PathVariable Long id, @RequestBody CarPoolingDto carPoolingDto) {
-        CarPoolingDto updated = carPoolingService.updateCarPooling(id, carPoolingDto);
-        if (updated == null) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
-        }
-        return updated;
+    @PatchMapping("/{id}")
+    public CarPoolingResponseDto updateCarPooling(@PathVariable Long id, @RequestBody CarPoolingCreateDto dto) {
+        return carPoolingService.updateCarPooling(id, dto);
     }
 
-
-
     /**
-     * delete a carpooling
-     *
-     * @param id
-     * @return CarPoolingDto
+     * Deletes a carpooling entry by its ID.
+     * @param id the ID of the carpooling entry.
+     * @return a response indicating the deletion status.
      */
     @DeleteMapping("/{id}")
-    public CarPoolingDto deleteCarPooling(@PathVariable Long id) {
-        CarPoolingDto existing = getCarPoolingById(id);
-        if (existing == null) {
-            throw new RessourceNotFoundException("Carpooling not found with id: " + id);
-        }
-        carPoolingService.deleteCarPooling(id);
-        return existing;
+    public ResponseEntity<Void> deleteCarPooling(@PathVariable Long id) {
+        carPoolingService.deleteCarpooling(id);
+        return ResponseEntity.noContent().build();
+    }
+    /**
+     * Retrieves all carpoolings.
+     * @return list of all carpoolings.
+     */
+    @GetMapping("/list")
+    public List<CarPoolingResponseDto> getAll() {
+        return carPoolingService.getAllCarpooling();
     }
 
+    /**
+     * Retrieves a carpooling entry by its ID.
+     * @param id the ID of the carpooling entry.
+     * @return the carpooling entry with the specified ID.
+     */
+    @GetMapping("/{id}")
+    public CarPoolingResponseDto getById(@PathVariable Long id) {
+        return carPoolingService.getCarPoolingById(id);
+    }
 
+    /**
+     * Filters carpoolings based on optional criteria such as organizer ID, status, departure date, and vehicle ID.
+     * All parameters are optional; if none are provided, all carpoolings are returned.
+     *
+     * @param organizerId optional ID of the organizer (user)
+     * @param status optional status of the carpooling (e.g., PENDING, VALIDATED)
+     * @param startDate optional departure date to filter
+     * @param endDate   optional arrival date to filter
+     * @param vehicleId optional ID of the vehicle
+     * @return list of carpoolings matching the provided filters
+     */
+    @GetMapping("/filter")
+    public List<CarPoolingResponseDto> filterByCriteria(
+            @RequestParam(required = false) Long organizerId,
+            @RequestParam(required = false) CarPoolingStatus status,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date startDate,
+            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date endDate,
+            @RequestParam(required = false) Long vehicleId
+    ) {
+        return carPoolingService.filterByStatusDateVehicle(organizerId, status, startDate, endDate, vehicleId);
+    }
 }
-

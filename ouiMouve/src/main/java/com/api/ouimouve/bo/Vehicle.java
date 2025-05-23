@@ -29,10 +29,10 @@ public class Vehicle {
     private String immatriculation;
 
     /**
-     * number of place of this vehicle
+     * number of seat of this vehicle
      */
     @Column(nullable = false)
-    private Integer places;
+    private Integer seats;
 
     /**
      * relationship with the Carpooling
@@ -40,10 +40,7 @@ public class Vehicle {
     @OneToMany (mappedBy = "vehicle", fetch = FetchType.LAZY)
     private List<CarPooling> carPoolings;
 
-    /**
-     * status of the vehicle
-     */
-    private VehicleStatus status;
+
 }
 
 
