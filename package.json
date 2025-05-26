@@ -1,5 +1,6 @@
 {
   "dependencies": {
-    "swagger-angular-generator": "^4.2.2"
+    "swagger-angular-generator": "^4.2.2",
+    "tslib": "^2.8.1"
   }
 }
