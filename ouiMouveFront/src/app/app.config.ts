@@ -7,10 +7,13 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 
+import { provideHttpClient } from '@angular/common/http';
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
+    provideHttpClient(),
     provideClientHydration(withEventReplay()),
     { provide: BASE_PATH, useValue: 'http://localhost:8087/' },
   ],
