@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "swagger-angular-generator": "^4.2.2"
+  }
+}
