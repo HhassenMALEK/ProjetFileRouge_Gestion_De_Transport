@@ -1,0 +1,17 @@
+.red {
+  background-color: #b53d3d;
+}
+.gray {
+  background-color: #656565;
+}
+button {
+  width: 150px;
+  height: 30px;
+  border-radius: 0.5rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  opacity: 0.8;
+}

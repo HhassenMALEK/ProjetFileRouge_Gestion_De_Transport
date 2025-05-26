@@ -1,0 +1,28 @@
+<section>
+  <app-input
+    [label]="'Email'"
+    [type]="'email'"
+    [placeholder]="'xxx@example.com'"
+    [required]="true"
+    [name]="'email'"
+    [(value)]="email"
+    [disabled]="false"
+  ></app-input>
+  <app-input
+    [label]="'Mot de passe'"
+    [type]="'password'"
+    [placeholder]="'Entrez votre mot de passe'"
+    [required]="true"
+    [name]="'password'"
+    [(value)]="password"
+    [disabled]="false"
+  ></app-input>
+  <div>
+    <app-button
+      [color]="'red'"
+      [label]="'Valider'"
+      (onClick)="onSubmit()"
+    ></app-button>
+    <app-button [color]="'gray'" [label]="'Créer un compte'"></app-button>
+  </div>
+</section>
