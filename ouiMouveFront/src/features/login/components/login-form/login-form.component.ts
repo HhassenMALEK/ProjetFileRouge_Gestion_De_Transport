@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
+import { AuthControllerService } from '../../../../api';
 
 @Component({
   selector: 'app-login-form',
@@ -11,8 +12,24 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 export class LoginFormComponent {
   email = '';
   password = '';
-
+  auth;
+  constructor(authControllerService: AuthControllerService) {
+    // You can inject the AuthControllerService here if needed
+    this.auth = authControllerService;
+  }
   onSubmit() {
-    console.log('Login successful:', this.email, this.password);
+    this.auth
+      .login({
+        email: this.email,
+        password: this.password,
+      })
+      .subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+        },
+      });
   }
 }
