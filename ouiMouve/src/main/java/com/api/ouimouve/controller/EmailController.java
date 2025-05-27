@@ -1,83 +1,43 @@
 package com.api.ouimouve.controller;
 
+import com.api.ouimouve.dto.EmailRequest;
 import com.api.ouimouve.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Contrôleur REST pour l'envoi d'emails personnalisés.
+ */
 @RestController
 @RequestMapping("/api/email")
+@RequiredArgsConstructor
 public class EmailController {
 
-    @Autowired
-    private EmailService emailService;
+    private final EmailService emailService;
 
+    /**
+     * Endpoint POST pour envoyer un email.
+     *
+     * @param request le corps de la requête JSON contenant to, subject, body
+     * @return réponse JSON confirmant l'envoi ou une erreur
+     */
     @PostMapping("/send")
-    public ResponseEntity<?> sendEmail(@RequestBody EmailRequest request) {
-        try {
-            emailService.sendAlert(request.getTo(), request.getSubject(), request.getBody());
-
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Email envoyé avec succès");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Erreur lors de l'envoi de l'email: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
-        }
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> testEmail() {
+    public ResponseEntity<?> sendEmail(@Valid @RequestBody EmailRequest request) {
         try {
             emailService.sendAlert(
-                    "h_hassen.malek@hotmail.com",
-                    "Test d'envoi d'email",
-                    "Ceci est un email de test envoyé depuis l'API OuiMouve."
+                    request.getTo(),
+                    request.getSubject(),
+                    request.getBody()
             );
 
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "Email de test envoyé avec succès");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(Map.of("message", "Email envoyé avec succès"));
         } catch (Exception e) {
-            Map<String, String> errorResponse = new HashMap<>();
-            errorResponse.put("error", "Erreur lors de l'envoi de l'email de test: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+            return ResponseEntity.internalServerError().body(
+                    Map.of("error", "Erreur lors de l'envoi de l'email : " + e.getMessage()));
         }
-    }
-}
-
-class EmailRequest {
-    private String to;
-    private String subject;
-    private String body;
-
-    // Getters et setters
-    public String getTo() {
-        return to;
-    }
-
-    public void setTo(String to) {
-        this.to = to;
-    }
-
-    public String getSubject() {
-        return subject;
-    }
-
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
-    public String getBody() {
-        return body;
-    }
-
-    public void setBody(String body) {
-        this.body = body;
     }
 }
