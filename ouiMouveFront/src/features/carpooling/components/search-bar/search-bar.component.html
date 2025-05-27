@@ -1,1 +1,13 @@
-<p>search-bar!</p>
+<div class="onglet">
+  <app-onglet
+    (ongletCLicked)="handleOnglet(0)"
+    [isActive]="activeOngletIndex === 0"
+  >
+  </app-onglet>
+  <app-onglet
+    (ongletCLicked)="handleOnglet(1)"
+    [isActive]="activeOngletIndex === 1"
+  >
+  </app-onglet>
+</div>
+<div class="search-bar"></div>
