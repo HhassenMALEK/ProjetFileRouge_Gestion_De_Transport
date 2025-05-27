@@ -1,5 +1,6 @@
 import { Component, input } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { apiStatus } from '../../lib/status';
 
 @Component({
   selector: 'app-status',
@@ -11,32 +12,12 @@ export class StatusComponent {
   status = input<string>();
 
   getColor() {
-    switch (this.status()) {
-      case 'success':
-        return 'green';
-      case 'error':
-        return '#B53D3D';
-      case 'warning':
-        return 'orange';
-      case 'info':
-        return 'blue';
-      default:
-        return "gray";
-    }
+    if (!this.status()) return '#000000'; // Default to black if no status is provided
+    return apiStatus[this.status()!]?.color;// Default to black if status not found
   }
 
   getLabel() {
-    switch (this.status()) {
-      case 'success':
-        return  'Succès';
-      case 'error':
-        return 'Erreur';
-      case 'warning':
-        return 'Attention';
-      case 'info':
-        return 'Information';
-      default:
-        return 'Statut inconnu';
-    }
+    if (!this.status()) return 'Unknown Status'; // Default label if no status is provided
+    return apiStatus[this.status()!]?.label; // Default label if status not found
   }
 }
