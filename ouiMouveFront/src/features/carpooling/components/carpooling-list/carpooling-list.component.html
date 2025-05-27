@@ -1,4 +1,8 @@
 <section>
 <app-search-bar></app-search-bar>
-<app-carpooling-card></app-carpooling-card>
+<div>
+    @for (carPooling of carPoolings; track carPooling.id) {
+    <app-carpooling-card [carpooling]="carPooling"></app-carpooling-card>
+    }
+</div>
 </section>
