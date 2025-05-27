@@ -1,0 +1,17 @@
+section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  min-width: 80vw;
+  height: 20%;
+  background-color: aliceblue;
+  color: var(--oui-color-text);
+  border-radius: 5px;
+  mat-icon {
+    font-size: 15rem;
+    height: auto;
+    width: auto;
+  }
+}

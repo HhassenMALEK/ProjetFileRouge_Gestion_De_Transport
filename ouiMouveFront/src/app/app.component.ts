@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { LoginFormComponent } from '../features/login/components/login-form/login-form.component';
+import { CarpoolingListComponent } from '../features/carpooling/components/carpooling-list/carpooling-list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, LoginFormComponent],
+  imports: [RouterOutlet, CarpoolingListComponent ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
