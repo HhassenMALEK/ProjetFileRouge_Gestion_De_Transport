@@ -1,0 +1,28 @@
+.parallelepipede {
+    $left: 50px;
+    $right: $left * 1.3; 
+ 
+    width: 200px;
+    height: $right;
+    background: #B53D3D;
+    clip-path: polygon(
+        100% 0,
+        0 calc($right - $left),
+        0 100%,
+        100% 100%
+    );
+}
+.active {
+    background: #B53D3D;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.inactive {
+    background: black;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
