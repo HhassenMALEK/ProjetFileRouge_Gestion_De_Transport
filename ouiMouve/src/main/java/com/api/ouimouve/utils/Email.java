@@ -1,4 +1,4 @@
-package com.api.ouimouve.service;
+package com.api.ouimouve.utils;
 
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
-public class EmailService {
-
+public class Email {
+    // Service de Spring Boot qui envoie réellement les emails via SMTP
     private final JavaMailSender mailSender;
 
-    @Value("${spring.mail.username}")
+    @Value("${spring.mail.from:noreply@ouimouve.com}") // Valeur par défaut
     private String emailFrom;
-
-    private static final Logger logger = LoggerFactory.getLogger(EmailService.class);
+    // Logger pour journaliser les actions de ce service (ici : quand un mail est envoyé)
+    private static final Logger logger = LoggerFactory.getLogger(Email.class);
 
     /**
      * Envoie un email simple au format texte.
@@ -37,17 +37,6 @@ public class EmailService {
         message.setText(body);
 
         mailSender.send(message);
-        logger.info("✅ Email envoyé à {}", to);
-    }
-
-    /**
-     * Exemple d'appel interne pour tester l'envoi.
-     */
-    public void uneFonctionQuelconque() {
-        sendAlert(
-                "h_hassen.malek@hotmail.com",
-                "Sujet de l'email",
-                "Contenu de l'email d'alerte"
-        );
+        logger.info("Email envoyé à {} ",  to);
     }
 }
