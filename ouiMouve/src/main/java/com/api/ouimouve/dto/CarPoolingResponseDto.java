@@ -38,4 +38,7 @@ public class CarPoolingResponseDto {
     /** User who organizes the carpooling. */
 
     private Long organizerId;
+
+    /** User who organizes the carpooling. */
+    private Integer participantCount;
 }
