@@ -92,7 +92,6 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     /** Filter carpoolings based on multiple criteria.
      * @param organizerId the ID of the organizer (optional)
      * @param status      the status of the carpooling (optional)
-     * @param departure   the departure date (optional)
      * @param vehicleId   the ID of the vehicle (optional)
      * @return a list of carpoolings matching the criteria
      */
