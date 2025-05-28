@@ -3,24 +3,33 @@
     [type]="'text'"
     [placeholder]="'Ville de départ'"
     [icon]="'place'"
-    [(value)]="departure"
+    [(value)]="searchParameters.siteDeparture"
   ></app-input-icon>
   <app-input-icon
     [type]="'text'"
     [placeholder]="'Ville d\'arrivée'"
     [icon]="'place'"
-    [(value)]="arrival"
+    [(value)]="searchParameters.siteDestination"
   ></app-input-icon>
   <app-input-icon
     [type]="'date'"
     [placeholder]="'Jour de départ'"
     [icon]="'departure_board'"
-    [(value)]="date"
+    [(value)]="searchParameters.startDate"
   ></app-input-icon>
   <app-input-icon
     [type]="'number'"
     [placeholder]="'Nb de places'"
     [icon]="'event_seat'"
-    [(value)]="passanger"
+    [(value)]="searchParameters.passanger"
   ></app-input-icon>
+  <app-button
+    [label]="'Rechercher'"
+    (click)="searchCovoit()"
+    [isDisabled]="
+      !searchParameters.siteDeparture ||
+      !searchParameters.siteDestination ||
+      !searchParameters.startDate
+    "
+  ></app-button>
 </div>
