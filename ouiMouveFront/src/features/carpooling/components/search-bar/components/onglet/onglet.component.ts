@@ -9,6 +9,7 @@ import { Component, input, output } from '@angular/core';
 export class OngletComponent {
   isActive = input<boolean>(false);
   ongletCLicked = output<void>();
+  label = input<string>('');
 
   handleClick() {
     this.ongletCLicked.emit();

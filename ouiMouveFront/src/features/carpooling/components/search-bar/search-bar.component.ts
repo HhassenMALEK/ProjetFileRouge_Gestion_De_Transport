@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { OngletComponent } from './components/onglet/onglet.component';
+import { SearchCovoitComponent } from './components/search-covoit/search-covoit.component';
+import { SearchResaComponent } from './components/search-resa/search-resa.component';
 
 @Component({
   selector: 'app-search-bar',
-  imports: [OngletComponent],
+  imports: [OngletComponent, SearchCovoitComponent, SearchResaComponent],
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.scss',
 })
