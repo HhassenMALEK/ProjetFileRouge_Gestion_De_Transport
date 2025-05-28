@@ -27,9 +27,9 @@ public class CarPoolingResponseDto {
     private Integer distance;
 
     /** Adress where the carpooling starts. */
-    private AdressDto departureAddress ;
+    private SiteResponseDto departureSite ;
     /** Adress where the carpooling ends. */
-    private AdressDto destinationAddress;
+    private SiteResponseDto destinationSite;
 
 
     /** vehicle used for the carpooling. */

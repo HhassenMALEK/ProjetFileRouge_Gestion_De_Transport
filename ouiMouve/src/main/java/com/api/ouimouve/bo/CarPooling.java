@@ -44,13 +44,13 @@ public class CarPooling {
 
     /** Address where the carpooling starts. */
     @ManyToOne
-    @JoinColumn(name = "departure_address_id", nullable = false)
-    private Adress departureAdress;
+    @JoinColumn(name = "departure_site_id", nullable = false)
+    private Site departureSite;
 
     /** Address where the carpooling ends. */
     @ManyToOne
-    @JoinColumn(name = "destination_address_id", nullable = false)
-    private Adress destinationAdress;
+    @JoinColumn(name = "destination_site_id", nullable = false)
+    private Site destinationSite;
 
     /** Vehicle used for the carpooling. */
     @ManyToOne

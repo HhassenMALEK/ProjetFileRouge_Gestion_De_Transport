@@ -1,8 +1,10 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.bo.Site;
 import com.api.ouimouve.dto.ServiceVehicleCreateDto;
 import com.api.ouimouve.dto.ServiceVehicleDto;
+import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleMapper;
@@ -42,6 +44,19 @@ public class ServiceVehicleService {
         return serviceVehicleRepository.findById(id)
                 .map(vehicle -> vehicleMapper.toDto(vehicle))
                 .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found"));
+    }
+
+    /**
+     * Get all service vehicles associated with a specific site.
+     *
+     * @param siteId The site for which to retrieve service vehicles
+     * @return A list of service vehicle DTOs associated with the site
+     */
+
+    public List<ServiceVehicleDto> getAllServiceVehiclesBySite(long siteId) {
+        return serviceVehicleRepository.findAllBySiteId(siteId).stream()
+                .map(vehicleMapper::toDto)
+                .toList();
     }
 
     /**

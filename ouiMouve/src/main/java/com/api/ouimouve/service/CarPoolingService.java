@@ -1,8 +1,10 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.CarPooling;
+import com.api.ouimouve.bo.Site;
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
+import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.utils.Email;
 import com.api.ouimouve.exception.InvalidRessourceException;
@@ -38,7 +40,7 @@ public class CarPoolingService {
      * Repository for address-related data access.
      */
     @Autowired
-    private AdressRepository adressRepository;
+    private SiteRepository siteRepository;
     /**
      * Repository for user-related data access.
      */
@@ -158,26 +160,30 @@ public class CarPoolingService {
      * @param organizerId the ID of the organizer (optional)
      * @param status the status of the carpooling (optional)
      * @param startDate the start of the departure date range (optional)
-     * @param endDate the end of the departure date range (optional)
      * @param vehicleId the ID of the vehicle (optional)
      * @return a list of carpoolings matching the given filters
      */
-    public List<CarPoolingResponseDto> filterByStatusDateVehicle(
+    public List<CarPoolingResponseDto> getCarPoolingByFilter(
             Long organizerId,
             CarPoolingStatus status,
             Date startDate,
-            Date endDate,
+            SiteResponseDto departureSite,
+            SiteResponseDto destinationSite,
             Long vehicleId
     ) {
-        if (startDate != null && endDate == null) {
+        if (startDate != null ) {
             startDate = truncateToStartOfDay(startDate);
-            endDate = toEndOfDay(startDate);
-        } else if (startDate != null && endDate != null) {
+
+        } else if (startDate != null ) {
             startDate = truncateToStartOfDay(startDate);
-            endDate = toEndOfDay(endDate);
         }
 
-        return carPoolingRepository.filterCarpoolings(organizerId, status, startDate, endDate, vehicleId)
+        Long departureId = null;
+        if (departureSite != null) departureId = departureSite.getId();
+        Long destinationId = null;
+        if (destinationSite != null) departureId = destinationSite.getId();
+
+        return carPoolingRepository.filterCarpoolings(organizerId, status, startDate, departureId, destinationId, vehicleId)
                 .stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
@@ -200,10 +206,10 @@ public class CarPoolingService {
      * @param dto the DTO to validate
      */
     private void validateRequiredFields(CarPoolingCreateDto dto) {
-        if (dto.getDepartureAddressId() == null) {
+        if (dto.getDepartureSiteId() == null) {
             throw new InvalidRessourceException("L'adresse de départ est obligatoire.");
         }
-        if (dto.getDestinationAddressId() == null) {
+        if (dto.getDestinationSiteId() == null) {
             throw new InvalidRessourceException("L'adresse de destination est obligatoire.");
         }
         if (dto.getVehicleId() == null) {
@@ -212,7 +218,7 @@ public class CarPoolingService {
         if (dto.getOrganizerId() == null) {
             throw new InvalidRessourceException("L'organisateur est obligatoire.");
         }
-        if (dto.getDepartureAddressId().equals(dto.getDestinationAddressId())) {
+        if (dto.getDepartureSiteId().equals(dto.getDestinationSiteId())) {
             throw new InvalidRessourceException("L'adresse de départ et d'arrivée ne peuvent pas être identiques.");
         }
     }
@@ -280,10 +286,10 @@ public class CarPoolingService {
      * @param dto the source DTO
      */
     private void populateEntityReferences(CarPooling entity, CarPoolingCreateDto dto) {
-        entity.setDepartureAdress(adressRepository.findById(dto.getDepartureAddressId())
+        entity.setDepartureSite(siteRepository.findById(dto.getDepartureSiteId())
                 .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
 
-        entity.setDestinationAdress(adressRepository.findById(dto.getDestinationAddressId())
+        entity.setDestinationSite(siteRepository.findById(dto.getDestinationSiteId())
                 .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
 
         entity.setVehicle(vehicleRepository.findById(dto.getVehicleId())
