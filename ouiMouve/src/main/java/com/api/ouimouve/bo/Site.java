@@ -28,15 +28,28 @@ public class Site {
     private String name;
 
     /**
-     * Address associated with the site
+     * Label of this adress
      */
-    @OneToOne()
-    @JoinColumn(name = "adress_id" ,nullable = false)
-    private Adress adress;
+    @Column(nullable = false)
+    private String label;
 
     /**
-     * List of vehicles associated with the site
+     * City of this adress
      */
-    @OneToMany(mappedBy = "site")
-    private List<ServiceVehicle> vehiclesServices;
+    @Column(nullable = false)
+    private String city;
+
+    /**
+     * Latitude of this adress
+     */
+    @Column(nullable = false)
+    private float latX;
+
+    /**
+     * Longitude of this adress
+     */
+    @Column(nullable = false)
+    private float longY;
+
+
 }

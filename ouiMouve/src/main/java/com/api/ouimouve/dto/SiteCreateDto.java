@@ -12,8 +12,25 @@ import java.util.List;
 public class SiteCreateDto {
     /** Name of the site */
     private String name;
-    /** ID of the associated address */
-    private Long adressId;
-    /** List of vehicle IDs to associate with the site */
-    private List<Long> vehicleIds;
+
+    /**
+     * Label of this address
+     */
+    private String label;
+
+    /**
+     * City of this address
+     */
+    private String city;
+    /**
+     * Latitude of this address
+     */
+    private float latX;
+
+    /**
+     * Longitude of this address
+     */
+    private float longY;
+
+
 }

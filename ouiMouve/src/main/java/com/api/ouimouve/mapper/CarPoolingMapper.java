@@ -3,14 +3,8 @@ package com.api.ouimouve.mapper;
 import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
-import com.api.ouimouve.repository.AdressRepository;
-import com.api.ouimouve.repository.CarPoolingRepository;
-import com.api.ouimouve.repository.VehicleRepository;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Mapper interface for CarPooling.
@@ -20,17 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @Mapper(componentModel = "spring")
 public abstract class CarPoolingMapper {
 
-    /**
-     * Repository for carpooling-related data access (currently unused but available for future logic).
-     */
-    @Autowired
-    private CarPoolingRepository carpoolingRepository;
-
-    /**
-     * Repository for vehicle-related data access (currently unused but can be used for enrichment logic).
-     */
-    @Autowired
-    protected VehicleRepository vehicleRepository;
 
     /**
      * Converts a CarPoolingCreateDto into a CarPooling entity.
@@ -39,8 +22,8 @@ public abstract class CarPoolingMapper {
      * @param dto the Dto containing the raw input from the client
      * @return the mapped CarPooling entity (with reference IDs only)
      */
-    @Mapping(target = "departureAdress.id", source = "departureAddressId")
-    @Mapping(target = "destinationAdress.id", source = "destinationAddressId")
+    @Mapping(target = "departureSite.id", source = "departureSiteId")
+    @Mapping(target = "destinationSite.id", source = "destinationSiteId")
     @Mapping(target = "organizer.id", source = "organizerId")
     @Mapping(target = "vehicle.id", source = "vehicleId")
     public abstract CarPooling toEntity(CarPoolingCreateDto dto);
@@ -53,8 +36,8 @@ public abstract class CarPoolingMapper {
      * @param entity the CarPooling entity to convert
      * @return the corresponding DTO
      */
-    @Mapping(target = "departureAddress", source = "departureAdress")
-    @Mapping(target = "destinationAddress", source = "destinationAdress")
+    @Mapping(target = "departureSite", source = "departureSite")
+    @Mapping(target = "destinationSite", source = "destinationSite")
     @Mapping(target = "organizerId", source = "organizer.id")
     @Mapping(target = "vehicle", ignore = true) // pour éviter de charger tout un arbre d’objet inutile
     public abstract CarPoolingResponseDto toResponseDto(CarPooling entity);

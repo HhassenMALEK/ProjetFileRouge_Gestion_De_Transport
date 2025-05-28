@@ -33,8 +33,8 @@ public class CarPoolingReservationsRepositoryTest {
     private User user2;
     private CarPooling carPooling1;
     private CarPooling carPooling2;
-    private Adress adress1;
-    private Adress adress2;
+    private Site adress1;
+    private Site adress2;
 
     @BeforeEach
     void setUp() {
@@ -43,13 +43,13 @@ public class CarPoolingReservationsRepositoryTest {
         vehicle.setSeats(4);
         entityManager.persist(vehicle);
 
-        adress1 = new Adress();
+        adress1 = new Site();
         adress1.setLabel("123 Main St");
         adress1.setCity("Paris");
         adress1.setLatX(48.8566f);
         adress1.setLongY(2.3522f);
         entityManager.persist(adress1);
-        adress2 = new Adress();
+        adress2 = new Site();
         adress2.setLabel("123 Main St");
         adress2.setCity("Paris");
         adress2.setLatX(48.8566f);
@@ -78,8 +78,8 @@ public class CarPoolingReservationsRepositoryTest {
         carPooling1 = new CarPooling();
         carPooling1.setDeparture(new Date());
         carPooling1.setArrival(new Date());
-        carPooling1.setDepartureAdress(adress1);
-        carPooling1.setDestinationAdress(adress2);
+        carPooling1.setDepartureSite(adress1);
+        carPooling1.setDestinationSite(adress2);
         carPooling1.setDistance(450);
         carPooling1.setDurationInMinutes(240);
         carPooling1.setStatus(CarPoolingStatus.BOOKING_FULL);
@@ -90,8 +90,8 @@ public class CarPoolingReservationsRepositoryTest {
         carPooling2 = new CarPooling();
         carPooling2.setDeparture(new Date());
         carPooling2.setArrival(new Date());
-        carPooling2.setDepartureAdress(adress1);
-        carPooling2.setDestinationAdress(adress2);carPooling2.setDistance(200);
+        carPooling2.setDepartureSite(adress1);
+        carPooling2.setDestinationSite(adress2);carPooling2.setDistance(200);
         carPooling2.setDurationInMinutes(120);
         carPooling2.setStatus(CarPoolingStatus.BOOKING_FULL);
         carPooling2.setOrganizer(user2);

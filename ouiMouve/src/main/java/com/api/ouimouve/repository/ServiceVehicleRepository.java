@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Repository
 public interface ServiceVehicleRepository extends JpaRepository<ServiceVehicle, Long> {
-    //Ajouter Par Hassen
-    List<ServiceVehicle> findAllBySite_Id(Long siteId);
+
+    List<ServiceVehicle> findAllBySiteId(Long siteId);
 
 }

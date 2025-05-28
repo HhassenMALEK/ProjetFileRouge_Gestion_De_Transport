@@ -13,8 +13,25 @@ public class SiteResponseDto {
     private Long id;
     /** Name of the site */
     private String name;
-    /** Associated address as a full DTO */
-    private AdressDto adress;
-    /** List of associated vehicle IDs */
-    private List<Long> vehicleIds;
+
+    /**
+     * Label of this address
+     */
+    private String label;
+
+    /**
+     * City of this address
+     */
+    private String city;
+    /**
+     * Latitude of this address
+     */
+    private float latX;
+
+    /**
+     * Longitude of this address
+     */
+    private float longY;
+
+
 }

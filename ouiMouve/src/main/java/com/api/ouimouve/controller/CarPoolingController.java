@@ -2,6 +2,7 @@ package com.api.ouimouve.controller;
 
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
+import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.service.CarPoolingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +80,8 @@ public class CarPoolingController {
      * @param organizerId optional ID of the organizer (user)
      * @param status optional status of the carpooling (e.g., PENDING, VALIDATED)
      * @param startDate optional departure date to filter
-     * @param endDate   optional arrival date to filter
+     * @param siteDeparture optional departure site
+     * @param siteDestination optional destination site
      * @param vehicleId optional ID of the vehicle
      * @return list of carpoolings matching the provided filters
      */
@@ -88,9 +90,10 @@ public class CarPoolingController {
             @RequestParam(required = false) Long organizerId,
             @RequestParam(required = false) CarPoolingStatus status,
             @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date startDate,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date endDate,
+            @RequestParam(required = false) SiteResponseDto siteDeparture,
+            @RequestParam(required = false) SiteResponseDto siteDestination,
             @RequestParam(required = false) Long vehicleId
     ) {
-        return carPoolingService.filterByStatusDateVehicle(organizerId, status, startDate, endDate, vehicleId);
+        return carPoolingService.getCarPoolingByFilter(organizerId, status, startDate, siteDeparture, siteDestination, vehicleId);
     }
 }

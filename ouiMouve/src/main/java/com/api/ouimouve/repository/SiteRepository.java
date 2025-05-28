@@ -17,5 +17,8 @@ public interface SiteRepository extends JpaRepository<Site, Long> {
      * @return a list of sites with the specified name
      */
     List<Site> findAllByName(String name);
-    Optional<Site> findByNameAndAdressId(String name, Long adressId);
+    Optional<Site> findByName(String name);
+
+    // Adress findAdressByLabelAndCity(@Param("label") String label, @Param("city") String city);
+    //Adress findAdressByLatXAndLongY(@Param("latX") float latX, @Param("longY") float longY);
 }
