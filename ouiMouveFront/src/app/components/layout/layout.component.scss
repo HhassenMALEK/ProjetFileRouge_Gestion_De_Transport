@@ -1,0 +1,18 @@
+main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  section {
+    height: 80vh;
+    min-height: 80vh;
+  }
+
+  @media (max-width: 768px) {
+    div {
+      height: calc(100vh - 60px); // Adjust for header/footer height
+      min-height: calc(100vh - 60px);
+    }
+  }
+}
