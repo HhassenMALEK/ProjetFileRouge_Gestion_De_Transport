@@ -40,7 +40,7 @@ public class DataInitializerConfig {
                 User user1 = new User();
                 user1.setFirstName("Marie");
                 user1.setLastName("Dupont");
-                user1.setEmail("marie.dupont@gmail.com");
+                user1.setEmail("h.hassen.malek@gmail.com");
                 user1.setPassword(passwordEncoder.encode("test2"));
                 user1.setRole(Role.USER);
                 user1.setLicenseNumber("B98765432");

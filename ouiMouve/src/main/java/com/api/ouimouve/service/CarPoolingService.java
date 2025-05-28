@@ -4,6 +4,7 @@ import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
+import com.api.ouimouve.utils.Email;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.CarPoolingMapper;
@@ -49,6 +50,9 @@ public class CarPoolingService {
     @Autowired
     private VehicleRepository vehicleRepository;
 
+    @Autowired
+    private Email email;
+
     /**
      * Retrieves all carpoolings.
      * @return a list of CarPoolingResponseDto
@@ -81,12 +85,19 @@ public class CarPoolingService {
      */
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
         validateCarPooling(dto, null);
-
         CarPooling carPooling = carPoolingMapper.toEntity(dto);
         populateEntityReferences(carPooling, dto);
-
-        return carPoolingMapper.toResponseDto(carPoolingRepository.save(carPooling));
+        // Sauvegarde
+        CarPooling saved = carPoolingRepository.save(carPooling);
+        // Envoi de l'email à l'organisateur
+        email.sendAlert(
+                saved.getOrganizer().getEmail(),
+                "Covoiturage créé avec succès",
+                "Votre covoiturage prévu pour le " + saved.getDeparture() + " a bien été enregistré."
+        );
+        return carPoolingMapper.toResponseDto(saved);
     }
+
 
     /**
      * Updates an existing carpooling entry.
@@ -109,8 +120,17 @@ public class CarPoolingService {
 
         // Mise à jour des références
         populateEntityReferences(entity, dto);
+// Sauvegarde de l'entité mise à jour
+        CarPooling updated = carPoolingRepository.save(entity);
 
-        return carPoolingMapper.toResponseDto(carPoolingRepository.save(entity));
+        // Envoi de l'email avec l'entité mise à jour
+        email.sendAlert(
+                updated.getOrganizer().getEmail(),
+                "Mise à jour de votre covoiturage",
+                "Votre covoiturage a été modifié. Nouvelle date de départ : " + updated.getDeparture()
+        );
+
+        return carPoolingMapper.toResponseDto(updated);
     }
 
     /**
@@ -120,12 +140,17 @@ public class CarPoolingService {
     public void deleteCarpooling(Long id) {
         CarPooling carPooling = carPoolingRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Covoiturage introuvable avec l'ID : " + id));
-
         // Vérifie si la date de départ est passée
         if (carPooling.getDeparture() != null && !carPooling.getDeparture().after(new Date())) {
             throw new InvalidRessourceException("Impossible de supprimer un covoiturage déjà commencé ou passé.");
         }
         carPoolingRepository.deleteById(id);
+        // Envoi d'une alerte par email
+        email.sendAlert(
+                carPooling.getOrganizer().getEmail(),
+                "Covoiturage annulé",
+                "Votre covoiturage prévu pour le " + carPooling.getDeparture() + " a été supprimé."
+        );
     }
 
     /**

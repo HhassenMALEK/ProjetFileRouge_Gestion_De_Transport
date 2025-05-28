@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { AuthControllerService } from '../../../../api';
@@ -12,13 +12,10 @@ import { AuthControllerService } from '../../../../api';
 export class LoginFormComponent {
   email = '';
   password = '';
-  auth;
-  constructor(authControllerService: AuthControllerService) {
-    // You can inject the AuthControllerService here if needed
-    this.auth = authControllerService;
-  }
+  private authService = inject(AuthControllerService);
+  
   onSubmit() {
-    this.auth
+    this.authService
       .login({
         email: this.email,
         password: this.password,
