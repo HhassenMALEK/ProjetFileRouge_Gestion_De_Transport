@@ -8,28 +8,20 @@ export const routes: Routes = [
         '../features/login/components/login-form/login-form.component'
       ).then((m) => m.LoginFormComponent),
   },
+
   {
-    path: 'home',
+    path: 'search',
     loadComponent: () =>
-      import('./components/layout/layout.component').then(
-        (m) => m.LayoutComponent
+      import('../features/search-bar/search-bar.component').then(
+        (m) => m.SearchBarComponent
       ),
     children: [
       {
-        path: 'search',
+        path: 'covoit',
         loadComponent: () =>
-          import('../features/search-bar/search-bar.component').then(
-            (m) => m.SearchBarComponent
-          ),
-        children: [
-          {
-            path: 'covoit',
-            loadComponent: () =>
-              import(
-                '../features/carpooling/components/carpooling-list/carpooling-list.component'
-              ).then((m) => m.CarpoolingListComponent),
-          },
-        ],
+          import(
+            '../features/carpooling/components/carpooling-list/carpooling-list.component'
+          ).then((m) => m.CarpoolingListComponent),
       },
     ],
   },

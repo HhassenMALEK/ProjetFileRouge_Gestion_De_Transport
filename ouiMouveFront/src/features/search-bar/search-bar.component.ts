@@ -20,6 +20,6 @@ export class SearchBarComponent {
   router = inject(Router);
   handleOnglet(index: number) {
     this.activeOngletIndex = index;
-    this.router.navigate(['home/search/covoit']);
+    this.router.navigate(['/search/covoit']);
   }
 }

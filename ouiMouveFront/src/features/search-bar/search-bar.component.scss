@@ -1,5 +1,11 @@
-.onglet {
-  margin-left: 39vw;
+section {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .onglet {
+    margin-left: 39vw;
+    display: flex;
+    flex-direction: row;
+  }
 }

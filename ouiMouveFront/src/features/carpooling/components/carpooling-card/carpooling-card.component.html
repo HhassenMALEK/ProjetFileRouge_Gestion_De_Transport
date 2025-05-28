@@ -1,22 +1,39 @@
 @let nb = 1;
 <section>
-    
-    <div>
-          <!-- TODO: ajouter les places dans le covoiturages-->
-            <app-status [status]="carpooling()?.status" ></app-status>
-          <!-- <p>Places restantes: {{carpooling().}}</p> -->
-          <p>Date de départ: {{getFormattedDateTime(carpooling()?.departure)?.date}}</p>      
-          <p>Heure de départ: {{getFormattedDateTime(carpooling()?.departure)?.time}}</p>      
-          <p>Lieu de départ: {{`${carpooling()?.departureAddress?.label}, ${carpooling()?.departureAddress?.city}`}}</p>      
-    </div>
-    <mat-icon>compare_arrows</mat-icon>
-    <div>
-      @if (nb > 0) {
-    <app-button [label]="'Réserver'" [color]="'red'" (onClick)="handleReservation()"></app-button>
+  <div>
+    <!-- TODO: ajouter les places dans le covoiturages-->
+    <app-status [status]="carpooling()?.status"></app-status>
+    <!-- <p>Places restantes: {{carpooling().}}</p> -->
+    <p>
+      Date de départ: {{ getFormattedDateTime(carpooling()?.departure)?.date }}
+    </p>
+    <p>
+      Heure de départ: {{ getFormattedDateTime(carpooling()?.departure)?.time }}
+    </p>
+    <p>
+      Lieu de départ:
+      {{`${carpooling()?.departureAddress?.label}, ${carpooling()?.departureAddress?.city}`}}
+    </p>
+  </div>
+  <mat-icon>compare_arrows</mat-icon>
+  <div>
+    @if (nb > 0) {
+    <app-button
+      [label]="'Réserver'"
+      [color]="'red'"
+      (onClick)="handleReservation()"
+    ></app-button>
     }
-        <p></p>
-          <p>Date de arrivée: {{getFormattedDateTime(carpooling()?.arrival)?.date}}</p>      
-          <p>Heure de arrivée: {{getFormattedDateTime(carpooling()?.arrival)?.time}}</p>      
-          <p>Lieu de arrivée: {{`${carpooling()?.destinationAddress?.label}, ${carpooling()?.destinationAddress?.city}`}}</p> 
-    </div>
+    <p></p>
+    <p>
+      Date de arrivée: {{ getFormattedDateTime(carpooling()?.arrival)?.date }}
+    </p>
+    <p>
+      Heure de arrivée: {{ getFormattedDateTime(carpooling()?.arrival)?.time }}
+    </p>
+    <p>
+      Lieu de arrivée:
+      {{`${carpooling()?.destinationAddress?.label}, ${carpooling()?.destinationAddress?.city}`}}
+    </p>
+  </div>
 </section>

@@ -1,20 +1,22 @@
-<div class="onglet">
-  <app-onglet
-    (ongletCLicked)="handleOnglet(0)"
-    [isActive]="activeOngletIndex === 0"
-    [label]="'Covoiturages'"
-  >
-  </app-onglet>
-  <app-onglet
-    (ongletCLicked)="handleOnglet(1)"
-    [isActive]="activeOngletIndex === 1"
-    [label]="'Réservations'"
-  >
-  </app-onglet>
-</div>
-@if (activeOngletIndex === 0) {
-<app-search-covoit></app-search-covoit>
-} @else {
-<app-search-resa></app-search-resa>
-}
+<section>
+  <div class="onglet">
+    <app-onglet
+      (ongletCLicked)="handleOnglet(0)"
+      [isActive]="activeOngletIndex === 0"
+      [label]="'Covoiturages'"
+    >
+    </app-onglet>
+    <app-onglet
+      (ongletCLicked)="handleOnglet(1)"
+      [isActive]="activeOngletIndex === 1"
+      [label]="'Réservations'"
+    >
+    </app-onglet>
+  </div>
+  @if (activeOngletIndex === 0) {
+  <app-search-covoit></app-search-covoit>
+  } @else {
+  <app-search-resa></app-search-resa>
+  }
+</section>
 <router-outlet></router-outlet>
