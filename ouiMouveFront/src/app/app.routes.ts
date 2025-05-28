@@ -18,9 +18,18 @@ export const routes: Routes = [
       {
         path: 'search',
         loadComponent: () =>
-          import(
-            '../features/search-bar/components/search-covoit/search-covoit.component'
-          ).then((m) => m.SearchCovoitComponent),
+          import('../features/search-bar/search-bar.component').then(
+            (m) => m.SearchBarComponent
+          ),
+        children: [
+          {
+            path: 'covoit',
+            loadComponent: () =>
+              import(
+                '../features/carpooling/components/carpooling-list/carpooling-list.component'
+              ).then((m) => m.CarpoolingListComponent),
+          },
+        ],
       },
     ],
   },
