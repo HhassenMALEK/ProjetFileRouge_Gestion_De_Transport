@@ -77,9 +77,6 @@ public class AdressService {
                 adressDto.setCity(adressDto.getCity());
                 adressDto.setLatX(adressDto.getLatX());
                 adressDto.setLongY(adressDto.getLongY());
-                adressDto.setSiteId(adressDto.getSiteId());
-                adressDto.setDeparturesId(adressDto.getDeparturesId());
-                adressDto.setArrivalsId(adressDto.getArrivalsId());
                 adressRepository.save(adress);
             });
         }

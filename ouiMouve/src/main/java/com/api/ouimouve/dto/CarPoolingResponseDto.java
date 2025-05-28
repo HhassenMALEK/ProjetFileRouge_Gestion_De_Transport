@@ -36,5 +36,6 @@ public class CarPoolingResponseDto {
     @JsonIgnore
     private Vehicle vehicle;
     /** User who organizes the carpooling. */
+
     private Long organizerId;
 }

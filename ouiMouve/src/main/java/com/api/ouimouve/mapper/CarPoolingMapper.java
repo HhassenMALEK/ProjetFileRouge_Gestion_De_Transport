@@ -41,6 +41,7 @@ public abstract class CarPoolingMapper {
      */
     @Mapping(target = "departureAdress.id", source = "departureAddressId")
     @Mapping(target = "destinationAdress.id", source = "destinationAddressId")
+    @Mapping(target = "organizer.id", source = "organizerId")
     @Mapping(target = "vehicle.id", source = "vehicleId")
     public abstract CarPooling toEntity(CarPoolingCreateDto dto);
 
@@ -54,6 +55,7 @@ public abstract class CarPoolingMapper {
      */
     @Mapping(target = "departureAddress", source = "departureAdress")
     @Mapping(target = "destinationAddress", source = "destinationAdress")
+    @Mapping(target = "organizerId", source = "organizer.id")
     @Mapping(target = "vehicle", ignore = true) // pour éviter de charger tout un arbre d’objet inutile
     public abstract CarPoolingResponseDto toResponseDto(CarPooling entity);
 

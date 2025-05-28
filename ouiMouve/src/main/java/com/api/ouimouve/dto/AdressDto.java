@@ -17,8 +17,5 @@ public class AdressDto {
     private String city;
     private float latX;
     private float longY;
-    private long siteId;
-    private List<Long> departuresId;
-    private List<Long>arrivalsId;
 
 }

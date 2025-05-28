@@ -48,15 +48,5 @@ public class Adress {
     @Column(nullable = false)
     private float longY;
 
-    /**
-     * The carpooling departures associated with this address
-     */
-    @OneToMany(mappedBy = "departureAdress")
-    private List<CarPooling> departures;
-    /**
-     * The carpooling arrivals associated with this address
-     */
-    @OneToMany(mappedBy = "destinationAdress")
-    private List<CarPooling> arrivals;
 
 }
