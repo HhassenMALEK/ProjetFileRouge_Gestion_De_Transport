@@ -1,5 +1,3 @@
-export * from './adressController.service';
-import { AdressControllerService } from './adressController.service';
 export * from './authController.service';
 import { AuthControllerService } from './authController.service';
 export * from './carPoolingController.service';
@@ -20,4 +18,4 @@ export * from './userController.service';
 import { UserControllerService } from './userController.service';
 export * from './vehicleReservationController.service';
 import { VehicleReservationControllerService } from './vehicleReservationController.service';
-export const APIS = [AdressControllerService, AuthControllerService, CarPoolingControllerService, CarPoolingReservationsControllerService, ModelControllerService, PersonalVehicleControllerService, ReparationControllerService, ServiceVehicleControllerService, SiteControllerService, UserControllerService, VehicleReservationControllerService];
+export const APIS = [AuthControllerService, CarPoolingControllerService, CarPoolingReservationsControllerService, ModelControllerService, PersonalVehicleControllerService, ReparationControllerService, ServiceVehicleControllerService, SiteControllerService, UserControllerService, VehicleReservationControllerService];

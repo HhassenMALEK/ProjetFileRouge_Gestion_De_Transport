@@ -9,14 +9,11 @@
  */
 
 
-export interface AdressDto { 
-    id?: number;
+export interface SiteCreateDto { 
+    name?: string;
     label?: string;
     city?: string;
     latX?: number;
     longY?: number;
-    siteId?: number;
-    departuresId?: Array<number>;
-    arrivalsId?: Array<number>;
 }
 

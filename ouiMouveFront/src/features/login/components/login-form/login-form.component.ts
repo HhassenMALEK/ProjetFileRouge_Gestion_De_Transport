@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
-import { AuthControllerService } from '../../../../api';
+import { AuthControllerService } from '../../../../service';
 
 @Component({
   selector: 'app-login-form',
@@ -13,7 +13,7 @@ export class LoginFormComponent {
   email = '';
   password = '';
   private authService = inject(AuthControllerService);
-  
+
   onSubmit() {
     this.authService
       .login({

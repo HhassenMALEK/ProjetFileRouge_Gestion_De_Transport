@@ -1,1 +1,2084 @@
-{"openapi":"3.0.1","info":{"title":"OuiMouve API","description":"Ensemble des API de OuiMouve","contact":{"name":"M Basier, H Malek, J Brou, S Daudey"},"version":"1.0"},"servers":[{"url":"http://localhost:8087","description":"Generated server url"}],"security":[{"bearerAuth":[]}],"paths":{"/api/users/{id}":{"get":{"tags":["user-controller"],"operationId":"getUserById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/UserDto"}}}}}},"put":{"tags":["user-controller"],"operationId":"updateUser","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/UserDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/UserDto"}}}}}},"delete":{"tags":["user-controller"],"operationId":"deleteUser","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK"}}}},"/api/sites/{id}":{"get":{"tags":["site-controller"],"operationId":"getSiteById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SiteResponseDto"}}}}}},"put":{"tags":["site-controller"],"operationId":"updateSite","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SiteResponseDto"}}}}}},"delete":{"tags":["site-controller"],"operationId":"deleteSite","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SiteResponseDto"}}}}}}},"/api/service-vehicle/{id}":{"get":{"tags":["service-vehicle-controller"],"summary":"Get a service vehicle by its ID","operationId":"getServiceVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"200":{"description":"Vehicle found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"404":{"description":"Vehicle not found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}}}},"put":{"tags":["service-vehicle-controller"],"summary":"Update an existing service vehicle","operationId":"updateServiceVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ServiceVehicleCreateDto"}}},"required":true},"responses":{"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"200":{"description":"Vehicle updated successfully","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"400":{"description":"Invalid vehicle data","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"404":{"description":"Vehicle not found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}}}},"delete":{"tags":["service-vehicle-controller"],"summary":"Delete a service vehicle","operationId":"deleteServiceVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"200":{"description":"Vehicle deleted successfully","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"404":{"description":"Vehicle not found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}}}}},"/api/personal-vehicle/{id}":{"get":{"tags":["personal-vehicle-controller"],"operationId":"getPersonalVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/PersonalVehicleDto"}}}}}},"put":{"tags":["personal-vehicle-controller"],"operationId":"updatePersonalVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PersonalVehicleCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/PersonalVehicleDto"}}}}}},"delete":{"tags":["personal-vehicle-controller"],"operationId":"deletePersonalVehicle","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/PersonalVehicleDto"}}}}}}},"/api/carpooling-reservations/subscribe/{resId}":{"put":{"tags":["car-pooling-reservations-controller"],"operationId":"subscribeToCarPooling","parameters":[{"name":"resId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingReservationsResponseDTO"}}}}}}},"/api/carpooling-reservations/cancel/{resId}":{"put":{"tags":["car-pooling-reservations-controller"],"operationId":"cancelReservation","parameters":[{"name":"resId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingReservationsResponseDTO"}}}}}}},"/api/sites":{"post":{"tags":["site-controller"],"operationId":"createSite","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/SiteCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/SiteResponseDto"}}}}}}},"/api/service-vehicle":{"post":{"tags":["service-vehicle-controller"],"summary":"Create a new service vehicle","operationId":"createServiceVehicle","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ServiceVehicleCreateDto"}}},"required":true},"responses":{"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"400":{"description":"Invalid vehicle data","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}},"200":{"description":"Vehicle created successfully","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ServiceVehicleDto"}}}}}}},"/api/reservation":{"post":{"tags":["vehicle-reservation-controller"],"summary":"Create a reservation","operationId":"createReservation","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/VehicleReservationCreateDto"}}},"required":true},"responses":{"200":{"description":"Reservation created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"403":{"description":"access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"404":{"description":"Aucune idée ??","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}}},"/api/reparation":{"post":{"tags":["reparation-controller"],"operationId":"createReparation","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ReparationCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ReparationResponseDto"}}}}}}},"/api/personal-vehicle":{"post":{"tags":["personal-vehicle-controller"],"operationId":"createPersonalVehicle","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/PersonalVehicleCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/PersonalVehicleDto"}}}}}}},"/api/model":{"post":{"tags":["model-controller"],"summary":"Create a model","operationId":"createModel","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ModelCreateDto"}}},"required":true},"responses":{"200":{"description":"Model created","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}}}}},"/api/carpooling":{"post":{"tags":["car-pooling-controller"],"operationId":"createCarPooling","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CarPoolingCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingResponseDto"}}}}}}},"/api/carpooling-reservations":{"post":{"tags":["car-pooling-reservations-controller"],"operationId":"createCarPoolingReservation","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CarPoolingReservationsCreateDTO"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingReservationsResponseDTO"}}}}}}},"/api/auth/register":{"post":{"tags":["auth-controller"],"operationId":"register","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/RegisterRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"object"}}}}}}},"/api/auth/login":{"post":{"tags":["auth-controller"],"operationId":"login","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/LoginRequest"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AuthResponse"}}}}}}},"/api/adress ":{"post":{"tags":["adress-controller"],"operationId":"createAdress","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdressDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}}},"/api/reservation/{id}":{"get":{"tags":["vehicle-reservation-controller"],"summary":"Get a reservation by its ID","operationId":"getReservationById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"Reservation found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"404":{"description":"No reservations found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}},"delete":{"tags":["vehicle-reservation-controller"],"summary":"Delete a reservation by its ID","operationId":"deleteReservation","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"Reservation deleted","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"404":{"description":"No reservations found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}},"patch":{"tags":["vehicle-reservation-controller"],"summary":"Update a reservation by its ID","operationId":"updateReservation","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/VehicleReservationCreateDto"}}},"required":true},"responses":{"200":{"description":"Reservation updated","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"403":{"description":"access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"404":{"description":"No reservations found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}}},"/api/reparation/{id}":{"get":{"tags":["reparation-controller"],"operationId":"getReparationById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ReparationResponseDto"}}}}}},"delete":{"tags":["reparation-controller"],"operationId":"deleteReparation","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ReparationResponseDto"}}}}}},"patch":{"tags":["reparation-controller"],"operationId":"updateReparation","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ReparationCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ReparationResponseDto"}}}}}}},"/api/model/{id}":{"get":{"tags":["model-controller"],"summary":"Get a model by its ID","operationId":"getModelById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"Model found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"404":{"description":"No model found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}}}},"delete":{"tags":["model-controller"],"summary":"Delete a model by its ID","operationId":"deleteModel","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"Model deleted","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"404":{"description":"No model found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}}}},"patch":{"tags":["model-controller"],"summary":"Update a model by its ID","operationId":"updateModel","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/ModelCreateDto"}}},"required":true},"responses":{"200":{"description":"Model updated","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"404":{"description":"No model found","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"$ref":"#/components/schemas/ModelDto"}}}}}}},"/api/carpooling/{id}":{"get":{"tags":["car-pooling-controller"],"operationId":"getById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingResponseDto"}}}}}},"delete":{"tags":["car-pooling-controller"],"operationId":"deleteCarPooling","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK"}}},"patch":{"tags":["car-pooling-controller"],"operationId":"updateCarPooling","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CarPoolingCreateDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingResponseDto"}}}}}}},"/api/adress /{id}":{"get":{"tags":["adress-controller"],"operationId":"getAdressById","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}},"delete":{"tags":["adress-controller"],"operationId":"deleteAdress","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}},"patch":{"tags":["adress-controller"],"operationId":"updateAdress","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/AdressDto"}}},"required":true},"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}}},"/api/users/all":{"get":{"tags":["user-controller"],"operationId":"getAllUsers","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/UserDto"}}}}}}}},"/api/sites/list":{"get":{"tags":["site-controller"],"operationId":"getAllSites","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/SiteResponseDto"}}}}}}}},"/api/reservation/user/{userId}/filter":{"get":{"tags":["vehicle-reservation-controller"],"summary":"Get all reservations for a user with optional filters","description":"Retrieves reservations filtered by start date and/or status. Both filters are optional.","operationId":"getAllReservationsByUserWithFilters","parameters":[{"name":"userId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}},{"name":"start","in":"query","description":"Start date filter (optional, format: yyyy-MM-dd)","required":false,"schema":{"type":"string"}},{"name":"status","in":"query","description":"Reservation status filter (optional)","required":false,"schema":{"type":"string"}}],"responses":{"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"200":{"description":"List of filtered reservations","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"404":{"description":"No reservations found matching criteria","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}}}},"/api/reservation/list/{vehicleId}":{"get":{"tags":["vehicle-reservation-controller"],"summary":"Get all reservations for a vehicle","operationId":"getAllReservationsByVehicle","parameters":[{"name":"vehicleId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"List of reservations for the vehicle","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"404":{"description":"No reservations found for this vehicle","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}}}},"/api/reservation/list/user/{UserID}":{"get":{"tags":["vehicle-reservation-controller"],"summary":"Get all reservations for a user","operationId":"getAllReservationsByUser","parameters":[{"name":"UserID","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"List of reservations for the user","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"404":{"description":"No reservations found for this user","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}},"500":{"description":"Internal Serveur Error","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/VehicleReservationDto"}}}}}}}},"/api/reparation/list/{vehicleId}":{"get":{"tags":["reparation-controller"],"operationId":"getAllReparations","parameters":[{"name":"vehicleId","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ReparationResponseDto"}}}}}}}},"/api/personal-vehicle/list":{"get":{"tags":["personal-vehicle-controller"],"operationId":"getPersonalVehiclesByUserId","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/PersonalVehicleDto"}}}}}}}},"/api/model/list":{"get":{"tags":["model-controller"],"summary":"Get all models","operationId":"getAllModels","responses":{"200":{"description":"List of all models","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"404":{"description":"No models found","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}}}}},"/api/model/category/{category}":{"get":{"tags":["model-controller"],"summary":"Get all models by category","operationId":"getAllModelsByCategory","parameters":[{"name":"category","in":"path","required":true,"schema":{"type":"string","enum":["MICRO_URBANE","MINI_CITADINE","CITADINE_POLYVALENTE","COMPACTE","BERLINE_TAILLE_S","BERLINE_TAILLE_M","BERLINE_TAILLE_L","SUV_TOUT_TERRAIN_ET_PICKUP"]}}],"responses":{"200":{"description":"List of models by category","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"403":{"description":"Access required","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"404":{"description":"No models found","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}},"500":{"description":"Internal Server Error","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ModelDto"}}}}}}}},"/api/carpooling/list":{"get":{"tags":["car-pooling-controller"],"operationId":"getAll","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CarPoolingResponseDto"}}}}}}}},"/api/carpooling/filter":{"get":{"tags":["car-pooling-controller"],"operationId":"filterByCriteria","parameters":[{"name":"organizerId","in":"query","required":false,"schema":{"type":"integer","format":"int64"}},{"name":"status","in":"query","required":false,"schema":{"type":"string","enum":["IN_PROGRESS","FINISHED","CANCELLED","BOOKING_OPEN","BOOKING_FULL"]}},{"name":"startDate","in":"query","required":false,"schema":{"type":"string","format":"date-time"}},{"name":"endDate","in":"query","required":false,"schema":{"type":"string","format":"date-time"}},{"name":"vehicleId","in":"query","required":false,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CarPoolingResponseDto"}}}}}}}},"/api/carpooling-reservations/{id}":{"get":{"tags":["car-pooling-reservations-controller"],"operationId":"getCarPoolingReservation","parameters":[{"name":"id","in":"path","required":true,"schema":{"type":"integer","format":"int64"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/CarPoolingReservationsResponseDTO"}}}}}}},"/api/carpooling-reservations/list":{"get":{"tags":["car-pooling-reservations-controller"],"operationId":"getAllCarPoolingReservations","responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/CarPoolingReservationsResponseDTO"}}}}}}}},"/api/adress /{latX}/{longY}":{"get":{"tags":["adress-controller"],"operationId":"getAdressByLatAndLong","parameters":[{"name":"latX","in":"path","required":true,"schema":{"type":"number","format":"float"}},{"name":"longY","in":"path","required":true,"schema":{"type":"number","format":"float"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}}},"/api/adress /{label}/{city}":{"get":{"tags":["adress-controller"],"operationId":"getAdressByLabelAndCity","parameters":[{"name":"label","in":"path","required":true,"schema":{"type":"string"}},{"name":"city","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"200":{"description":"OK","content":{"*/*":{"schema":{"$ref":"#/components/schemas/AdressDto"}}}}}}}},"components":{"schemas":{"UserDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"firstName":{"type":"string"},"lastName":{"type":"string"},"email":{"type":"string"},"role":{"type":"string"},"licenseNumber":{"type":"string"}}},"SiteCreateDto":{"type":"object","properties":{"name":{"type":"string"},"adressId":{"type":"integer","format":"int64"},"vehicleIds":{"type":"array","items":{"type":"integer","format":"int64"}}}},"AdressDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"label":{"type":"string"},"city":{"type":"string"},"latX":{"type":"number","format":"float"},"longY":{"type":"number","format":"float"},"siteId":{"type":"integer","format":"int64"},"departuresId":{"type":"array","items":{"type":"integer","format":"int64"}},"arrivalsId":{"type":"array","items":{"type":"integer","format":"int64"}}}},"SiteResponseDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"name":{"type":"string"},"adress":{"$ref":"#/components/schemas/AdressDto"},"vehicleIds":{"type":"array","items":{"type":"integer","format":"int64"}}}},"ServiceVehicleCreateDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"immatriculation":{"type":"string"},"seats":{"type":"integer","format":"int32"},"status":{"type":"string","enum":["DISABLED","ENABLED","BOOKED"]},"modelId":{"type":"integer","format":"int64"},"modelName":{"type":"string"},"mark":{"type":"string"},"siteId":{"type":"integer","format":"int64"},"siteName":{"type":"string"}}},"ModelDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"modelName":{"type":"string"},"mark":{"type":"string"},"photoURL":{"type":"string"},"motorType":{"type":"string"},"category":{"type":"string","enum":["MICRO_URBANE","MINI_CITADINE","CITADINE_POLYVALENTE","COMPACTE","BERLINE_TAILLE_S","BERLINE_TAILLE_M","BERLINE_TAILLE_L","SUV_TOUT_TERRAIN_ET_PICKUP"]},"seatsModel":{"type":"integer","format":"int32"},"co2":{"type":"integer","format":"int32"}}},"ServiceVehicleDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"immatriculation":{"type":"string"},"seats":{"type":"integer","format":"int32"},"status":{"type":"string","enum":["DISABLED","ENABLED","BOOKED"]},"model":{"$ref":"#/components/schemas/ModelDto"},"mark":{"type":"string"},"site":{"$ref":"#/components/schemas/SiteResponseDto"},"siteName":{"type":"string"}}},"PersonalVehicleCreateDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"immatriculation":{"type":"string"},"seats":{"type":"integer","format":"int32"},"color":{"type":"string"},"description":{"type":"string"},"userId":{"type":"integer","format":"int64"}}},"PersonalVehicleDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"immatriculation":{"type":"string"},"seats":{"type":"integer","format":"int32"},"color":{"type":"string"},"description":{"type":"string"},"user":{"$ref":"#/components/schemas/UserDto"}}},"CarPoolingReservationsResponseDTO":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"date":{"type":"string","format":"date-time"},"carPooling":{"$ref":"#/components/schemas/CarPoolingResponseDto"},"status":{"type":"string","enum":["BOOKED","FINISHED","CANCELLED"]},"participantCount":{"type":"integer","format":"int32"}}},"CarPoolingResponseDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"departure":{"type":"string","format":"date-time"},"arrival":{"type":"string","format":"date-time"},"status":{"type":"string","enum":["IN_PROGRESS","FINISHED","CANCELLED","BOOKING_OPEN","BOOKING_FULL"]},"durationInMinutes":{"type":"integer","format":"int32"},"distance":{"type":"integer","format":"int32"},"departureAddress":{"$ref":"#/components/schemas/AdressDto"},"destinationAddress":{"$ref":"#/components/schemas/AdressDto"},"organizerId":{"type":"integer","format":"int64"}}},"VehicleReservationCreateDto":{"type":"object","properties":{"serviceVehicleId":{"type":"integer","format":"int64"},"userId":{"type":"integer","format":"int64"},"start":{"type":"string","format":"date-time"},"end":{"type":"string","format":"date-time"},"status":{"type":"string","enum":["DISABLED","ENABLED","BOOKED"]}}},"VehicleReservationDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"serviceVehicle":{"$ref":"#/components/schemas/ServiceVehicleDto"},"user":{"$ref":"#/components/schemas/UserDto"},"start":{"type":"string","format":"date-time"},"end":{"type":"string","format":"date-time"},"status":{"type":"string","enum":["DISABLED","ENABLED","BOOKED"]}}},"ReparationCreateDto":{"type":"object","properties":{"start":{"type":"string","format":"date-time"},"end":{"type":"string","format":"date-time"},"motive":{"type":"string"},"vehicleId":{"type":"integer","format":"int64"}}},"ReparationResponseDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"start":{"type":"string","format":"date-time"},"end":{"type":"string","format":"date-time"},"motive":{"type":"string"},"vehicle":{"$ref":"#/components/schemas/ServiceVehicleDto"}}},"ModelCreateDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"modelName":{"type":"string"},"mark":{"type":"string"},"photoURL":{"type":"string"},"motorType":{"type":"string"},"category":{"type":"string","enum":["MICRO_URBANE","MINI_CITADINE","CITADINE_POLYVALENTE","COMPACTE","BERLINE_TAILLE_S","BERLINE_TAILLE_M","BERLINE_TAILLE_L","SUV_TOUT_TERRAIN_ET_PICKUP"]},"seatsModel":{"type":"integer","format":"int32"},"co2":{"type":"integer","format":"int32"}}},"CarPoolingCreateDto":{"type":"object","properties":{"id":{"type":"integer","format":"int64"},"departure":{"type":"string","format":"date-time"},"arrival":{"type":"string","format":"date-time"},"status":{"type":"string","enum":["IN_PROGRESS","FINISHED","CANCELLED","BOOKING_OPEN","BOOKING_FULL"]},"durationInMinutes":{"type":"integer","format":"int32"},"distance":{"type":"integer","format":"int32"},"departureAddressId":{"type":"integer","format":"int64"},"destinationAddressId":{"type":"integer","format":"int64"},"vehicleId":{"type":"integer","format":"int64"},"organizerId":{"type":"integer","format":"int64"}}},"CarPoolingReservationsCreateDTO":{"type":"object","properties":{"date":{"type":"string","format":"date-time"},"userId":{"type":"integer","format":"int64"},"carPoolingId":{"type":"integer","format":"int64"},"status":{"type":"string","enum":["BOOKED","FINISHED","CANCELLED"]},"id":{"type":"integer","format":"int64"}}},"RegisterRequest":{"type":"object","properties":{"firstName":{"type":"string"},"lastName":{"type":"string"},"email":{"type":"string"},"password":{"type":"string"},"licenseNumber":{"type":"string"}}},"LoginRequest":{"type":"object","properties":{"email":{"type":"string"},"password":{"type":"string"}}},"AuthResponse":{"type":"object","properties":{"token":{"type":"string"}}}},"securitySchemes":{"bearerAuth":{"type":"http","scheme":"bearer","bearerFormat":"JWT"}}}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "OuiMouve API",
+    "description": "Ensemble des API de OuiMouve",
+    "contact": { "name": "M Basier, H Malek, J Brou, S Daudey" },
+    "version": "1.0"
+  },
+  "servers": [
+    { "url": "http://localhost:8087", "description": "Generated server url" }
+  ],
+  "security": [{ "bearerAuth": [] }],
+  "paths": {
+    "/api/users/{id}": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getUserById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/UserDto" } }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["user-controller"],
+        "operationId": "updateUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/UserDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/UserDto" } }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["user-controller"],
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/sites/{id}": {
+      "get": {
+        "tags": ["site-controller"],
+        "operationId": "getSiteById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["site-controller"],
+        "operationId": "updateSite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SiteCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["site-controller"],
+        "operationId": "deleteSite",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-vehicle/{id}": {
+      "get": {
+        "tags": ["service-vehicle-controller"],
+        "summary": "Get a service vehicle by its ID",
+        "operationId": "getServiceVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "200": {
+            "description": "Vehicle found",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["service-vehicle-controller"],
+        "summary": "Update an existing service vehicle",
+        "operationId": "updateServiceVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceVehicleCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "200": {
+            "description": "Vehicle updated successfully",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid vehicle data",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["service-vehicle-controller"],
+        "summary": "Delete a service vehicle",
+        "operationId": "deleteServiceVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "200": {
+            "description": "Vehicle deleted successfully",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "404": {
+            "description": "Vehicle not found",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/personal-vehicle/{id}": {
+      "get": {
+        "tags": ["personal-vehicle-controller"],
+        "operationId": "getPersonalVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PersonalVehicleDto" }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["personal-vehicle-controller"],
+        "operationId": "updatePersonalVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalVehicleCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PersonalVehicleDto" }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["personal-vehicle-controller"],
+        "operationId": "deletePersonalVehicle",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PersonalVehicleDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling-reservations/subscribe/{resId}": {
+      "put": {
+        "tags": ["car-pooling-reservations-controller"],
+        "operationId": "subscribeToCarPooling",
+        "parameters": [
+          {
+            "name": "resId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingReservationsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling-reservations/cancel/{resId}": {
+      "put": {
+        "tags": ["car-pooling-reservations-controller"],
+        "operationId": "cancelReservation",
+        "parameters": [
+          {
+            "name": "resId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingReservationsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sites": {
+      "post": {
+        "tags": ["site-controller"],
+        "operationId": "createSite",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/SiteCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/service-vehicle": {
+      "post": {
+        "tags": ["service-vehicle-controller"],
+        "summary": "Create a new service vehicle",
+        "operationId": "createServiceVehicle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ServiceVehicleCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid vehicle data",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          },
+          "200": {
+            "description": "Vehicle created successfully",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservation": {
+      "post": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Create a reservation",
+        "operationId": "createReservation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleReservationCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation created",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Aucune idée ??",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reparation": {
+      "post": {
+        "tags": ["reparation-controller"],
+        "operationId": "createReparation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReparationCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReparationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/personal-vehicle": {
+      "post": {
+        "tags": ["personal-vehicle-controller"],
+        "operationId": "createPersonalVehicle",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PersonalVehicleCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/PersonalVehicleDto" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model": {
+      "post": {
+        "tags": ["model-controller"],
+        "summary": "Create a model",
+        "operationId": "createModel",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ModelCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Model created",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling": {
+      "post": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "createCarPooling",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CarPoolingCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling-reservations": {
+      "post": {
+        "tags": ["car-pooling-reservations-controller"],
+        "operationId": "createCarPoolingReservation",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarPoolingReservationsCreateDTO"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingReservationsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/register": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "register",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": { "*/*": { "schema": { "type": "object" } } }
+          }
+        }
+      }
+    },
+    "/api/auth/login": {
+      "post": {
+        "tags": ["auth-controller"],
+        "operationId": "login",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/LoginRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": { "$ref": "#/components/schemas/AuthResponse" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservation/{id}": {
+      "get": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Get a reservation by its ID",
+        "operationId": "getReservationById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservation found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Delete a reservation by its ID",
+        "operationId": "deleteReservation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reservation deleted",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Update a reservation by its ID",
+        "operationId": "updateReservation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VehicleReservationCreateDto"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Reservation updated",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/VehicleReservationDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reparation/{id}": {
+      "get": {
+        "tags": ["reparation-controller"],
+        "operationId": "getReparationById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReparationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["reparation-controller"],
+        "operationId": "deleteReparation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReparationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["reparation-controller"],
+        "operationId": "updateReparation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ReparationCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReparationResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/{id}": {
+      "get": {
+        "tags": ["model-controller"],
+        "summary": "Get a model by its ID",
+        "operationId": "getModelById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Model found",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "404": {
+            "description": "No model found",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["model-controller"],
+        "summary": "Delete a model by its ID",
+        "operationId": "deleteModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Model deleted",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "404": {
+            "description": "No model found",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          }
+        }
+      },
+      "patch": {
+        "tags": ["model-controller"],
+        "summary": "Update a model by its ID",
+        "operationId": "updateModel",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ModelCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Model updated",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "404": {
+            "description": "No model found",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": { "schema": { "$ref": "#/components/schemas/ModelDto" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling/{id}": {
+      "get": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "getById",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingResponseDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "deleteCarPooling",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      },
+      "patch": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "updateCarPooling",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CarPoolingCreateDto" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingResponseDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/users/all": {
+      "get": {
+        "tags": ["user-controller"],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/UserDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/sites/list": {
+      "get": {
+        "tags": ["site-controller"],
+        "operationId": "getAllSites",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/SiteResponseDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservation/user/{userId}/filter": {
+      "get": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Get all reservations for a user with optional filters",
+        "description": "Retrieves reservations filtered by start date and/or status. Both filters are optional.",
+        "operationId": "getAllReservationsByUserWithFilters",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "start",
+            "in": "query",
+            "description": "Start date filter (optional, format: yyyy-MM-dd)",
+            "required": false,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "description": "Reservation status filter (optional)",
+            "required": false,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "List of filtered reservations",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found matching criteria",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservation/list/{vehicleId}": {
+      "get": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Get all reservations for a vehicle",
+        "operationId": "getAllReservationsByVehicle",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of reservations for the vehicle",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found for this vehicle",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reservation/list/user/{UserID}": {
+      "get": {
+        "tags": ["vehicle-reservation-controller"],
+        "summary": "Get all reservations for a user",
+        "operationId": "getAllReservationsByUser",
+        "parameters": [
+          {
+            "name": "UserID",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of reservations for the user",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No reservations found for this user",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Serveur Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VehicleReservationDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/reparation/list/{vehicleId}": {
+      "get": {
+        "tags": ["reparation-controller"],
+        "operationId": "getAllReparations",
+        "parameters": [
+          {
+            "name": "vehicleId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ReparationResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/personal-vehicle/list": {
+      "get": {
+        "tags": ["personal-vehicle-controller"],
+        "operationId": "getPersonalVehiclesByUserId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/PersonalVehicleDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/list": {
+      "get": {
+        "tags": ["model-controller"],
+        "summary": "Get all models",
+        "operationId": "getAllModels",
+        "responses": {
+          "200": {
+            "description": "List of all models",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No models found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/model/category/{category}": {
+      "get": {
+        "tags": ["model-controller"],
+        "summary": "Get all models by category",
+        "operationId": "getAllModelsByCategory",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "MICRO_URBANE",
+                "MINI_CITADINE",
+                "CITADINE_POLYVALENTE",
+                "COMPACTE",
+                "BERLINE_TAILLE_S",
+                "BERLINE_TAILLE_M",
+                "BERLINE_TAILLE_L",
+                "SUV_TOUT_TERRAIN_ET_PICKUP"
+              ]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of models by category",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Access required",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "No models found",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/ModelDto" }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling/list": {
+      "get": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "getAll",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarPoolingResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling/filter": {
+      "get": {
+        "tags": ["car-pooling-controller"],
+        "operationId": "filterByCriteria",
+        "parameters": [
+          {
+            "name": "organizerId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": [
+                "IN_PROGRESS",
+                "FINISHED",
+                "CANCELLED",
+                "BOOKING_OPEN",
+                "BOOKING_FULL"
+              ]
+            }
+          },
+          {
+            "name": "startDate",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "string", "format": "date-time" }
+          },
+          {
+            "name": "siteDeparture",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+          },
+          {
+            "name": "siteDestination",
+            "in": "query",
+            "required": false,
+            "schema": { "$ref": "#/components/schemas/SiteResponseDto" }
+          },
+          {
+            "name": "vehicleId",
+            "in": "query",
+            "required": false,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarPoolingResponseDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling-reservations/{id}": {
+      "get": {
+        "tags": ["car-pooling-reservations-controller"],
+        "operationId": "getCarPoolingReservation",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarPoolingReservationsResponseDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/carpooling-reservations/list": {
+      "get": {
+        "tags": ["car-pooling-reservations-controller"],
+        "operationId": "getAllCarPoolingReservations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "*/*": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarPoolingReservationsResponseDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "UserDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "role": { "type": "string" },
+          "licenseNumber": { "type": "string" }
+        }
+      },
+      "SiteCreateDto": {
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "label": { "type": "string" },
+          "city": { "type": "string" },
+          "latX": { "type": "number", "format": "float" },
+          "longY": { "type": "number", "format": "float" }
+        }
+      },
+      "SiteResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "label": { "type": "string" },
+          "city": { "type": "string" },
+          "latX": { "type": "number", "format": "float" },
+          "longY": { "type": "number", "format": "float" }
+        }
+      },
+      "ServiceVehicleCreateDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "immatriculation": { "type": "string" },
+          "seats": { "type": "integer", "format": "int32" },
+          "status": {
+            "type": "string",
+            "enum": ["DISABLED", "ENABLED", "BOOKED"]
+          },
+          "modelId": { "type": "integer", "format": "int64" },
+          "modelName": { "type": "string" },
+          "mark": { "type": "string" },
+          "siteId": { "type": "integer", "format": "int64" },
+          "siteName": { "type": "string" }
+        }
+      },
+      "ModelDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "modelName": { "type": "string" },
+          "mark": { "type": "string" },
+          "photoURL": { "type": "string" },
+          "motorType": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "MICRO_URBANE",
+              "MINI_CITADINE",
+              "CITADINE_POLYVALENTE",
+              "COMPACTE",
+              "BERLINE_TAILLE_S",
+              "BERLINE_TAILLE_M",
+              "BERLINE_TAILLE_L",
+              "SUV_TOUT_TERRAIN_ET_PICKUP"
+            ]
+          },
+          "seatsModel": { "type": "integer", "format": "int32" },
+          "co2": { "type": "integer", "format": "int32" }
+        }
+      },
+      "ServiceVehicleDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "immatriculation": { "type": "string" },
+          "seats": { "type": "integer", "format": "int32" },
+          "status": {
+            "type": "string",
+            "enum": ["DISABLED", "ENABLED", "BOOKED"]
+          },
+          "model": { "$ref": "#/components/schemas/ModelDto" },
+          "mark": { "type": "string" },
+          "site": { "$ref": "#/components/schemas/SiteResponseDto" },
+          "siteName": { "type": "string" }
+        }
+      },
+      "PersonalVehicleCreateDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "immatriculation": { "type": "string" },
+          "seats": { "type": "integer", "format": "int32" },
+          "color": { "type": "string" },
+          "description": { "type": "string" },
+          "userId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "PersonalVehicleDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "immatriculation": { "type": "string" },
+          "seats": { "type": "integer", "format": "int32" },
+          "color": { "type": "string" },
+          "description": { "type": "string" },
+          "user": { "$ref": "#/components/schemas/UserDto" }
+        }
+      },
+      "CarPoolingReservationsResponseDTO": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "date": { "type": "string", "format": "date-time" },
+          "carPooling": {
+            "$ref": "#/components/schemas/CarPoolingResponseDto"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["BOOKED", "FINISHED", "CANCELLED"]
+          },
+          "participantCount": { "type": "integer", "format": "int32" }
+        }
+      },
+      "CarPoolingResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "departure": { "type": "string", "format": "date-time" },
+          "arrival": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "IN_PROGRESS",
+              "FINISHED",
+              "CANCELLED",
+              "BOOKING_OPEN",
+              "BOOKING_FULL"
+            ]
+          },
+          "durationInMinutes": { "type": "integer", "format": "int32" },
+          "distance": { "type": "integer", "format": "int32" },
+          "departureSite": { "$ref": "#/components/schemas/SiteResponseDto" },
+          "destinationSite": { "$ref": "#/components/schemas/SiteResponseDto" },
+          "organizerId": { "type": "integer", "format": "int64" },
+          "participantCount": { "type": "integer", "format": "int32" }
+        }
+      },
+      "VehicleReservationCreateDto": {
+        "type": "object",
+        "properties": {
+          "serviceVehicleId": { "type": "integer", "format": "int64" },
+          "userId": { "type": "integer", "format": "int64" },
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "enum": ["DISABLED", "ENABLED", "BOOKED"]
+          }
+        }
+      },
+      "VehicleReservationDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "serviceVehicle": {
+            "$ref": "#/components/schemas/ServiceVehicleDto"
+          },
+          "user": { "$ref": "#/components/schemas/UserDto" },
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "enum": ["DISABLED", "ENABLED", "BOOKED"]
+          }
+        }
+      },
+      "ReparationCreateDto": {
+        "type": "object",
+        "properties": {
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" },
+          "motive": { "type": "string" },
+          "vehicleId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ReparationResponseDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "start": { "type": "string", "format": "date-time" },
+          "end": { "type": "string", "format": "date-time" },
+          "motive": { "type": "string" },
+          "vehicle": { "$ref": "#/components/schemas/ServiceVehicleDto" }
+        }
+      },
+      "ModelCreateDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "modelName": { "type": "string" },
+          "mark": { "type": "string" },
+          "photoURL": { "type": "string" },
+          "motorType": { "type": "string" },
+          "category": {
+            "type": "string",
+            "enum": [
+              "MICRO_URBANE",
+              "MINI_CITADINE",
+              "CITADINE_POLYVALENTE",
+              "COMPACTE",
+              "BERLINE_TAILLE_S",
+              "BERLINE_TAILLE_M",
+              "BERLINE_TAILLE_L",
+              "SUV_TOUT_TERRAIN_ET_PICKUP"
+            ]
+          },
+          "seatsModel": { "type": "integer", "format": "int32" },
+          "co2": { "type": "integer", "format": "int32" }
+        }
+      },
+      "CarPoolingCreateDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "departure": { "type": "string", "format": "date-time" },
+          "arrival": { "type": "string", "format": "date-time" },
+          "status": {
+            "type": "string",
+            "enum": [
+              "IN_PROGRESS",
+              "FINISHED",
+              "CANCELLED",
+              "BOOKING_OPEN",
+              "BOOKING_FULL"
+            ]
+          },
+          "durationInMinutes": { "type": "integer", "format": "int32" },
+          "distance": { "type": "integer", "format": "int32" },
+          "departureSiteId": { "type": "integer", "format": "int64" },
+          "destinationSiteId": { "type": "integer", "format": "int64" },
+          "vehicleId": { "type": "integer", "format": "int64" },
+          "organizerId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "CarPoolingReservationsCreateDTO": {
+        "type": "object",
+        "properties": {
+          "date": { "type": "string", "format": "date-time" },
+          "userId": { "type": "integer", "format": "int64" },
+          "carPoolingId": { "type": "integer", "format": "int64" },
+          "status": {
+            "type": "string",
+            "enum": ["BOOKED", "FINISHED", "CANCELLED"]
+          },
+          "id": { "type": "integer", "format": "int64" }
+        }
+      },
+      "RegisterRequest": {
+        "type": "object",
+        "properties": {
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "password": { "type": "string" },
+          "licenseNumber": { "type": "string" }
+        }
+      },
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": { "type": "string" },
+          "password": { "type": "string" }
+        }
+      },
+      "AuthResponse": {
+        "type": "object",
+        "properties": { "token": { "type": "string" } }
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  }
+}
