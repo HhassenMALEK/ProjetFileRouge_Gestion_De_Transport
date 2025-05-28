@@ -1,3 +1,26 @@
 <div class="search-bar">
-  <span>Covoiturages</span>
+  <app-input-icon
+    [type]="'text'"
+    [placeholder]="'Ville de départ'"
+    [icon]="'place'"
+    [(value)]="departure"
+  ></app-input-icon>
+  <app-input-icon
+    [type]="'text'"
+    [placeholder]="'Ville d\'arrivée'"
+    [icon]="'place'"
+    [(value)]="arrival"
+  ></app-input-icon>
+  <app-input-icon
+    [type]="'date'"
+    [placeholder]="'Jour de départ'"
+    [icon]="'departure_board'"
+    [(value)]="date"
+  ></app-input-icon>
+  <app-input-icon
+    [type]="'number'"
+    [placeholder]="'Nb de places'"
+    [icon]="'event_seat'"
+    [(value)]="passanger"
+  ></app-input-icon>
 </div>
