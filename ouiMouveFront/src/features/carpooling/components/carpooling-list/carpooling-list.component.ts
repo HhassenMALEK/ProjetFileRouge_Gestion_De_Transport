@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CarpoolingCardComponent } from '../carpooling-card/carpooling-card.component';
-import { CarPoolingControllerService } from '../../../../api/api/carPoolingController.service';
-import { CarPoolingResponseDto } from '../../../../api';
+import { CarPoolingControllerService } from '../../../../service/api/carPoolingController.service';
+import { CarPoolingResponseDto } from '../../../../service';
 
 @Component({
   selector: 'app-carpooling-list',

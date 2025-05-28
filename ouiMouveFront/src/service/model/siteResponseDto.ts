@@ -9,9 +9,12 @@
  */
 
 
-export interface SiteCreateDto { 
+export interface SiteResponseDto { 
+    id?: number;
     name?: string;
-    adressId?: number;
-    vehicleIds?: Array<number>;
+    label?: string;
+    city?: string;
+    latX?: number;
+    longY?: number;
 }
 

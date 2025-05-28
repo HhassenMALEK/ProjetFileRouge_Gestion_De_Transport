@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { StatusComponent } from '../../../../shared/components/status/status.component';
-import { CarPoolingResponseDto } from '../../../../api';
+import { CarPoolingResponseDto } from '../../../../service';
 import { MatIconModule } from '@angular/material/icon';
 import { extractDateTime } from '../../../../shared/utils/dateUtils';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -9,7 +9,7 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
   selector: 'app-carpooling-card',
   imports: [StatusComponent, MatIconModule, ButtonComponent],
   templateUrl: './carpooling-card.component.html',
-  styleUrl: './carpooling-card.component.scss'
+  styleUrl: './carpooling-card.component.scss',
 })
 export class CarpoolingCardComponent {
   carpooling = input<CarPoolingResponseDto>();
