@@ -3,3 +3,5 @@
 .idea/
 *.iml
 node_modules
+*.bak
+*.log
