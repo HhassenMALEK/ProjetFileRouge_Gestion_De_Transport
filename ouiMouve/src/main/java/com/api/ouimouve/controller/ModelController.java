@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ModelController {
      * @throws RessourceNotFoundException if no models are found
      */
     @GetMapping("/list")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all models", responses = {
             @ApiResponse(responseCode = "200", description = "List of all models"),
             @ApiResponse(responseCode = "403", description = "Access required"),
