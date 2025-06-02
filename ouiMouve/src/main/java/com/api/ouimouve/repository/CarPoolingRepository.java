@@ -31,7 +31,7 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     SELECT c FROM CarPooling c
     WHERE c.vehicle.id = :vehicleId
     AND c.departure < :end
-    AND c.arrival > :start
+    AND c.departure > :start
 """)
     /**find over lapping carpooling by vehicle
      * @param vehicleId the ID of the vehicle
@@ -58,7 +58,7 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     WHERE c.vehicle.id = :vehicleId 
     AND c.id <> :excludeId 
     AND c.departure < :end 
-    AND c.arrival > :start
+    AND c.departure > :start
 """)
     List<CarPooling> findOverlappingCarPoolingByVehicleExcludingId(
             @Param("vehicleId") Long vehicleId,
@@ -80,7 +80,7 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     WHERE c.organizer.id = :organizerId 
     AND c.id <> :excludeId 
     AND c.departure < :end 
-    AND c.arrival > :start
+    AND c.departure > :start
 """)
     List<CarPooling> findOverlappingCarPoolingByOrganizer(
             @Param("organizerId") Long organizerId,
