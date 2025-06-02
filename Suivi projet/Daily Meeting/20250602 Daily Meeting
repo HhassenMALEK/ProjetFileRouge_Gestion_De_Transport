@@ -19,7 +19,7 @@
 - [] Front : calcul de durée des trajets carpooling - appel externe 
 - [] Cooriger bugs remonter par SonarQube
 - [] Passer des tests Squash
-
+- [] ajouter un traitement batch qui passe les covoiturages à terminés 
 - [] génération de la javadoc
 
 
