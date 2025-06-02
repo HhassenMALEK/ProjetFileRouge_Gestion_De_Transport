@@ -1,5 +1,6 @@
 package com.api.ouimouve.bo;
 
+import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -24,10 +25,6 @@ public class CarPooling {
     /** The date and time when the carpooling is scheduled to start. */
     @NotNull
     private Date departure;
-
-    /** The date and time when the carpooling is scheduled to arrive. */
-    @NotNull
-    private Date arrival;
 
     /** The status of the carpooling (e.g., PENDING, VALIDATED, CANCELLED). */
     @NotNull
@@ -65,4 +62,11 @@ public class CarPooling {
     /** Users who participate as passengers in the carpooling. */
     @OneToMany(mappedBy = "carPooling")
     private List<CarPoolingReservations> reservations;
+
+    /** Maximum number of passengers allowed in the carpooling. */
+    public Long getNbSeatAvailable() {
+        return vehicle.getSeats() - 1 - reservations.stream()
+                .filter(reservation -> reservation.getStatus() != CarPoolingReservationStatus.CANCELLED)
+                .count();
+    }
 }

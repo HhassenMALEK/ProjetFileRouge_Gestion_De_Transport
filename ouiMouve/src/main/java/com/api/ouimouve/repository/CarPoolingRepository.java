@@ -99,7 +99,8 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     SELECT c FROM CarPooling c
     WHERE (:organizerId IS NULL OR c.organizer.id = :organizerId)
     AND (:status IS NULL OR c.status = :status)
-   AND (:startDate IS NULL OR c.departure >= :startDate)
+    AND (:startDate IS NULL OR c.departure >= :startDate)
+    AND (:endDate IS NULL OR c.departure <= :endDate)
     AND (:departureSiteId IS NULL OR c.departureSite.id= :departureSiteId)
     AND (:destinationSiteId IS NULL OR c.destinationSite.id = :destinationSiteId)
     AND (:vehicleId IS NULL OR c.vehicle.id = :vehicleId)
@@ -108,6 +109,7 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("organizerId") Long organizerId,
             @Param("status") CarPoolingStatus status,
             @Param("startDate") Date startDate,
+            @Param("endDate") Date endDate,
             @Param("departureSiteId") Long departureSiteId,
             @Param("destinationSiteId") Long destinationSiteId,
             @Param("vehicleId") Long vehicleId
