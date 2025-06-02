@@ -20,8 +20,6 @@ import { Observable }                                        from 'rxjs';
 import { CarPoolingCreateDto } from '../model/carPoolingCreateDto';
 // @ts-ignore
 import { CarPoolingResponseDto } from '../model/carPoolingResponseDto';
-// @ts-ignore
-import { SiteResponseDto } from '../model/siteResponseDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -164,16 +162,18 @@ export class CarPoolingControllerService extends BaseService {
      * @param organizerId 
      * @param status 
      * @param startDate 
-     * @param siteDeparture 
-     * @param siteDestination 
+     * @param endDate 
+     * @param nameDeparture 
+     * @param nameDestination 
      * @param vehicleId 
+     * @param capacity 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, siteDeparture?: SiteResponseDto, siteDestination?: SiteResponseDto, vehicleId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<CarPoolingResponseDto>>;
-    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, siteDeparture?: SiteResponseDto, siteDestination?: SiteResponseDto, vehicleId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CarPoolingResponseDto>>>;
-    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, siteDeparture?: SiteResponseDto, siteDestination?: SiteResponseDto, vehicleId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CarPoolingResponseDto>>>;
-    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, siteDeparture?: SiteResponseDto, siteDestination?: SiteResponseDto, vehicleId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<CarPoolingResponseDto>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CarPoolingResponseDto>>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CarPoolingResponseDto>>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -183,11 +183,15 @@ export class CarPoolingControllerService extends BaseService {
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>startDate, 'startDate');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>siteDeparture, 'siteDeparture');
+          <any>endDate, 'endDate');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-          <any>siteDestination, 'siteDestination');
+          <any>nameDeparture, 'nameDeparture');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>nameDestination, 'nameDestination');
         localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
           <any>vehicleId, 'vehicleId');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>capacity, 'capacity');
 
         let localVarHeaders = this.defaultHeaders;
 

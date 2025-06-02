@@ -32,7 +32,7 @@ export class LoginFormComponent {
         next: (response: any) => {
           if (response && response.token) {
             this.tokenService.saveToken(response.token);
-            this.router.navigate(['/search']); // Navigate to the home page after login
+            this.router.navigate(['/search/covoit']); // Navigate to the home page after login
           }
         },
         error: (error: any) => {
