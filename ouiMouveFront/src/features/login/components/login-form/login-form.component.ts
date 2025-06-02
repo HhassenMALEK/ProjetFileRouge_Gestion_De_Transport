@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthControllerService } from '../../../../api';
+import { AuthControllerService } from '../../../../service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { TokenService } from '../../../../shared/service/token.service';
@@ -29,13 +29,13 @@ export class LoginFormComponent {
         { httpHeaderAccept: 'application/json' as any } // options
       )
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
           if (response && response.token) {
             this.tokenService.saveToken(response.token);
             this.router.navigate(['/search']); // Navigate to the home page after login
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           console.error('Login failed:', error);
         },
       });
