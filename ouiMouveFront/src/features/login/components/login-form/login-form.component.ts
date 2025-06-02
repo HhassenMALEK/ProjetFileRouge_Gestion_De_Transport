@@ -1,9 +1,9 @@
 import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthControllerService } from '../../../../api';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
-import { AuthControllerService } from '../../../../api';
-import { AuthService } from '../../../../shared/service/auth.service';
-import { Router } from '@angular/router';
+import { TokenService } from '../../../../shared/service/token.service';
 
 @Component({
   selector: 'app-login-form',
@@ -15,7 +15,7 @@ export class LoginFormComponent {
   email = 'admin@ouimouve.fr';
   password = 'test';
   private authApiService = inject(AuthControllerService);
-  private authService = inject(AuthService);
+  private tokenService = inject(TokenService);
   private router = inject(Router);
   onSubmit() {
     this.authApiService
@@ -31,7 +31,7 @@ export class LoginFormComponent {
       .subscribe({
         next: (response) => {
           if (response && response.token) {
-            this.authService.saveToken(response.token);
+            this.tokenService.saveToken(response.token);
             this.router.navigate(['/search']); // Navigate to the home page after login
           }
         },
