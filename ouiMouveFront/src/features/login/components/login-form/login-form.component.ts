@@ -2,6 +2,8 @@ import { Component, inject } from '@angular/core';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { AuthControllerService } from '../../../../api';
+import { AuthService } from '../../../../shared/service/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login-form',
@@ -10,19 +12,28 @@ import { AuthControllerService } from '../../../../api';
   styleUrl: './login-form.component.scss',
 })
 export class LoginFormComponent {
-  email = '';
-  password = '';
-  private authService = inject(AuthControllerService);
-  
+  email = 'admin@ouimouve.fr';
+  password = 'test';
+  private authApiService = inject(AuthControllerService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
   onSubmit() {
-    this.authService
-      .login({
-        email: this.email,
-        password: this.password,
-      })
+    this.authApiService
+      .login(
+        {
+          email: this.email,
+          password: this.password,
+        },
+        'body',
+        false, // reportProgress (assuming this is the next parameter, defaults to false)
+        { httpHeaderAccept: 'application/json' as any } // options
+      )
       .subscribe({
         next: (response) => {
-          console.log('Login successful:', response);
+          if (response && response.token) {
+            this.authService.saveToken(response.token);
+            this.router.navigate(['/search']); // Navigate to the home page after login
+          }
         },
         error: (error) => {
           console.error('Login failed:', error);
