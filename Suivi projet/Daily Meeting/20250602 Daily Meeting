@@ -1,0 +1,29 @@
+# Daily Meeting Template du 02 Juin
+
+## Réalisé
+-[] 
+
+  
+## À Faire 
+- [] Front finir écran liste des CarPoolings
+- [] Back CarPooling revoir la recherche - recherche d'un covoit entre deux dates mais covoit n'a qu'une date de départ 
+- [] Back : Implementer les envois de mails
+- [] Back : RAF sur dev VéhService
+			○ Filtre véhicules disponibles sur site /date début/date de fin -> API à créer
+			○ Liste de l'ensemble des véhicules de services filtrés (ou pas) par statut, Site, modèle
+- [] Front : Login effectif ?
+- [] Controle Back : 
+      vérifier que l'utilisateur ne puisse pas modifier les covoiturage, véhicule,.. qui ne lui appartienent pas 
+- [] Front : calcul de durée des trajets carpooling - appel externe 
+- [] Cooriger bugs remonter par SonarQube 
+-[Hassen] Diagrammesont ils à jour ?
+- [] génération de la javadoc
+
+
+## Autres Points
+- [] 
+ -[]
+ -[]
+ -[]
+
+# Esprit du jour de l'équipe
