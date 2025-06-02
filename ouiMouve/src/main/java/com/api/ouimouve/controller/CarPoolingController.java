@@ -89,7 +89,7 @@ public class CarPoolingController {
     public List<CarPoolingResponseDto> filterByCriteria(
             @RequestParam(required = false) Long organizerId,
             @RequestParam(required = false) CarPoolingStatus status,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)Date startDate,
+            @RequestParam(required = false) String startDate,
             @RequestParam(required = false) SiteResponseDto siteDeparture,
             @RequestParam(required = false) SiteResponseDto siteDestination,
             @RequestParam(required = false) Long vehicleId

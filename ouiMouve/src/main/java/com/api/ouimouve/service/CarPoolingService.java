@@ -11,9 +11,12 @@ import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.CarPoolingMapper;
 import com.api.ouimouve.repository.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
@@ -24,6 +27,7 @@ import java.util.stream.Collectors;
  * Service class for managing carpooling operations.
  * Provides methods to create, update, delete, and retrieve carpooling information.
  */
+@Slf4j
 @Service
 public class CarPoolingService {
     /**
@@ -166,24 +170,23 @@ public class CarPoolingService {
     public List<CarPoolingResponseDto> getCarPoolingByFilter(
             Long organizerId,
             CarPoolingStatus status,
-            Date startDate,
+            String startDate,
             SiteResponseDto departureSite,
             SiteResponseDto destinationSite,
             Long vehicleId
     ) {
+        Date date = null;
         if (startDate != null ) {
-            startDate = truncateToStartOfDay(startDate);
-
-        } else if (startDate != null ) {
-            startDate = truncateToStartOfDay(startDate);
+            LocalDate localDate = LocalDate.parse(startDate);
+            date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            log.info(date.toString());
         }
-
         Long departureId = null;
         if (departureSite != null) departureId = departureSite.getId();
         Long destinationId = null;
         if (destinationSite != null) departureId = destinationSite.getId();
 
-        return carPoolingRepository.filterCarpoolings(organizerId, status, startDate, departureId, destinationId, vehicleId)
+        return carPoolingRepository.filterCarpoolings(organizerId, status, date, departureId, destinationId, vehicleId)
                 .stream()
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());

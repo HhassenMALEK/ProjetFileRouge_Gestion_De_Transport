@@ -20,7 +20,6 @@ import java.util.Optional;
  */
 @Repository
 public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
-
     /**
      * Finds overlapping carpoolings for a given vehicle.
      * @param vehicleId the ID of the vehicle
