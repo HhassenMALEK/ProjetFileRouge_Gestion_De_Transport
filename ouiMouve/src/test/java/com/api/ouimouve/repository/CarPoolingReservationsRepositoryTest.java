@@ -77,7 +77,6 @@ public class CarPoolingReservationsRepositoryTest {
 
         carPooling1 = new CarPooling();
         carPooling1.setDeparture(new Date());
-        carPooling1.setArrival(new Date());
         carPooling1.setDepartureSite(adress1);
         carPooling1.setDestinationSite(adress2);
         carPooling1.setDistance(450);
@@ -89,7 +88,6 @@ public class CarPoolingReservationsRepositoryTest {
 
         carPooling2 = new CarPooling();
         carPooling2.setDeparture(new Date());
-        carPooling2.setArrival(new Date());
         carPooling2.setDepartureSite(adress1);
         carPooling2.setDestinationSite(adress2);carPooling2.setDistance(200);
         carPooling2.setDurationInMinutes(120);
