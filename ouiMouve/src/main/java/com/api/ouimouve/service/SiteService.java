@@ -110,10 +110,9 @@ public class SiteService {
         /**
          * Checks if the site is referenced by any carPooling departure or destination.
          */
-        boolean siteUsedByCarPooling = carPoolingService.getCarPoolingByFilter(null, null,null,
-                siteMapper.toSiteResponseDto(site),null,null).isEmpty() &&
+        boolean siteUsedByCarPooling = carPoolingService.getCarPoolingByFilter(null, null,null,null, site.getName(),null, null, null).isEmpty() &&
                 carPoolingService.getCarPoolingByFilter(null, null,null,
-                        null,siteMapper.toSiteResponseDto(site),null).isEmpty();
+                        null,null,site.getName(), null, null).isEmpty();
         if (!siteUsedByCarPooling) {
             throw new InvalidRessourceException("Impossible de supprimer ce site : un ou plusieurs covoiturages le référence");
         }

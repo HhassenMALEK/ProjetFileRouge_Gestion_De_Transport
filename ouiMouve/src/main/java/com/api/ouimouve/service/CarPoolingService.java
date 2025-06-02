@@ -119,7 +119,6 @@ public class CarPoolingService {
 
         // Mise à jour des propriétés de base
         entity.setDeparture(dto.getDeparture());
-        entity.setArrival(dto.getArrival());
         entity.setStatus(dto.getStatus());
         entity.setDurationInMinutes(dto.getDurationInMinutes());
         entity.setDistance(dto.getDistance());
@@ -171,23 +170,41 @@ public class CarPoolingService {
             Long organizerId,
             CarPoolingStatus status,
             String startDate,
-            SiteResponseDto departureSite,
-            SiteResponseDto destinationSite,
-            Long vehicleId
+            String endDate,
+            String nameDeparture,
+            String nameDestination,
+            Long vehicleId,
+            Integer capacity
     ) {
-        Date date = null;
+        Date dateBegin = null;
         if (startDate != null ) {
             LocalDate localDate = LocalDate.parse(startDate);
-            date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            log.info(date.toString());
+            dateBegin = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
-        Long departureId = null;
-        if (departureSite != null) departureId = departureSite.getId();
-        Long destinationId = null;
-        if (destinationSite != null) departureId = destinationSite.getId();
+        Date dateFinal = null;
+        if (endDate != null) {
+            LocalDate localDate = LocalDate.parse(endDate);
+            Date dateAtStartOfDay = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            dateFinal = toEndOfDay(dateAtStartOfDay);
+        }
 
-        return carPoolingRepository.filterCarpoolings(organizerId, status, date, departureId, destinationId, vehicleId)
+        Site departureSite = null;
+        if(nameDeparture != null){
+            departureSite = siteRepository.findByName(nameDeparture)
+                    .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable : " + nameDeparture));
+        }
+
+        Site destinationSite = null;
+        if(nameDestination != null){
+            destinationSite = siteRepository.findByName(nameDestination)
+                    .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable : " + nameDestination));
+        }
+
+
+
+        return carPoolingRepository.filterCarpoolings(organizerId, status, dateBegin, dateFinal, departureSite.getId(), destinationSite.getId(), vehicleId)
                 .stream()
+                .filter(carpooling -> capacity == null || carpooling.getNbSeatAvailable() >= capacity)
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
