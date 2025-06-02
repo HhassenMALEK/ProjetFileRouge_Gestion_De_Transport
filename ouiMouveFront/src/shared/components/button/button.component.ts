@@ -8,7 +8,7 @@ import { CommonModule } from '@angular/common';
 })
 export class ButtonComponent {
   label = input<string>('');
-  isDisabled = signal(false);
+  isDisabled = input(false);
   color = input<string>('');
   onClick = output<void>();
 }

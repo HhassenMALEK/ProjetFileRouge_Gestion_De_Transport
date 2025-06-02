@@ -16,8 +16,8 @@ export interface CarPoolingCreateDto {
     status?: CarPoolingCreateDto.StatusEnum;
     durationInMinutes?: number;
     distance?: number;
-    departureAddressId?: number;
-    destinationAddressId?: number;
+    departureSiteId?: number;
+    destinationSiteId?: number;
     vehicleId?: number;
     organizerId?: number;
 }

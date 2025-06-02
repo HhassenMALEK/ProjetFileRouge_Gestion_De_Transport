@@ -17,7 +17,9 @@ import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
 // @ts-ignore
-import { AdressDto } from '../model/adressDto';
+import { CarPoolingCreateDto } from '../model/carPoolingCreateDto';
+// @ts-ignore
+import { CarPoolingResponseDto } from '../model/carPoolingResponseDto';
 
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -29,23 +31,23 @@ import { BaseService } from '../api.base.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AdressControllerService extends BaseService {
+export class CarPoolingControllerService extends BaseService {
 
     constructor(protected httpClient: HttpClient, @Optional() @Inject(BASE_PATH) basePath: string|string[], @Optional() configuration?: Configuration) {
         super(basePath, configuration);
     }
 
     /**
-     * @param adressDto 
+     * @param carPoolingCreateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public createAdress(adressDto: AdressDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public createAdress(adressDto: AdressDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public createAdress(adressDto: AdressDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public createAdress(adressDto: AdressDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (adressDto === null || adressDto === undefined) {
-            throw new Error('Required parameter adressDto was null or undefined when calling createAdress.');
+    public createCarPooling(carPoolingCreateDto: CarPoolingCreateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<CarPoolingResponseDto>;
+    public createCarPooling(carPoolingCreateDto: CarPoolingCreateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CarPoolingResponseDto>>;
+    public createCarPooling(carPoolingCreateDto: CarPoolingCreateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CarPoolingResponseDto>>;
+    public createCarPooling(carPoolingCreateDto: CarPoolingCreateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+        if (carPoolingCreateDto === null || carPoolingCreateDto === undefined) {
+            throw new Error('Required parameter carPoolingCreateDto was null or undefined when calling createCarPooling.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -85,12 +87,12 @@ export class AdressControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/adress `;
+        let localVarPath = `/api/carpooling`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('post', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CarPoolingResponseDto>('post', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: adressDto,
+                body: carPoolingCreateDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,
@@ -106,13 +108,90 @@ export class AdressControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public deleteAdress(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public deleteAdress(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public deleteAdress(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public deleteAdress(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public deleteCarPooling(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any>;
+    public deleteCarPooling(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<any>>;
+    public deleteCarPooling(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<any>>;
+    public deleteCarPooling(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: undefined, context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling deleteAdress.');
+            throw new Error('Required parameter id was null or undefined when calling deleteCarPooling.');
         }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (bearerAuth) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('bearerAuth', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/carpooling/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<any>('delete', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param organizerId 
+     * @param status 
+     * @param startDate 
+     * @param endDate 
+     * @param nameDeparture 
+     * @param nameDestination 
+     * @param vehicleId 
+     * @param capacity 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<CarPoolingResponseDto>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CarPoolingResponseDto>>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CarPoolingResponseDto>>>;
+    public filterByCriteria(organizerId?: number, status?: 'IN_PROGRESS' | 'FINISHED' | 'CANCELLED' | 'BOOKING_OPEN' | 'BOOKING_FULL', startDate?: string, endDate?: string, nameDeparture?: string, nameDestination?: string, vehicleId?: number, capacity?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>organizerId, 'organizerId');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>status, 'status');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>startDate, 'startDate');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>endDate, 'endDate');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>nameDeparture, 'nameDeparture');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>nameDestination, 'nameDestination');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>vehicleId, 'vehicleId');
+        localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+          <any>capacity, 'capacity');
 
         let localVarHeaders = this.defaultHeaders;
 
@@ -142,9 +221,62 @@ export class AdressControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/adress /${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/carpooling/filter`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('delete', `${basePath}${localVarPath}`,
+        return this.httpClient.request<Array<CarPoolingResponseDto>>('get', `${basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                ...(withCredentials ? { withCredentials } : {}),
+                headers: localVarHeaders,
+                observe: observe,
+                transferCache: localVarTransferCache,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getAll(observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<Array<CarPoolingResponseDto>>;
+    public getAll(observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<Array<CarPoolingResponseDto>>>;
+    public getAll(observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<Array<CarPoolingResponseDto>>>;
+    public getAll(observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+
+        let localVarHeaders = this.defaultHeaders;
+
+        // authentication (bearerAuth) required
+        localVarHeaders = this.configuration.addCredentialToHeaders('bearerAuth', 'Authorization', localVarHeaders, 'Bearer ');
+
+        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
+            '*/*'
+        ]);
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
+
+        const localVarTransferCache: boolean = options?.transferCache ?? true;
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/carpooling/list`;
+        const { basePath, withCredentials } = this.configuration;
+        return this.httpClient.request<Array<CarPoolingResponseDto>>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -162,12 +294,12 @@ export class AdressControllerService extends BaseService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public getAdressById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public getAdressById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public getAdressById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public getAdressById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public getById(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<CarPoolingResponseDto>;
+    public getById(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CarPoolingResponseDto>>;
+    public getById(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CarPoolingResponseDto>>;
+    public getById(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling getAdressById.');
+            throw new Error('Required parameter id was null or undefined when calling getById.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -198,129 +330,9 @@ export class AdressControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/adress /${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/carpooling/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('get', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param label 
-     * @param city 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAdressByLabelAndCity(label: string, city: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public getAdressByLabelAndCity(label: string, city: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public getAdressByLabelAndCity(label: string, city: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public getAdressByLabelAndCity(label: string, city: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (label === null || label === undefined) {
-            throw new Error('Required parameter label was null or undefined when calling getAdressByLabelAndCity.');
-        }
-        if (city === null || city === undefined) {
-            throw new Error('Required parameter city was null or undefined when calling getAdressByLabelAndCity.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (bearerAuth) required
-        localVarHeaders = this.configuration.addCredentialToHeaders('bearerAuth', 'Authorization', localVarHeaders, 'Bearer ');
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/adress /${this.configuration.encodeParam({name: "label", value: label, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}/${this.configuration.encodeParam({name: "city", value: city, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('get', `${basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                responseType: <any>responseType_,
-                ...(withCredentials ? { withCredentials } : {}),
-                headers: localVarHeaders,
-                observe: observe,
-                transferCache: localVarTransferCache,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
-     * @param latX 
-     * @param longY 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public getAdressByLatAndLong(latX: number, longY: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public getAdressByLatAndLong(latX: number, longY: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public getAdressByLatAndLong(latX: number, longY: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public getAdressByLatAndLong(latX: number, longY: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
-        if (latX === null || latX === undefined) {
-            throw new Error('Required parameter latX was null or undefined when calling getAdressByLatAndLong.');
-        }
-        if (longY === null || longY === undefined) {
-            throw new Error('Required parameter longY was null or undefined when calling getAdressByLatAndLong.');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        // authentication (bearerAuth) required
-        localVarHeaders = this.configuration.addCredentialToHeaders('bearerAuth', 'Authorization', localVarHeaders, 'Bearer ');
-
-        const localVarHttpHeaderAcceptSelected: string | undefined = options?.httpHeaderAccept ?? this.configuration.selectHeaderAccept([
-            '*/*'
-        ]);
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        const localVarHttpContext: HttpContext = options?.context ?? new HttpContext();
-
-        const localVarTransferCache: boolean = options?.transferCache ?? true;
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/adress /${this.configuration.encodeParam({name: "latX", value: latX, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "float"})}/${this.configuration.encodeParam({name: "longY", value: longY, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "float"})}`;
-        const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('get', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CarPoolingResponseDto>('get', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 responseType: <any>responseType_,
@@ -335,19 +347,19 @@ export class AdressControllerService extends BaseService {
 
     /**
      * @param id 
-     * @param adressDto 
+     * @param carPoolingCreateDto 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public updateAdress(id: number, adressDto: AdressDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<AdressDto>;
-    public updateAdress(id: number, adressDto: AdressDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<AdressDto>>;
-    public updateAdress(id: number, adressDto: AdressDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<AdressDto>>;
-    public updateAdress(id: number, adressDto: AdressDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
+    public updateCarPooling(id: number, carPoolingCreateDto: CarPoolingCreateDto, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<CarPoolingResponseDto>;
+    public updateCarPooling(id: number, carPoolingCreateDto: CarPoolingCreateDto, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpResponse<CarPoolingResponseDto>>;
+    public updateCarPooling(id: number, carPoolingCreateDto: CarPoolingCreateDto, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<HttpEvent<CarPoolingResponseDto>>;
+    public updateCarPooling(id: number, carPoolingCreateDto: CarPoolingCreateDto, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: '*/*', context?: HttpContext, transferCache?: boolean}): Observable<any> {
         if (id === null || id === undefined) {
-            throw new Error('Required parameter id was null or undefined when calling updateAdress.');
+            throw new Error('Required parameter id was null or undefined when calling updateCarPooling.');
         }
-        if (adressDto === null || adressDto === undefined) {
-            throw new Error('Required parameter adressDto was null or undefined when calling updateAdress.');
+        if (carPoolingCreateDto === null || carPoolingCreateDto === undefined) {
+            throw new Error('Required parameter carPoolingCreateDto was null or undefined when calling updateCarPooling.');
         }
 
         let localVarHeaders = this.defaultHeaders;
@@ -387,12 +399,12 @@ export class AdressControllerService extends BaseService {
             }
         }
 
-        let localVarPath = `/api/adress /${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
+        let localVarPath = `/api/carpooling/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int64"})}`;
         const { basePath, withCredentials } = this.configuration;
-        return this.httpClient.request<AdressDto>('patch', `${basePath}${localVarPath}`,
+        return this.httpClient.request<CarPoolingResponseDto>('patch', `${basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
-                body: adressDto,
+                body: carPoolingCreateDto,
                 responseType: <any>responseType_,
                 ...(withCredentials ? { withCredentials } : {}),
                 headers: localVarHeaders,

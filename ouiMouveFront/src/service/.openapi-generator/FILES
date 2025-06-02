@@ -1,9 +1,7 @@
 .gitignore
-.openapi-generator-ignore
 README.md
 api.base.service.ts
 api.module.ts
-api/adressController.service.ts
 api/api.ts
 api/authController.service.ts
 api/carPoolingController.service.ts
@@ -19,7 +17,6 @@ configuration.ts
 encoder.ts
 git_push.sh
 index.ts
-model/adressDto.ts
 model/authResponse.ts
 model/carPoolingCreateDto.ts
 model/carPoolingReservationsCreateDTO.ts
