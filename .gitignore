@@ -1,8 +1,7 @@
-Diagrammes/
-Suivi projet/
-
 
 # IntelliJ
 .idea/
 *.iml
 node_modules
+*.bak
+*.log
