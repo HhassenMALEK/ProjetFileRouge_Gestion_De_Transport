@@ -1,13 +1,11 @@
-# Daily Meeting Template du 02 Juin
+# Daily Meeting Template du 03 Juin
 
 ## Réalisé
 -[Hassen] Diagrammes ont été remis à jour 
 
   
 ## À Faire 
-- [Ensemble] Front finir écran liste des CarPoolings
-- [Ensemble] Back CarPooling revoir la recherche - recherche d'un covoit entre deux dates mais covoit n'a qu'une date de départ 
-- [Ensemble] Front : Login effectif ?
+- [] Login pb du local storage
 
 - [] Back : Implementer les envois de mails
 - [] Back : RAF sur dev VéhService
@@ -21,6 +19,12 @@
 - [] Passer des tests Squash
 - [] ajouter un traitement batch qui passe les covoiturages à terminés 
 - [] génération de la javadoc
+
+
+- [Mathis] Liste des covoturages réservées toute la ligne + Carroussel véhisule service
+- [Hassen] Création/modification du covoiturage
+- [Joseph] ajouter un traitement batch qui passe les covoiturages à terminés 
+- [Sebastien] CRUD sur Véhicule de service
 
 
 ## Autres Points
