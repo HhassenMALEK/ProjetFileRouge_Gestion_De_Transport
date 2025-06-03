@@ -18,8 +18,8 @@ import { RouterModule, Router } from '@angular/router';
 export class SearchBarComponent {
   activeOngletIndex: number = 0;
   router = inject(Router);
+
   handleOnglet(index: number) {
     this.activeOngletIndex = index;
-    this.router.navigate(['/search/covoit']);
   }
 }

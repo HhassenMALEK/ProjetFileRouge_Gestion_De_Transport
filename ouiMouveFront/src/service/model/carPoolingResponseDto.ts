@@ -7,7 +7,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AdressDto } from './adressDto';
+import { SiteResponseDto } from './siteResponseDto';
 
 
 export interface CarPoolingResponseDto { 
@@ -17,9 +17,10 @@ export interface CarPoolingResponseDto {
     status?: CarPoolingResponseDto.StatusEnum;
     durationInMinutes?: number;
     distance?: number;
-    departureAddress?: AdressDto;
-    destinationAddress?: AdressDto;
+    departureSite?: SiteResponseDto;
+    destinationSite?: SiteResponseDto;
     organizerId?: number;
+    participantCount?: number;
 }
 export namespace CarPoolingResponseDto {
     export const StatusEnum = {

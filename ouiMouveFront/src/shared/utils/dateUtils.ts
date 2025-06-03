@@ -1,10 +1,13 @@
+import { DatePipe } from '@angular/common';
 /**
  * Extrait la date et l'heure d'une chaîne de caractères de date.
  * @param dateString La chaîne de caractères de date à analyser (par exemple, "2024-05-27T10:30:00").
- * @returns Un objet avec les propriétés `date` (format JJ/MM/AAAA) et `time` (format HH:mm), 
+ * @returns Un objet avec les propriétés `date` (format JJ/MM/AAAA) et `time` (format HH:mm),
  *          ou null si la chaîne de date est invalide.
  */
-export function extractDateTime(dateString?: string): { date: string; time: string } | null {
+export function extractDateTime(
+  dateString?: string
+): { date: string; time: string } | null {
   if (!dateString) {
     return null;
   }

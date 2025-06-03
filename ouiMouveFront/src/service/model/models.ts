@@ -1,4 +1,3 @@
-export * from './adressDto';
 export * from './authResponse';
 export * from './carPoolingCreateDto';
 export * from './carPoolingReservationsCreateDTO';
