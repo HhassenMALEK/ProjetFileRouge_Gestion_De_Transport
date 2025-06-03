@@ -7,6 +7,7 @@ import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.utils.Email;
+import com.api.ouimouve.utils.DateUtils;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.CarPoolingMapper;
 import com.api.ouimouve.repository.*;
@@ -154,20 +155,6 @@ public class CarPoolingService {
     }
 
     /**
-     * Converts the given date to the end of the day (23:59:59).
-     * @param date the original date
-     * @return a new Date object set to 23:59:59 of the same day
-     */
-    private Date toEndOfDay(Date date) {
-        return Date.from(date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate()
-                .atTime(23, 59, 59)
-                .atZone(ZoneId.systemDefault())
-                .toInstant());
-    }
-
-    /**
      * Filters carpoolings based on optional criteria.
      * @param organizerId the ID of the organizer (optional)
      * @param status the status of the carpooling (optional)
@@ -194,7 +181,7 @@ public class CarPoolingService {
         if (endDate != null) {
             LocalDate localDate = LocalDate.parse(endDate);
             Date dateAtStartOfDay = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            dateFinal = toEndOfDay(dateAtStartOfDay);
+            dateFinal = DateUtils.toEndOfDay(dateAtStartOfDay);
         }
         Site departureSite = null;
         if(nameDeparture != null){
