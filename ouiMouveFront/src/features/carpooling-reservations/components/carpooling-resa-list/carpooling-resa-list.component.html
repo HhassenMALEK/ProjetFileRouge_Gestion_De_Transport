@@ -1,0 +1,15 @@
+<section>
+  @if (reservations && reservations.length === 0) {
+  <div class="text-center">
+    <p class="text-muted">No reservations found.</p>
+  </div>
+  } @else if (reservations) {
+  <div class="list-group">
+    @for (reservation of reservations; track reservation.id) {
+    <app-carpooling-resa-item
+      [reservation]="reservation"
+    ></app-carpooling-resa-item>
+    }
+  </div>
+  }
+</section>

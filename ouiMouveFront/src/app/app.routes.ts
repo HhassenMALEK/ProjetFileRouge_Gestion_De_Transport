@@ -25,4 +25,18 @@ export const routes: Routes = [
       },
     ],
   },
+  {
+    path: 'carpooling-reservation',
+    loadComponent: () =>
+      import(
+        '../features/carpooling-reservations/components/carpooling-resa-list/carpooling-resa-list.component'
+      ).then((m) => m.CarpoolingResaListComponent),
+  },
+  {
+    path: 'carpooling-reservation/details/:id',
+    loadComponent: () =>
+      import(
+        '../features/carpooling-reservations/components/carpooling-resa-detail/carpooling-resa-detail.component'
+      ).then((m) => m.CarpoolingResaDetailComponent),
+  },
 ];
