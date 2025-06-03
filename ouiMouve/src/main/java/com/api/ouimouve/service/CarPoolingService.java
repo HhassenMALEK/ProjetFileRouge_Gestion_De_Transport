@@ -99,7 +99,7 @@ public class CarPoolingService {
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
         carPoolingValidator.validate(dto, null);
         CarPooling carPooling = carPoolingMapper.toEntity(dto);
-        populateEntityReferences(carPooling, dto);
+        carPoolingValidator.checkInput(carPooling, dto);
         CarPooling saved = carPoolingRepository.save(carPooling);
         //send an email alert to the organizer
         email.sendAlert(
@@ -124,7 +124,7 @@ public class CarPoolingService {
         entity.setStatus(dto.getStatus());
         entity.setDurationInMinutes(dto.getDurationInMinutes());
         entity.setDistance(dto.getDistance());
-        populateEntityReferences(entity, dto);
+        carPoolingValidator.checkInput(entity, dto);
         CarPooling updated = carPoolingRepository.save(entity);
         // Send an email alert
         email.sendAlert(
@@ -212,25 +212,6 @@ public class CarPoolingService {
                 .filter(carpooling -> capacity == null || carpooling.getNbSeatAvailable() >= capacity)
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
-    }
-
-    /**
-     * Populates entity references from a DTO.
-     * @param entity the entity to populate
-     * @param dto the source DTO
-     */
-    private void populateEntityReferences(CarPooling entity, CarPoolingCreateDto dto) {
-        entity.setDepartureSite(siteRepository.findById(dto.getDepartureSiteId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
-
-        entity.setDestinationSite(siteRepository.findById(dto.getDestinationSiteId())
-                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
-
-        entity.setVehicle(vehicleRepository.findById(dto.getVehicleId())
-                .orElseThrow(() -> new RessourceNotFoundException("Véhicule introuvable")));
-
-        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
-                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
     }
 
 }

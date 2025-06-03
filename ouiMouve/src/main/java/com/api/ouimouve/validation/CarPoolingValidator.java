@@ -3,7 +3,11 @@ package com.api.ouimouve.validation;
 import com.api.ouimouve.bo.CarPooling;
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
+import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.repository.CarPoolingRepository;
+import com.api.ouimouve.repository.SiteRepository;
+import com.api.ouimouve.repository.UserRepository;
+import com.api.ouimouve.repository.VehicleRepository;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -14,10 +18,22 @@ import java.util.List;
 @Component
 public class CarPoolingValidator {
     private final CarPoolingRepository carPoolingRepository;
+    private final SiteRepository siteRepository;
+    private final VehicleRepository vehicleRepository;
+    private final UserRepository userRepository;
 
-    public CarPoolingValidator(CarPoolingRepository carPoolingRepository) {
+
+    public CarPoolingValidator(
+            CarPoolingRepository carPoolingRepository,
+            SiteRepository siteRepository,
+            VehicleRepository vehicleRepository,
+            UserRepository userRepository){
         this.carPoolingRepository = carPoolingRepository;
-    }
+        this.siteRepository = siteRepository;
+        this.vehicleRepository = vehicleRepository;
+        this.userRepository = userRepository;
+
+        }
 
     /**
      * Validates all aspects of a carpooling entry.
@@ -29,6 +45,24 @@ public class CarPoolingValidator {
         validateDateLogic(dto);
         validateDateAndTime(dto.getDeparture());
         checkOverlaps(dto.getVehicleId(), dto.getOrganizerId(), dto.getDeparture(), dto.getArrival(), excludeId);
+    }
+    /**
+     * Populates entity references from a DTO.
+     * @param entity the entity to populate
+     * @param dto the source DTO
+     */
+    public void checkInput(CarPooling entity, CarPoolingCreateDto dto) {
+        entity.setDepartureSite(siteRepository.findById(dto.getDepartureSiteId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable")));
+
+        entity.setDestinationSite(siteRepository.findById(dto.getDestinationSiteId())
+                .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable")));
+
+        entity.setVehicle(vehicleRepository.findById(dto.getVehicleId())
+                .orElseThrow(() -> new RessourceNotFoundException("Véhicule introuvable")));
+
+        entity.setOrganizer(userRepository.findById(dto.getOrganizerId())
+                .orElseThrow(() -> new RessourceNotFoundException("Organisateur introuvable")));
     }
 
     public void checkDeletable(CarPooling carPooling) {
