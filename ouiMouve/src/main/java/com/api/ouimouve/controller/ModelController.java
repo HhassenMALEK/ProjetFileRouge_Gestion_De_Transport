@@ -30,7 +30,7 @@ public class ModelController {
      * @throws RessourceNotFoundException if no models are found
      */
     @GetMapping("/list")
-    @PreAuthorize("hasRole('ADMIN')")
+    //@PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all models", responses = {
             @ApiResponse(responseCode = "200", description = "List of all models"),
             @ApiResponse(responseCode = "403", description = "Access required"),
