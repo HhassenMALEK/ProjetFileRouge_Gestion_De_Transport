@@ -6,10 +6,10 @@ INSERT INTO vehicle_reservation (id, user_id, start, end, status, service_vehicl
 (4, 2, '2023-12-01 08:00:00', '2023-12-01 19:00:00', 'BOOKED', 4);
 
 -- CarPooling
-INSERT INTO car_pooling (id, departure, arrival, status, duration_in_minutes, distance, departure_site_id, destination_site_id, vehicle_id, organizer_id) VALUES
-(1, '2023-11-22 08:00:00', '2023-11-22 09:30:00', 'BOOKING_OPEN', 90, 80, 1, 2, 6, 2),
-(2, '2023-11-23 17:30:00', '2023-11-23 19:00:00', 'BOOKING_OPEN', 90, 80, 2, 1, 6, 2),
-(3, '2023-11-24 07:45:00', '2023-11-24 08:30:00', 'BOOKING_FULL', 45, 30, 4, 5, 7, 2);
+INSERT INTO car_pooling (id, departure, status, duration_in_minutes, distance, departure_site_id, destination_site_id, vehicle_id, organizer_id) VALUES
+(1, '2023-11-22 08:00:00', 'BOOKING_OPEN', 90, 80, 1, 2, 6, 2),
+(2, '2023-11-23 17:30:00', 'BOOKING_OPEN', 90, 80, 2, 1, 6, 2),
+(3, '2023-11-24 07:45:00', 'BOOKING_FULL', 45, 30, 4, 5, 7, 2);
 
 -- CarPoolingReservation
 INSERT INTO car_pooling_reservations (id, date, status, user_id, carpooling_id) VALUES
