@@ -183,22 +183,24 @@ public class CarPoolingService {
             Date dateAtStartOfDay = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
             dateFinal = DateUtils.toEndOfDay(dateAtStartOfDay);
         }
-        Site departureSite = null;
+
+        Long departureSiteId = null;
         if(nameDeparture != null){
-            departureSite = siteRepository.findByName(nameDeparture)
+            Site departureSite = siteRepository.findByName(nameDeparture)
                     .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable : " + nameDeparture));
+            departureSiteId = departureSite.getId();
         }
-        Site destinationSite = null;
+
+        Long destinationSiteId = null;
         if(nameDestination != null){
-            destinationSite = siteRepository.findByName(nameDestination)
+            Site destinationSite = siteRepository.findByName(nameDestination)
                     .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable : " + nameDestination));
+            destinationSiteId = destinationSite.getId();
         }
-        return carPoolingRepository
-                .filterCarpoolings(organizerId, status, dateBegin, dateFinal, departureSite.getId(), destinationSite.getId(), vehicleId)
+        return carPoolingRepository.filterCarpoolings(organizerId, status, dateBegin, dateFinal, departureSiteId, destinationSiteId, vehicleId)
                 .stream()
                 .filter(carpooling -> capacity == null || carpooling.getNbSeatAvailable() >= capacity)
                 .map(carPoolingMapper::toResponseDto)
                 .collect(Collectors.toList());
     }
-
 }
