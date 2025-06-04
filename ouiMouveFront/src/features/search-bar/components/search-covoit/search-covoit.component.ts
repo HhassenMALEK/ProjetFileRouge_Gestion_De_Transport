@@ -38,10 +38,7 @@ export class SearchCovoitComponent implements OnInit {
         this.searchParameters.siteDeparture || undefined,
         this.searchParameters.siteDestination || undefined,
         undefined,
-        this.searchParameters.capacity || undefined,
-        'body',
-        false,
-        { httpHeaderAccept: 'application/json' as any }
+        this.searchParameters.capacity || undefined
       )
       .subscribe({
         next: (response) => {
