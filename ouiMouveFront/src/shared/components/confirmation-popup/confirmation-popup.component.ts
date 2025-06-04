@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, output, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../button/button.component';
 
@@ -12,6 +12,6 @@ import { ButtonComponent } from '../button/button.component';
 export class ConfirmationPopupComponent {
   title = input<string>('Confirmation');
   message = input<string>('Êtes-vous sûr de vouloir continuer ?');
-  onConfirm = input.required<() => void>();
-  onCancel = input.required<() => void>();
+  onConfirm = output<void>();
+  onCancel = output<void>();
 }

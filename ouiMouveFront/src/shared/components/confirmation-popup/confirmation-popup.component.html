@@ -1,4 +1,4 @@
-  <div class="modal-overlay">
+    <div class="modal-overlay">
       <div class="modal-content">
         <h2>{{ title() }}</h2>
         <p>{{ message() }}</p>
@@ -6,12 +6,12 @@
           <app-button
             label="Confirmer"
             color="red"
-            (onClick)="onConfirm()"
+            (onClick)="onConfirm.emit()"
           ></app-button>
           <app-button
             label="Annuler"
             color="gray"
-            (onClick)="onCancel()"
+            (onClick)="onCancel.emit()"
           ></app-button>
         </div>
       </div>

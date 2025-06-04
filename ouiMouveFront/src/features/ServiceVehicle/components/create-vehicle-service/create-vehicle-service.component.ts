@@ -53,10 +53,9 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
 
   vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
-    seats: undefined,
-    status: undefined,
+    seats: 1,
+    status: 'ENABLED',
     modelId: undefined,
-
     siteId: undefined,
   };
 
@@ -115,23 +114,35 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
     this.showConfirmationPopup.set(true);
   }
 
-  confirmSubmit(): void {
+   confirmSubmit = () => {
+    // get nbseats from the model
+    const selectedModel = this.modelDtos.find(
+      (model) => model.id === this.vehicle.modelId
+    );
+    if (selectedModel) {
+      this.vehicle.seats = selectedModel.seatsModel;
+    } else {
+      console.error('Modèle sélectionné non trouvé');
+      return;
+    }
+
     const submitSub = this.serviceVehicleService
       .createServiceVehicle(this.vehicle)
       .subscribe({
         next: (res) => {
           console.log('Véhicule créé avec succès', res);
-          this.router.navigate(['..']); // Retourne à la liste
+          this.showConfirmationPopup.set(false);
+          this.router.navigate(['..']);
         },
-        error: (err) =>
-          console.error('Erreur à la création du véhicule service', err),
+        error: (err) => console.error('Erreur à la création du véhicule service', err),
       });
-
     this.subscriptions.push(submitSub);
-  }
-  cancelSubmit(): void {
+  };
+
+  cancelSubmit = () => {
     this.showConfirmationPopup.set(false);
-  }
+  };
+
 
   onAbort(): void {
     this.router.navigate(['..']);
