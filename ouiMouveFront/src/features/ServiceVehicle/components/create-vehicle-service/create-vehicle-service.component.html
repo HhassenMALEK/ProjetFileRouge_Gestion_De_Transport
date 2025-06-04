@@ -56,3 +56,13 @@
     </div>
   </form>
 </section>
+
+@if (showConfirmationPopup()) {
+  <app-confirmation-modal
+    title="Confirmation de création"
+    message="Êtes-vous sûr de vouloir créer ce véhicule ?"
+    [onConfirm]="confirmSubmit"
+    [onCancel]="cancelSubmit"
+>
+</app-confirmation-modal>
+}

@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit,signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -21,12 +21,13 @@ import { ButtonComponent } from '../../../../shared/components/button/button.com
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
 import { CustomConfiguration } from '../../../../service/custom-configuration';
+import { ConfirmationPopupComponent } from '../../../../shared/components/confirmation-popup/confirmation-popup.component';
 
 @Component({
   selector: 'app-create-vehicle-service',
   templateUrl: './create-vehicle-service.component.html',
   styleUrls: ['./create-vehicle-service.component.scss'],
-  imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule],
+  imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule, ConfirmationPopupComponent],
   providers: [
     { provide: Configuration, useClass: CustomConfiguration }
   ],
@@ -44,6 +45,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   // Données du formulaire
   modelDtos: ModelDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
+  showConfirmationPopup = signal(false);
   vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
     seats: undefined,
@@ -100,6 +102,10 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.showConfirmationPopup.set(true);
+  }
+
+  confirmSubmit(): void {
     const submitSub = this.serviceVehicleService.createServiceVehicle(this.vehicle)
       .subscribe({
         next: (res) => {
@@ -111,8 +117,11 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
 
     this.subscriptions.push(submitSub);
   }
+   cancelSubmit(): void {
+    this.showConfirmationPopup.set(false);
+  }
 
   onAbort(): void {
-    this.router.navigate(['..']); // Retourne à la liste
+    this.router.navigate(['..']); 
   }
 }

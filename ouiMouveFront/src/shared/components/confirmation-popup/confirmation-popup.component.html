@@ -1,0 +1,18 @@
+  <div class="modal-overlay">
+      <div class="modal-content">
+        <h2>{{ title() }}</h2>
+        <p>{{ message() }}</p>
+        <div class="modal-buttons">
+          <app-button
+            label="Confirmer"
+            color="red"
+            (onClick)="onConfirm()"
+          ></app-button>
+          <app-button
+            label="Annuler"
+            color="gray"
+            (onClick)="onCancel()"
+          ></app-button>
+        </div>
+      </div>
+    </div>
