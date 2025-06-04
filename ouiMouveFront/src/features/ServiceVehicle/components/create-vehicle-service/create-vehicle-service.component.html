@@ -28,12 +28,7 @@
       #model="ngModel"
       [required]="true"
     ></app-select>
-    @if (model.invalid && (model.dirty || model.touched)) {
-      <div class="error-message">
-        Le modèle est requis
-      </div>
-    }
-
+    
     <app-select
       [items]="siteCreateDtos"
       [displayAttr]="'name'"
@@ -44,17 +39,12 @@
       #site="ngModel"
       [required]="true"
     ></app-select>
-    @if (site.invalid && (site.dirty || site.touched)) {
-      <div class="error-message">
-        Le site est requis
-      </div>
-    }
-
+    
  
     <div >
       <app-button
         label="Ajouter"
-           [color]="vehicle.immatriculation && vehicle.modelId && vehicle.siteId ? 'red' : 'gray'"
+        [color]="vehicleForm.valid ? 'red' : 'gray'"
         (onClick)="onSubmit()"
         [isDisabled]="!vehicleForm.valid"
       ></app-button>
