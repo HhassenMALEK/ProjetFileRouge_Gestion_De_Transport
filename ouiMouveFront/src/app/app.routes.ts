@@ -4,15 +4,15 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () =>
-      import(
-        '../features/login/components/login-form/login-form.component'
-      ).then((m) => m.LoginFormComponent),
+      import('@features/login/components/login-form/login-form.component').then(
+        (m) => m.LoginFormComponent
+      ),
   },
 
   {
     path: 'search',
     loadComponent: () =>
-      import('../features/search-bar/search-bar.component').then(
+      import('@features/search-bar/search-bar.component').then(
         (m) => m.SearchBarComponent
       ),
     children: [
@@ -20,7 +20,7 @@ export const routes: Routes = [
         path: 'covoit',
         loadComponent: () =>
           import(
-            '../features/carpooling/components/carpooling-list/carpooling-list.component'
+            '@features/carpooling/components/carpooling-list/carpooling-list.component'
           ).then((m) => m.CarpoolingListComponent),
       },
     ],
@@ -28,22 +28,21 @@ export const routes: Routes = [
   {
     path: 'serviceVehicle',
     loadComponent: () =>
-      import('../features/ServiceVehicle/components/create-vehicle-service/create-vehicle-service.component')
-    .then((m) => m.CreateVehicleServiceComponent
-      ),
+      import(
+        '@features/ServiceVehicle/components/create-vehicle-service/create-vehicle-service.component'
+      ).then((m) => m.CreateVehicleServiceComponent),
 
     path: 'carpooling-reservation',
     loadComponent: () =>
       import(
-        '../features/carpooling-reservations/components/carpooling-resa-list/carpooling-resa-list.component'
+        '@features/carpooling-reservations/components/carpooling-resa-list/carpooling-resa-list.component'
       ).then((m) => m.CarpoolingResaListComponent),
   },
   {
     path: 'carpooling-reservation/details/:id',
     loadComponent: () =>
       import(
-        '../features/carpooling-reservations/components/carpooling-resa-detail/carpooling-resa-detail.component'
+        '@features/carpooling-reservations/components/carpooling-resa-detail/carpooling-resa-detail.component'
       ).then((m) => m.CarpoolingResaDetailComponent),
-
   },
 ];

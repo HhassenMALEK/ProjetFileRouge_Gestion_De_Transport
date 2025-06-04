@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarPoolingResponseDto } from '../../../../service';
-import { CarPoolingFilteringService } from '../../../../shared/service/carpooling-filtering.service';
+import { CarPoolingFilteringService } from '@shared/service/carpooling-filtering.service';
 import { CarpoolingCardComponent } from '../carpooling-card/carpooling-card.component';
 @Component({
   selector: 'app-carpooling-list',

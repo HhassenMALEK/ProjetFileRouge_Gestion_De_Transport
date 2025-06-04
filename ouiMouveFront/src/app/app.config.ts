@@ -8,7 +8,7 @@ import {
 } from '@angular/platform-browser';
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { authInterceptor } from '../shared/service/auth.interceptor';
+import { authInterceptor } from '@shared/service/auth.interceptor';
 import { Configuration } from '../service';
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -6,13 +6,13 @@ import {
   ServiceVehicleControllerService,
 } from '../../../../service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { StatusComponent } from '../../../../shared/components/status/status.component';
+import { StatusComponent } from '@shared/components/status/status.component';
 import {
   extractDateTime,
   formatMinIntoHoursAndMinutes,
   getArrivalDate,
-} from '../../../../shared/utils/dateUtils';
-import { DateTime } from '../../../../shared/lib/dateTime';
+} from '@shared/utils/dateUtils';
+import { DateTime } from '@shared/lib/dateTime';
 
 @Component({
   selector: 'app-carpooling-resa-detail',

@@ -1,13 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { InputIconComponent } from '../../../../shared/components/input-icon/input-icon.component';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
+import { InputIconComponent } from '@shared/components/input-icon/input-icon.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
 import { CarPoolingControllerService } from '../../../../service/api/carPoolingController.service';
 import { ServiceVehicleControllerService } from '../../../../service/api/serviceVehicleController.service';
 import { CarPoolingCreateDto } from '../../../../service/model/carPoolingCreateDto';
 import { ServiceVehicleDto } from '../../../../service/model/serviceVehicleDto';
-import { SelectComponent } from '../../../../shared/components/select/select.component';
+import { SelectComponent } from '@shared/components/select/select.component';
 import {
   PersonalVehicleControllerService,
   PersonalVehicleDto,

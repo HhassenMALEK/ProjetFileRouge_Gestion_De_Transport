@@ -1,9 +1,9 @@
 import { Component, inject, input, OnInit } from '@angular/core';
 import { CarPoolingReservationsResponseDTO } from '../../../../service';
-import { extractDateTime } from '../../../../shared/utils/dateUtils';
+import { extractDateTime } from '@shared/utils/dateUtils';
 import { Router } from '@angular/router';
-import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { StatusComponent } from '../../../../shared/components/status/status.component';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { StatusComponent } from '@shared/components/status/status.component';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
