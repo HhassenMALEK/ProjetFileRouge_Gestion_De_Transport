@@ -1,9 +1,10 @@
 package com.api.ouimouve.bo;
 
 
-import com.api.ouimouve.enumeration.VehicleStatus;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -14,6 +15,8 @@ import java.util.List;
 @Data
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "type")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Vehicle {
     /**
      * Unique identifier for the repair record.
