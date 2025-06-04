@@ -1,0 +1,90 @@
+<div class="carpooling-container">
+  <div class="field-group">
+    <p>*Ville de départ</p>
+    <app-input-icon
+      class="input-with-icon"
+      [type]="'text'"
+      [placeholder]="'Ville de départ'"
+      [icon]="'place'"
+      [(value)]="carpoolingParameters.siteDeparture"
+      name="siteDeparture"
+    ></app-input-icon>
+  </div>
+
+  <div class="field-group">
+    <p>*Ville de destination</p>
+    <app-input-icon
+      class="input-with-icon"
+      [type]="'text'"
+      [icon]="'place'"
+      [(value)]="carpoolingParameters.siteDestination"
+      name="siteDestination"
+    ></app-input-icon>
+  </div>
+
+  <div class="field-group">
+    <p>*Date de départ</p>
+    <app-input-icon
+      class="input-with-icon"
+      [type]="'date'"
+      [icon]="'departure_board'"
+      [(value)]="carpoolingParameters.startDate"
+      name="startDate"
+    ></app-input-icon>
+  </div>
+
+  <div class="field-group">
+    <p>*Heure de départ</p>
+    <app-input-icon
+      class="input-with-icon"
+      [type]="'time'"
+      [icon]="'schedule'"
+      [(value)]="carpoolingParameters.startTime"
+      name="startTime"
+    ></app-input-icon>
+  </div>
+
+  <div class="field-group">
+    <p>*Nombre de places</p>
+    <app-input-icon
+      class="input-with-icon"
+      [icon]="'event_seat'"
+      [type]="'number'"
+      [(value)]="carpoolingParameters.capacity"
+      name="capacity"
+    ></app-input-icon>
+  </div>
+
+  <div class="field-group">
+    <p>*Véhicule</p>
+    <app-input-icon class="input-with-icon" [icon]="'directions_car'">
+      <select
+        class="select-vehicle"
+        [(ngModel)]="carpoolingParameters.vehicleId"
+        name="vehicleId"
+        required
+      >
+        <option value="">Sélectionnez un véhicule</option>
+        @for (vehicle of vehicles; track vehicle.id) {
+        <option [value]="vehicle.id">{{ vehicle.label }}</option>
+        }
+      </select>
+    </app-input-icon>
+  </div>
+
+  <!-- Boutons -->
+  <div class="buttons">
+    <app-button
+      class="btn btn-create red"
+      [color]="'red'"
+      [label]="'Créer'"
+      (click)="onSubmit()"
+    ></app-button>
+    <app-button
+      class="btn btn-cancel gray"
+      [color]="'gray'"
+      [label]="'Annuler'"
+      (click)="onCancel()"
+    ></app-button>
+  </div>
+</div>
