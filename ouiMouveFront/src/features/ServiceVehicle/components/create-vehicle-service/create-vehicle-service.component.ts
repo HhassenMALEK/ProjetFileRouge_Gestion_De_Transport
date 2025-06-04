@@ -1,3 +1,4 @@
+
 import { Component, inject, OnDestroy, OnInit,signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -22,11 +23,11 @@ import { InputComponent } from '../../../../shared/components/input/input.compon
 import { SelectComponent } from '../../../../shared/components/select/select.component';
 import { CustomConfiguration } from '../../../../service/custom-configuration';
 import { ConfirmationPopupComponent } from '../../../../shared/components/confirmation-popup/confirmation-popup.component';
-
 @Component({
   selector: 'app-create-vehicle-service',
   templateUrl: './create-vehicle-service.component.html',
   styleUrls: ['./create-vehicle-service.component.scss'],
+
   imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule, ConfirmationPopupComponent],
   providers: [
     { provide: Configuration, useClass: CustomConfiguration }
@@ -46,11 +47,13 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   modelDtos: ModelDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
   showConfirmationPopup = signal(false);
+
   vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
     seats: undefined,
     status: undefined,
     modelId: undefined,
+
     siteId: undefined,
  };
 
@@ -68,6 +71,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
       .getAllModels(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (models: any) => {
+  
           if (models instanceof Blob) {
             const text = await models.text();
             this.modelDtos = JSON.parse(text);
@@ -76,6 +80,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
           }
           console.log('Modèles reçus:', this.modelDtos);
         },
+
         error: (err) => console.error('Erreur lors du chargement des modèles', err)
       });
 
@@ -87,6 +92,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
       .getAllSites(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (sites: any) => {
+       
           if (sites instanceof Blob) {
             const text = await sites.text();
             this.siteCreateDtos = JSON.parse(text);
@@ -95,6 +101,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
           }
           console.log('Sites reçus:', this.siteCreateDtos);
         },
+
         error: (err) => console.error('Erreur lors du chargement des sites', err)
       });
 

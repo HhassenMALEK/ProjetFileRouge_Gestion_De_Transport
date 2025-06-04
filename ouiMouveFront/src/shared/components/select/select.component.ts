@@ -1,5 +1,7 @@
+
 import { Component, input, model, signal } from '@angular/core';
 import { FormsModule, ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -8,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [FormsModule, CommonModule],
   templateUrl: './select.component.html',
   styleUrl: './select.component.scss',
+
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -18,6 +21,7 @@ import { CommonModule } from '@angular/common';
 })
 export class SelectComponent implements ControlValueAccessor {
   items = input.required<any[]>();
+
   displayAttr = input<string>('');
   valueAttr = input<string>('');
   label = input<string>('');
@@ -53,4 +57,5 @@ export class SelectComponent implements ControlValueAccessor {
     this.onChange(event);
     this.onTouched();
   }
+
 }
