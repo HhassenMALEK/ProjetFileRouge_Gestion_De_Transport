@@ -1,49 +1,71 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ServiceVehicleControllerService } from '../../../../service/api/serviceVehicleController.service';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
+import { CommonModule } from '@angular/common';
+// Services API
+import { 
+  ServiceVehicleControllerService,
+  ModelControllerService,
+  SiteControllerService,
+  Configuration,
+  ModelDto
+} from '../../../../service';
+
+// DTOs
 import { ServiceVehicleCreateDto } from '../../../../service/model/serviceVehicleCreateDto';
+import { SiteCreateDto } from '../../../../service/model/siteCreateDto';
+
+// Composants partagés
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
-import { ModelControllerService } from '../../../../service/api/modelController.service';
-import { SiteControllerService } from '../../../../service/api/siteController.service';
-import { ModelDto } from '../../../../service';
-import { SiteCreateDto } from '../../../../service/model/siteCreateDto';
-import { CommonModule } from '@angular/common';
+import { CustomConfiguration } from '../../../../service/custom-configuration';
 
 @Component({
   selector: 'app-create-vehicle-service',
   templateUrl: './create-vehicle-service.component.html',
   styleUrls: ['./create-vehicle-service.component.scss'],
-  imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule, ],
+  imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule],
+  providers: [
+    { provide: Configuration, useClass: CustomConfiguration }
+  ],
 })
+export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
+  // Services injectés
+  private readonly router = inject(Router);
+  private readonly serviceVehicleService = inject(ServiceVehicleControllerService);
+  private readonly modelControllerService = inject(ModelControllerService);
+  private readonly siteControllerService = inject(SiteControllerService);
 
-export class CreateVehicleServiceComponent implements OnInit {
-  
-  serviceVehicleService = inject(ServiceVehicleControllerService);
-  modelControllerService = inject(ModelControllerService);
-  siteControllerService = inject(SiteControllerService);
-  modelDtos: ModelDto[] = []; 
-  siteCreateDtos: SiteCreateDto[] = []; 
+  // Gestion des souscriptions
+  private subscriptions: Subscription[] = [];
 
-   vehicle: ServiceVehicleCreateDto = {
+  // Données du formulaire
+  modelDtos: ModelDto[] = [];
+  siteCreateDtos: SiteCreateDto[] = [];
+  vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
     seats: undefined,
     status: undefined,
     modelId: undefined,
-    modelName: '',
-    mark: '',
     siteId: undefined,
-    siteName: ''
-  };
-  
-  
-ngOnInit(): void {
-    // Utilisation d'un subscribe simple comme dans CarpoolingListComponent
-    this.modelControllerService.getAllModels(undefined, undefined, { httpHeaderAccept: '*/*' })
+ };
+
+  ngOnInit(): void {
+    this.loadModels();
+    this.loadSites();
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach(sub => sub.unsubscribe());
+  }
+
+  private loadModels(): void {
+    const modelsSub = this.modelControllerService
+      .getAllModels(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (models: any) => {
-          // Si la réponse est un Blob, on la parse
           if (models instanceof Blob) {
             const text = await models.text();
             this.modelDtos = JSON.parse(text);
@@ -52,14 +74,17 @@ ngOnInit(): void {
           }
           console.log('Modèles reçus:', this.modelDtos);
         },
-        error: (err) => {
-          console.error('Erreur lors du chargement des modèles', err);
-        }
+        error: (err) => console.error('Erreur lors du chargement des modèles', err)
       });
-    this.siteControllerService.getAllSites(undefined, undefined, { httpHeaderAccept: '*/*' })
+
+    this.subscriptions.push(modelsSub);
+  }
+
+  private loadSites(): void {
+    const sitesSub = this.siteControllerService
+      .getAllSites(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (sites: any) => {
-          // Si la réponse est un Blob, on la parse
           if (sites instanceof Blob) {
             const text = await sites.text();
             this.siteCreateDtos = JSON.parse(text);
@@ -68,22 +93,26 @@ ngOnInit(): void {
           }
           console.log('Sites reçus:', this.siteCreateDtos);
         },
-        error: (err) => {
-          console.error('Erreur lors du chargement des sites', err);
-        }
+        error: (err) => console.error('Erreur lors du chargement des sites', err)
       });
-      
+
+    this.subscriptions.push(sitesSub);
   }
 
-  onSubmit() {
-    this.serviceVehicleService.createServiceVehicle(this.vehicle).subscribe({
-      next: (res) => {
-        console.log('Véhicule crée avec succès', res);
-        
-      },
-      error: (err) => {
-        console.error('Erreur à la création de Véhicule service ', err);
-      }
-    });
+  onSubmit(): void {
+    const submitSub = this.serviceVehicleService.createServiceVehicle(this.vehicle)
+      .subscribe({
+        next: (res) => {
+          console.log('Véhicule créé avec succès', res);
+          this.router.navigate(['..']); // Retourne à la liste
+        },
+        error: (err) => console.error('Erreur à la création du véhicule service', err)
+      });
+
+    this.subscriptions.push(submitSub);
+  }
+
+  onAbort(): void {
+    this.router.navigate(['..']); // Retourne à la liste
   }
 }

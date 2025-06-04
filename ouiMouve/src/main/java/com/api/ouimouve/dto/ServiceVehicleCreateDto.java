@@ -21,23 +21,11 @@ public class ServiceVehicleCreateDto extends VehicleDto {
      */
     private Long modelId;
 
-    /**
-     * Name of the model (optional, for display purposes).
-     */
-    private String modelName;
-
-    /**
-     * Brand of the model (optional, for display purposes).
-     */
-    private String mark;
 
     /**
      * ID of the site where this vehicle is located.
      */
     private Long siteId;
 
-    /**
-     * Name of the site (optional, for display purposes).
-     */
-    private String siteName;
+
 }
