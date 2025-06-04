@@ -2,9 +2,7 @@ package com.api.ouimouve.bo;
 
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 /**
  * Entity class representing a Site.
@@ -13,8 +11,6 @@ import lombok.NoArgsConstructor;
  */
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class Site {
     /**
      * Identifier of the site
