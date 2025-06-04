@@ -1,1 +1,37 @@
-<p>{{ reservation?.id }}</p>
+<section>
+  <div>
+    <app-status [status]="reservation?.status"> </app-status>
+    <p>Places restantes : {{ reservation?.participantCount }}</p>
+    <p>
+      Date de départ : {{ departureDate.date }} <br />
+      Heure de départ : {{ departureDate.time }} <br />
+      Lieu de départ : {{ reservation?.carPooling?.departureSite?.city }} <br />
+    </p>
+    <p>
+      Adresse de départ : {{ reservation?.carPooling?.departureSite?.label
+      }}<br />
+      {{ reservation?.carPooling?.departureSite?.name }} <br />
+    </p>
+  </div>
+  <div>
+    <p>
+      Durée du voyage :
+      {{ formatHoursAndMinutes(reservation?.carPooling?.durationInMinutes) }}
+      <br />
+      Distance : {{ reservation?.carPooling?.distance }}
+    </p>
+  </div>
+  <div>
+    <p>
+      Date d'arrivée : {{ arrivalDate.date }} <br />
+      Heure d'arrivée : {{ arrivalDate.time }}<br />
+      Lieu d'arrivée : {{ reservation?.carPooling?.destinationSite?.city }}
+      <br />
+    </p>
+    <p>
+      Adresse d'arrivée : {{ reservation?.carPooling?.destinationSite?.label
+      }}<br />
+      {{ reservation?.carPooling?.destinationSite?.name }} <br />
+    </p>
+  </div>
+</section>
