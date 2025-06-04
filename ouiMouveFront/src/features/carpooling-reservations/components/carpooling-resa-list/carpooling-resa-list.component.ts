@@ -2,7 +2,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import {
   CarPoolingReservationsControllerService,
   CarPoolingReservationsResponseDTO,
-} from '../../../../service';
+} from '@openapi/index';
 import { CarpoolingResaItemComponent } from '../carpooling-resa-item/carpooling-resa-item.component';
 
 @Component({

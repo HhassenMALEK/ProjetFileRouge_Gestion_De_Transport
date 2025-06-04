@@ -22,7 +22,7 @@
       "@app/*": ["./app/*"],
       "@shared/*": ["./shared/*"],
       "@features/*": ["./features/*"],
-      "@openapi/*": ["./openapi/*"]
+      "@openapi/*": ["../generated/*"]
     }
   },
   "angularCompilerOptions": {

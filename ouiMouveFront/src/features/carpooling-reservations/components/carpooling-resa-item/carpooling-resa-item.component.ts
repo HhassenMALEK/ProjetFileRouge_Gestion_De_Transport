@@ -1,5 +1,5 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { CarPoolingReservationsResponseDTO } from '../../../../service';
+import { CarPoolingReservationsResponseDTO } from '@openapi/index';
 import { extractDateTime } from '@shared/utils/dateUtils';
 import { Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';

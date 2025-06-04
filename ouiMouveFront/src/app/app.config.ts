@@ -9,7 +9,7 @@ import {
 
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { authInterceptor } from '@shared/service/auth.interceptor';
-import { Configuration } from '../service';
+import { Configuration } from '@openapi/index';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),

@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { CarPoolingReservationsResponseDTO } from '../../service';
+import { CarPoolingReservationsResponseDTO } from '@openapi/index';
 /**
  * Extrait la date et l'heure d'une chaîne de caractères de date.
  * @param dateString La chaîne de caractères de date à analyser (par exemple, "2024-05-27T10:30:00").

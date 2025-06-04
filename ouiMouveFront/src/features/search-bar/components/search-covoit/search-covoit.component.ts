@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { InputIconComponent } from '@shared/components/input-icon/input-icon.component';
-import { CarPoolingControllerService } from '../../../../service/api/carPoolingController.service';
+import { CarPoolingControllerService } from '@openapi/api/carPoolingController.service';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { CarPoolingResponseDto } from '../../../../service';
+import { CarPoolingResponseDto } from '@openapi/index';
 import { Router } from '@angular/router';
 import { CarPoolingFilteringService } from '@shared/service/carpooling-filtering.service';
 

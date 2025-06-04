@@ -3,16 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { InputIconComponent } from '@shared/components/input-icon/input-icon.component';
 import { ButtonComponent } from '@shared/components/button/button.component';
-import { CarPoolingControllerService } from '../../../../service/api/carPoolingController.service';
-import { ServiceVehicleControllerService } from '../../../../service/api/serviceVehicleController.service';
-import { CarPoolingCreateDto } from '../../../../service/model/carPoolingCreateDto';
-import { ServiceVehicleDto } from '../../../../service/model/serviceVehicleDto';
+import { CarPoolingControllerService } from '@openapi/api/carPoolingController.service';
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
+import { CarPoolingCreateDto } from '@openapi/model/carPoolingCreateDto';
+import { ServiceVehicleDto } from '@openapi/model/serviceVehicleDto';
 import { SelectComponent } from '@shared/components/select/select.component';
-import {
-  PersonalVehicleControllerService,
-  PersonalVehicleDto,
-} from '../../../../service';
-
+import {  PersonalVehicleControllerService} from '@openapi/api/personalVehicleController.service';
+import {  PersonalVehicleDto } from '@openapi/model/personalVehicleDto';
 @Component({
   selector: 'app-carpooling-form',
   imports: [

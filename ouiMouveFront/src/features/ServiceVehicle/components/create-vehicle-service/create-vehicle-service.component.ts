@@ -4,23 +4,20 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 // Services API
-import {
-  ServiceVehicleControllerService,
-  ModelControllerService,
-  SiteControllerService,
-  Configuration,
-  ModelDto,
-} from '../../../../service';
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
+import { ModelControllerService } from '@openapi/api/modelController.service';  
+import { SiteControllerService } from '@openapi/api/siteController.service';  
+import { ModelDto } from '@openapi/index';
 
 // DTOs
-import { ServiceVehicleCreateDto } from '../../../../service/model/serviceVehicleCreateDto';
-import { SiteCreateDto } from '../../../../service/model/siteCreateDto';
+import { ServiceVehicleCreateDto } from '@openapi/model/serviceVehicleCreateDto';
+import { SiteCreateDto } from '@openapi/model/siteCreateDto';
 
 // Composants partagés
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { SelectComponent } from '@shared/components/select/select.component';
-import { CustomConfiguration } from '../../../../service/custom-configuration';
+
 import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
 @Component({
   selector: 'app-create-vehicle-service',
@@ -35,7 +32,7 @@ import { ConfirmationPopupComponent } from '@shared/components/confirmation-popu
     CommonModule,
     ConfirmationPopupComponent,
   ],
-  providers: [{ provide: Configuration, useClass: CustomConfiguration }],
+
 })
 export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   // Services injectés

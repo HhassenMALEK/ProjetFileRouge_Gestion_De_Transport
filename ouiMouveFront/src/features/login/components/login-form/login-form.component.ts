@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthControllerService } from '../../../../service';
+import { AuthControllerService } from '@openapi/index';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { TokenService } from '@shared/service/token.service';

@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { CarPoolingResponseDto } from '../../../../service';
+import { CarPoolingResponseDto } from '@openapi/model/carPoolingResponseDto';
 import { CarPoolingFilteringService } from '@shared/service/carpooling-filtering.service';
 import { CarpoolingCardComponent } from '../carpooling-card/carpooling-card.component';
 @Component({

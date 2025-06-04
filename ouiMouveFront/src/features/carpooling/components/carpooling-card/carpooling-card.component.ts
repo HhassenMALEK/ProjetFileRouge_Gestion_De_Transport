@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { StatusComponent } from '@shared/components/status/status.component';
-import { CarPoolingResponseDto } from '../../../../service';
+import { CarPoolingResponseDto } from '@openapi/index';
 import { MatIconModule } from '@angular/material/icon';
 import { extractDateTime } from '@shared/utils/dateUtils';
 import { ButtonComponent } from '@shared/components/button/button.component';

@@ -1,10 +1,15 @@
 import { Component, inject, OnInit } from '@angular/core';
-import {
-  CarPoolingReservationsControllerService,
-  CarPoolingReservationsResponseDTO,
-  PersonalVehicleControllerService,
-  ServiceVehicleControllerService,
-} from '../../../../service';
+import { CarPoolingReservationsControllerService } from '@openapi/api/carPoolingReservationsController.service';
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';  
+import { PersonalVehicleControllerService } from '@openapi/api/personalVehicleController.service';
+import { CarPoolingReservationsResponseDTO } from '@openapi/model/carPoolingReservationsResponseDTO';
+
+
+
+
+
+
+
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusComponent } from '@shared/components/status/status.component';
 import {
