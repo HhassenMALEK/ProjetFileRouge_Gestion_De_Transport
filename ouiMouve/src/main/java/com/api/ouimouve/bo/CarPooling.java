@@ -5,6 +5,7 @@ import com.api.ouimouve.enumeration.CarPoolingStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.Date;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  */
 @Entity
 @Data
+@ToString(exclude = "reservations")
 public class CarPooling {
 
     /** Unique identifier for the carpooling. */

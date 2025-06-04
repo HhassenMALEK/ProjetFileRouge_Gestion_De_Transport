@@ -115,4 +115,15 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("vehicleId") Long vehicleId
     );
 
+    /**
+     Searches for all CarPoolings whose status is not in the excluded list
+     * (FINISHED, CANCELLED)
+     *
+     */
+    @Query("""
+    SELECT c FROM CarPooling c
+    WHERE c.status NOT IN ('FINISHED', 'CANCELLED')
+""")
+    List<CarPooling> findAllNonFinishedNonCancelled();
+
 }
