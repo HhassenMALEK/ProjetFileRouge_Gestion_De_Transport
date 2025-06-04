@@ -15,18 +15,22 @@ import { CommonModule } from '@angular/common';
   selector: 'app-create-vehicle-service',
   templateUrl: './create-vehicle-service.component.html',
   styleUrls: ['./create-vehicle-service.component.scss'],
-  imports: [FormsModule, ButtonComponent, InputComponent, SelectComponent, CommonModule, ],
+  imports: [
+    FormsModule,
+    ButtonComponent,
+    InputComponent,
+    SelectComponent,
+    CommonModule,
+  ],
 })
-
 export class CreateVehicleServiceComponent implements OnInit {
-  
   serviceVehicleService = inject(ServiceVehicleControllerService);
   modelControllerService = inject(ModelControllerService);
   siteControllerService = inject(SiteControllerService);
-  modelDtos: ModelDto[] = []; 
-  siteCreateDtos: SiteCreateDto[] = []; 
+  modelDtos: ModelDto[] = [];
+  siteCreateDtos: SiteCreateDto[] = [];
 
-   vehicle: ServiceVehicleCreateDto = {
+  vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
     seats: undefined,
     status: undefined,
@@ -34,13 +38,13 @@ export class CreateVehicleServiceComponent implements OnInit {
     modelName: '',
     mark: '',
     siteId: undefined,
-    siteName: ''
+    siteName: '',
   };
-  
-  
-ngOnInit(): void {
+
+  ngOnInit(): void {
     // Utilisation d'un subscribe simple comme dans CarpoolingListComponent
-    this.modelControllerService.getAllModels(undefined, undefined, { httpHeaderAccept: '*/*' })
+    this.modelControllerService
+      .getAllModels(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (models: any) => {
           // Si la réponse est un Blob, on la parse
@@ -54,9 +58,10 @@ ngOnInit(): void {
         },
         error: (err) => {
           console.error('Erreur lors du chargement des modèles', err);
-        }
+        },
       });
-    this.siteControllerService.getAllSites(undefined, undefined, { httpHeaderAccept: '*/*' })
+    this.siteControllerService
+      .getAllSites(undefined, undefined, { httpHeaderAccept: '*/*' })
       .subscribe({
         next: async (sites: any) => {
           // Si la réponse est un Blob, on la parse
@@ -70,20 +75,18 @@ ngOnInit(): void {
         },
         error: (err) => {
           console.error('Erreur lors du chargement des sites', err);
-        }
+        },
       });
-      
   }
 
   onSubmit() {
     this.serviceVehicleService.createServiceVehicle(this.vehicle).subscribe({
       next: (res) => {
         console.log('Véhicule crée avec succès', res);
-        
       },
       error: (err) => {
         console.error('Erreur à la création de Véhicule service ', err);
-      }
+      },
     });
   }
 }

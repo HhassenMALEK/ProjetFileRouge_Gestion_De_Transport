@@ -6,7 +6,7 @@
       [type]="'text'"
       [placeholder]="'Ville de départ'"
       [icon]="'place'"
-      [(value)]="carpoolingParameters.siteDeparture"
+      [(value)]="carpooling.departureSiteId"
       name="siteDeparture"
     ></app-input-icon>
   </div>
@@ -17,7 +17,7 @@
       class="input-with-icon"
       [type]="'text'"
       [icon]="'place'"
-      [(value)]="carpoolingParameters.siteDestination"
+      [(value)]="carpooling.destinationSiteId"
       name="siteDestination"
     ></app-input-icon>
   </div>
@@ -28,48 +28,48 @@
       class="input-with-icon"
       [type]="'date'"
       [icon]="'departure_board'"
-      [(value)]="carpoolingParameters.startDate"
+      [(value)]="carpooling.departure"
       name="startDate"
     ></app-input-icon>
   </div>
 
-  <div class="field-group">
+  <!-- <div class="field-group">
     <p>*Heure de départ</p>
     <app-input-icon
       class="input-with-icon"
       [type]="'time'"
       [icon]="'schedule'"
-      [(value)]="carpoolingParameters.startTime"
+      [(value)]="carpooling.departure"
       name="startTime"
     ></app-input-icon>
-  </div>
+  </div> -->
 
-  <div class="field-group">
+  <!-- <div class="field-group">
     <p>*Nombre de places</p>
     <app-input-icon
       class="input-with-icon"
       [icon]="'event_seat'"
       [type]="'number'"
-      [(value)]="carpoolingParameters.capacity"
+     [(value)]=""
       name="capacity"
     ></app-input-icon>
-  </div>
+  </div> -->
 
   <div class="field-group">
     <p>*Véhicule</p>
-    <app-input-icon class="input-with-icon" [icon]="'directions_car'">
-      <select
-        class="select-vehicle"
-        [(ngModel)]="carpoolingParameters.vehicleId"
-        name="vehicleId"
-        required
-      >
-        <option value="">Sélectionnez un véhicule</option>
-        @for (vehicle of vehicles; track vehicle.id) {
-        <option [value]="vehicle.id">{{ vehicle.label }}</option>
-        }
-      </select>
-    </app-input-icon>
+    <app-select
+      [items]="personalVehicles"
+      [displayAttr]="'label'"
+      [valueAttr]="'id'"
+      [name]="'vehicleId'"
+      [(value)]="carpooling.vehicleId"
+      [required]="true"
+    >
+      <option value="0">Sélectionnez un véhicule</option>
+      <!-- @for (vehicle of vehicles; track vehicle.id) {
+      <option [value]="vehicle.id">{{ vehicle.label }}</option>
+      } -->
+    </app-select>
   </div>
 
   <!-- Boutons -->
