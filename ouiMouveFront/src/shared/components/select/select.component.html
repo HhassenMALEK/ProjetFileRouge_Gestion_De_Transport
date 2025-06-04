@@ -7,7 +7,9 @@
     [required]="required()"
     [disabled]="disabled()"
     [ngModel]="value()"
-    (ngModelChange)="valueChange.emit($event)"
+
+    (ngModelChange)="onValueChange($event)"
+
   >
     <option [ngValue]="null">{{ placeholder() }}</option>
     @for (item of items(); track item[valueAttr()]) {

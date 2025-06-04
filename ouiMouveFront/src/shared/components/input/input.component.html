@@ -1,11 +1,14 @@
 <div>
-  <label for="label()">{{ label() }}</label>
+  @if (label()) {
+    <label [for]="name()">{{ label() }}</label>
+  }
   <input
     [type]="type()"
     [name]="name()"
     [placeholder]="placeholder()"
-    [(ngModel)]="value"
+    [ngModel]="value()"
+    (ngModelChange)="onValueChange($event)"
     [required]="required()"
-    [disabled]="disabled()"
+    [disabled]="isDisabled()"
   />
 </div>

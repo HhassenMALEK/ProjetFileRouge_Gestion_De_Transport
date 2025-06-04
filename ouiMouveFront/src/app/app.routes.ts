@@ -44,5 +44,6 @@ export const routes: Routes = [
       import(
         '../features/carpooling-reservations/components/carpooling-resa-detail/carpooling-resa-detail.component'
       ).then((m) => m.CarpoolingResaDetailComponent),
+
   },
 ];
