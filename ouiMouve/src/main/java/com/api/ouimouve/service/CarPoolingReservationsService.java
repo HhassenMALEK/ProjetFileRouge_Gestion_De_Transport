@@ -1,5 +1,12 @@
 package com.api.ouimouve.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.api.ouimouve.bo.CarPoolingReservations;
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
@@ -7,14 +14,6 @@ import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.mapper.CarPoolingReservationsMapper;
 import com.api.ouimouve.repository.CarPoolingReservationsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CarPoolingReservationsService {
@@ -45,7 +44,7 @@ public class CarPoolingReservationsService {
      * @return a list of CarPoolingReservationsResponseDTO
      */
     public List<CarPoolingReservationsResponseDTO> getAllReservationsByUserId(Long userId) {
-        return carPoolingReservationsRepository.findByUserIdAndDateAfter(userId, Date.from(Instant.now()))
+        return carPoolingReservationsRepository.findByUserId(userId)
                 .stream()
                 .map(carPoolingReservationsMapper::toResponseDTO)
                 .collect(Collectors.toList());
