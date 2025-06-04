@@ -1,0 +1,11 @@
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  div {
+    height: 80vh;
+    min-height: 80vh;
+    overflow-y: auto;
+  }
+}
