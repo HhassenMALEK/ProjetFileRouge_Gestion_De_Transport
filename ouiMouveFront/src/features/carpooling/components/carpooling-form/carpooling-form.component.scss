@@ -1,0 +1,90 @@
+/* ===========================================================================
+   1. Conteneur général “card”
+   =========================================================================== */
+.carpooling-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  background-color: #e5e5e5;
+  border-radius: 16px;
+  padding: 24px;
+  max-width: 420px;
+  width: 100%;
+  margin: 40px auto;
+}
+
+.field-group {
+  width: 100%;
+  margin-bottom: 16px;
+  color: #202020;
+}
+
+.field-group > p {
+  font-size: 14px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #202020;
+}
+
+.carpooling-container app-input-icon.input-with-icon {
+  display: flex;
+  align-items: center;
+  background-color: #6b6969;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  padding: 0 0.75rem; /* espace intérieur horizontal */
+  height: 40px; /* Hauteur fixe pour uniformité */
+}
+
+/*cible l’élément interne <div> généré par app-input-icon */
+.carpooling-container app-input-icon.input-with-icon > div {
+  display: flex;
+  align-items: center;
+  color: white;
+  width: 100%;
+}
+
+.carpooling-container .select-vehicle {
+  flex: 1;
+  font-size: 14px;
+  border: none;
+  outline: none;
+  background: transparent;
+
+  padding: 4px 0;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: 24px;
+}
+
+/* Style commun à tous les <app-button> dans ce formulaire */
+.carpooling-container .btn {
+  font-size: 14px;
+  height: 36px;
+  padding: 0 20px;
+}
+.carpooling-container .btn-cancel.gray {
+  margin-left: 15px; /* Espacement entre “Créer” et “Annuler” */
+}
+
+@media (max-width: 480px) {
+  .carpooling-container {
+    padding: 16px;
+    margin: 24px auto;
+  }
+
+  .field-group {
+    margin-bottom: 12px;
+  }
+
+  .carpooling-container .btn {
+    font-size: 12px;
+    height: 32px;
+    padding: 0 16px;
+  }
+}

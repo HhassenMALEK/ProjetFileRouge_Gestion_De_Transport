@@ -43,8 +43,6 @@ public class PersonalVehicleService {
                 .map(vehicle -> vehicleMapper.toDto(vehicle))
                 .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found"));
     }
-
-
     /**
      * Get all personal vehicles for a specific user.
      * @return List of personal vehicles owned by the user

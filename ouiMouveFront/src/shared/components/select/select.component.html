@@ -1,0 +1,19 @@
+<div>
+  @if (label()) {
+    <label [for]="name()">{{ label() }}</label>
+  }
+  <select
+    [name]="name()"
+    [required]="required()"
+    [disabled]="disabled()"
+    [ngModel]="value()"
+    (ngModelChange)="valueChange.emit($event)"
+  >
+    <option [ngValue]="null">{{ placeholder() }}</option>
+    @for (item of items(); track item[valueAttr()]) {
+      <option [ngValue]="item[valueAttr()]">
+        {{ item[displayAttr()] }}
+      </option>
+    }
+  </select>
+</div>

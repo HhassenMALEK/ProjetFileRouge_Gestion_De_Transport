@@ -1,0 +1,37 @@
+<form #vehicleForm="ngForm" (ngSubmit)="onSubmit()">
+<app-input  
+    [label]="'Numéro d\'immatriculation'"
+    [type]="'text'"
+    [placeholder]="'Entrez le numéro'"
+    [required]="true"
+    [name]="'immatriculation'"
+    [(value)]="vehicle.immatriculation!"
+    [disabled]="false"
+></app-input>
+
+<app-select
+  [items]="modelDtos"
+  [displayAttr]="'modelName'"
+  [valueAttr]="'id'"
+  [label]="'Modèle'"
+  [name]="'modelId'"
+  [(value)]="vehicle.modelId"
+  [required]="true"
+></app-select>
+
+<app-select
+  [items]="siteCreateDtos"
+  [displayAttr]="'name'"
+  [valueAttr]="'id'"
+  [label]="'Site'"
+  [name]="'siteId'"
+  [(value)]="vehicle.siteId"
+  [required]="true"
+></app-select>
+  <app-button
+    label="Ajouter"
+    color="primary"
+    (onClick)="onSubmit()"
+    [isDisabled]="!vehicleForm.valid"
+  ></app-button>
+</form>
