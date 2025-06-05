@@ -16,5 +16,6 @@ export * from './serviceVehicleDto';
 export * from './siteCreateDto';
 export * from './siteResponseDto';
 export * from './userDto';
+export * from './vehicleDto';
 export * from './vehicleReservationCreateDto';
 export * from './vehicleReservationDto';

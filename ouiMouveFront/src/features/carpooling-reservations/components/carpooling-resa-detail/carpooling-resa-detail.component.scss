@@ -2,8 +2,10 @@ section {
   display: flex;
   gap: 1rem;
   padding: 1rem;
-  justify-content: space-between;
-
+  justify-content: space-around;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 80vw;
   div {
     flex-direction: column;
   }

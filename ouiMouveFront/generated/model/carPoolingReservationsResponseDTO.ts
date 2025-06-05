@@ -16,6 +16,7 @@ export interface CarPoolingReservationsResponseDTO {
     carPooling?: CarPoolingResponseDto;
     status?: CarPoolingReservationsResponseDTO.StatusEnum;
     participantCount?: number;
+    bookedUsers?: Array<string>;
 }
 export namespace CarPoolingReservationsResponseDTO {
     export const StatusEnum = {

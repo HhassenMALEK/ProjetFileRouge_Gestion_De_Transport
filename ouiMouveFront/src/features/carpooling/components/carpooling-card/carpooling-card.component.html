@@ -26,10 +26,11 @@
     }
     <p></p>
     <p>
-      Date de arrivée: {{ getFormattedDateTime(carpooling()?.arrival)?.date }}
+      Date de arrivée: {{ getFormattedDateTime(carpooling()?.departure)?.date }}
     </p>
     <p>
-      Heure de arrivée: {{ getFormattedDateTime(carpooling()?.arrival)?.time }}
+      Heure de arrivée:
+      {{ getFormattedDateTime(carpooling()?.departure)?.time }}
     </p>
     <p>
       Lieu de arrivée:

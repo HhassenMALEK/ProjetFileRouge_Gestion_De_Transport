@@ -1,37 +1,34 @@
 <section>
+  @if (reservation) {
   <div>
-    <app-status [status]="reservation?.status"> </app-status>
-    <p>Places restantes : {{ reservation?.participantCount }}</p>
-    <p>
-      Date de départ : {{ departureDate.date }} <br />
-      Heure de départ : {{ departureDate.time }} <br />
-      Lieu de départ : {{ reservation?.carPooling?.departureSite?.city }} <br />
-    </p>
-    <p>
-      Adresse de départ : {{ reservation?.carPooling?.departureSite?.label
-      }}<br />
-      {{ reservation?.carPooling?.departureSite?.name }} <br />
-    </p>
+    <app-status [status]="reservation.status"> </app-status>
+    <app-date-and-city [reservation]="reservation" [type]="'departure'">
+    </app-date-and-city>
+    <app-user-list [users]="reservation.bookedUsers"></app-user-list>
   </div>
   <div>
     <p>
       Durée du voyage :
-      {{ formatHoursAndMinutes(reservation?.carPooling?.durationInMinutes) }}
+      {{ formatHoursAndMinutes(reservation.carPooling?.durationInMinutes) }}
       <br />
-      Distance : {{ reservation?.carPooling?.distance }}
+      Distance : {{ reservation.carPooling?.distance }}
     </p>
   </div>
   <div>
     <p>
-      Date d'arrivée : {{ arrivalDate.date }} <br />
-      Heure d'arrivée : {{ arrivalDate.time }}<br />
-      Lieu d'arrivée : {{ reservation?.carPooling?.destinationSite?.city }}
-      <br />
+      <app-button
+        [label]="'Annuler'"
+        [color]="'red'"
+        (onClick)="handleAnnulation()"
+      ></app-button>
     </p>
-    <p>
-      Adresse d'arrivée : {{ reservation?.carPooling?.destinationSite?.label
-      }}<br />
-      {{ reservation?.carPooling?.destinationSite?.name }} <br />
-    </p>
+    <app-date-and-city [reservation]="reservation" [type]="'arrival'">
+    </app-date-and-city>
+    <app-vehicle-reservation
+      [vehicle]="reservation.carPooling?.vehicle"
+    ></app-vehicle-reservation>
   </div>
+  } @else {
+  <p>Chargement...</p>
+  }
 </section>
