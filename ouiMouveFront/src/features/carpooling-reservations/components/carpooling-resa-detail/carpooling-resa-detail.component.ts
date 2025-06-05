@@ -1,14 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarPoolingReservationsControllerService } from '@openapi/api/carPoolingReservationsController.service';
-import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';  
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
 import { PersonalVehicleControllerService } from '@openapi/api/personalVehicleController.service';
 import { CarPoolingReservationsResponseDTO } from '@openapi/model/carPoolingReservationsResponseDTO';
-
-
-
-
-
-
 
 import { ActivatedRoute, Router } from '@angular/router';
 import { StatusComponent } from '@shared/components/status/status.component';
@@ -70,7 +64,6 @@ export class CarpoolingResaDetailComponent implements OnInit {
   }
   private initializeDate(date: string | undefined): DateTime {
     const extractedDateTime = extractDateTime(date);
-    console.log('Extracted DateTime:', extractedDateTime);
     return extractedDateTime || { date: '', time: '' };
   }
 }
