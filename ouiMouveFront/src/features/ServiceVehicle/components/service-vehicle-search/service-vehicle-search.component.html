@@ -1,1 +1,37 @@
-<p>service-vehicle-search works!</p>
+
+<section>
+  <form #serviceVehicleSearchForm="ngForm" (ngSubmit)="onSearch()">
+    
+    <app-select
+      [items]="modelDtos"
+      [displayAttr]="'modelName'"
+      [valueAttr]="'id'"
+      [label]="'Modèle'"
+      name="modelId"
+      [(ngModel)]="vehicleFilter.modelId"
+      #model="ngModel"
+      [required]="false"
+    ></app-select>
+    
+    <app-select
+      [items]="siteCreateDtos" 
+      [displayAttr]="'name'"
+      [valueAttr]="'id'"
+      [label]="'Site'"
+      name="siteId"
+      [(ngModel)]="vehicleFilter.siteId"
+      #site="ngModel"
+      [required]="false"
+    ></app-select>
+    
+ 
+    <div >
+      <app-button
+        label="Filtrer"
+        [color]="'red'"
+        (onClick)="onSearch()"
+        
+      ></app-button>
+        </div>
+  </form>
+</section>

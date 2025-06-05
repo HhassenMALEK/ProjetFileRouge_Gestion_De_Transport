@@ -1,0 +1,41 @@
+section {
+  border: 4px solid #9e8686;
+  border-radius: 20px;
+  margin: 0px 0px 10px 0px;
+  width: 60vw;
+  height: 50px;
+  display: flex;
+  background: gray;
+  align-items: center;
+  justify-content: space-around;
+}
+form {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 30px;
+  width: 100%;
+  padding: 0 20px;
+}
+
+:host ::ng-deep app-select {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+
+  > div {  // Ajout de cette règle pour cibler le conteneur div du select
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+  }
+    label {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+}

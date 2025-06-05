@@ -36,8 +36,8 @@ export const routes: Routes = [
     path: 'serviceVehicle',
     loadComponent: () =>
       import(
-        '@features/ServiceVehicle/components/create-service-vehicle/create-service-vehicle.component'
-      ).then((m) => m.CreateServiceVehicleComponent),
+        '@features/ServiceVehicle/components/service-vehicle-main/service-vehicle-main.component'
+      ).then((m) => m.ServiceVehicleMainComponent),
     },
     {
     path: 'carpooling-reservation',

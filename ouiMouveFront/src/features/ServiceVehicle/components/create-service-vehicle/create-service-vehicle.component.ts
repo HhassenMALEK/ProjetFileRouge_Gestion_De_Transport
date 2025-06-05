@@ -37,7 +37,7 @@ import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator
 
 })
 export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
-  // Services injectés
+  // Services
   private readonly router = inject(Router);
   private readonly serviceServiceVehicle = inject(
     ServiceVehicleControllerService
@@ -48,7 +48,7 @@ export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
   // Gestion des souscriptions
   private subscriptions: Subscription[] = [];
 
-  // Données du formulaire
+  // Data for the component
   modelDtos: ModelDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
   showConfirmationPopup = signal(false);
