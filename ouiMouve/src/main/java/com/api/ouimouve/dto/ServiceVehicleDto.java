@@ -21,10 +21,7 @@ public class ServiceVehicleDto extends VehicleDto {
      */
     private ModelDto model;
 
-    /**
-     * Brand of the model (optional, for display purposes).
-     */
-    private String mark;
+
 
     /**
      * ID of the site where this vehicle is located.
@@ -33,12 +30,7 @@ public class ServiceVehicleDto extends VehicleDto {
     private SiteResponseDto site;
 
 
-    /**
-     * Name of the site (optional, for display purposes).
-     */
-    private String siteName;
-    
-    private String immatriculation;
+
 
 
 }

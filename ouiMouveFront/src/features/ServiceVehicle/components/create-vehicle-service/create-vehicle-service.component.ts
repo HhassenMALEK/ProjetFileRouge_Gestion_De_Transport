@@ -19,6 +19,7 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { SelectComponent } from '@shared/components/select/select.component';
 
 import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
+import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator';
 @Component({
   selector: 'app-create-vehicle-service',
   templateUrl: './create-vehicle-service.component.html',
@@ -31,6 +32,7 @@ import { ConfirmationPopupComponent } from '@shared/components/confirmation-popu
     SelectComponent,
     CommonModule,
     ConfirmationPopupComponent,
+    ImmatriculationValidator
   ],
 
 })
@@ -113,6 +115,9 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.showConfirmationPopup.set(true);
   }
+  onAbort(): void {
+    this.router.navigate(['..']);
+  }
 
    confirmSubmit = () => {
     // get nbseats from the model
@@ -137,6 +142,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
         error: (err) => console.error('Erreur à la création du véhicule service', err),
       });
     this.subscriptions.push(submitSub);
+    this.showConfirmationPopup.set(false);
   };
 
   cancelSubmit = () => {
@@ -144,7 +150,5 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   };
 
 
-  onAbort(): void {
-    this.router.navigate(['..']);
-  }
+
 }

@@ -1,5 +1,6 @@
 package com.api.ouimouve.service;
 
+import com.api.ouimouve.bo.Model;
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.Site;
 import com.api.ouimouve.dto.ServiceVehicleCreateDto;
@@ -8,12 +9,15 @@ import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleMapper;
+import com.api.ouimouve.repository.ModelRepository;
 import com.api.ouimouve.repository.ServiceVehicleRepository;
+import com.api.ouimouve.repository.SiteRepository;
 import com.api.ouimouve.utils.AuthContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Service for managing Service vehicles.
@@ -33,6 +37,11 @@ public class ServiceVehicleService {
 
     @Autowired
     private VehicleMapper vehicleMapper;
+
+    @Autowired
+    private SiteRepository siteRepository;
+    @Autowired
+    private ModelRepository modelRepository;
 
     /**
      * Get a service vehicle by its ID.
@@ -111,4 +120,45 @@ public class ServiceVehicleService {
         //TODO:Revoir controle avant suppression
         return vehicleMapper.toDto(vehicle);
     }
+
+    /**
+     * Get all service vehicles.
+     */
+    public List<ServiceVehicleDto> getAllServiceVehicles()
+    {    return serviceVehicleRepository.findAll().stream()
+            .map(vehicleMapper::toDto)
+            .collect(Collectors.toList());
+    }
+
+    /**
+     *  Find all service vehicles by optional filters
+     *  * @param status the status of the vehicle to filter by (optional)
+     *  * @param modelName the name of the model to filter by (optional)
+     *  * @param siteName the name of the site to filter by (optional)
+     *  * @param seats the number of seats to filter by (optional)
+     *  * @return a list of ServiceVehicleDto objects that match the filters
+     */
+    public List<ServiceVehicleDto> findAllServiceVehiclesByFilters(
+            String status, String modelName, String siteName, Integer seats) {
+
+        Long siteId = null;
+        if(siteName != null){
+            Site site = siteRepository.findByName(siteName)
+                    .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable : " + siteName));
+            siteId = site.getId();
+        }
+        Long modelId = null;
+        if(modelName != null){
+            Model model = modelRepository.findByModelName(modelName).stream()
+                          .findFirst()
+                          .orElseThrow(() -> new RessourceNotFoundException("Model not found: " + modelName));
+            modelId = model.getId();
+        }
+
+        List<ServiceVehicle> vehicles = serviceVehicleRepository.findAllByFilters(siteId, modelId,seats, status);
+        return vehicles.stream()
+                .map(vehicleMapper::toDto)
+                .collect(Collectors.toList());
+    }
+
 }

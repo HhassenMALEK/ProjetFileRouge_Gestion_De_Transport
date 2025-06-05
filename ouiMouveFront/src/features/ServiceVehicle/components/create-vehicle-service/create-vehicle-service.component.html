@@ -5,16 +5,23 @@
     <app-input  
       [label]="'*Numéro d\'immatriculation'"
       [type]="'text'"
-      [placeholder]="'Entrez le numéro'"
+      [placeholder]="'Ex: AA123BB'"
       [required]="true"
       name="immatriculation"
       [(ngModel)]="vehicle.immatriculation"
+      [ngModelOptions]="{updateOn: 'blur'}" 
       #immat="ngModel"
+      immatriculationFormat
       [disabled]="false"
     ></app-input>
-    @if (immat.invalid && (immat.dirty || immat.touched)) {
+   @if (immat.invalid) {
       <div class="error-message">
-        L'immatriculation est requise
+        @if (immat.errors?.['required']) {
+          L'immatriculation est requise
+        }
+        @if (immat.errors?.['immatriculation']) {
+          Format attendu : 2 lettres + 3 chiffres + 2 lettres (ex: AA123BB)
+        }
       </div>
     }
 
