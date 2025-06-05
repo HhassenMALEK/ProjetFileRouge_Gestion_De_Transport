@@ -21,7 +21,7 @@ import { SelectComponent } from '@shared/components/select/select.component';
 import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
 import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator';
 @Component({
-  selector: 'app-create-vehicle-service',
+  selector: 'app-create-service-vehicle',
   templateUrl: './create-service-vehicle.component.html',
   styleUrls: ['./create-service-vehicle.component.scss'],
 
@@ -36,10 +36,10 @@ import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator
   ],
 
 })
-export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
+export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
   // Services injectés
   private readonly router = inject(Router);
-  private readonly serviceVehicleService = inject(
+  private readonly serviceServiceVehicle = inject(
     ServiceVehicleControllerService
   );
   private readonly modelControllerService = inject(ModelControllerService);
@@ -131,7 +131,7 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const submitSub = this.serviceVehicleService
+    const submitSub = this.serviceServiceVehicle
       .createServiceVehicle(this.vehicle)
       .subscribe({
         next: (res) => {
