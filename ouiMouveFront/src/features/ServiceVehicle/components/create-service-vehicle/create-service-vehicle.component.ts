@@ -22,8 +22,8 @@ import { ConfirmationPopupComponent } from '@shared/components/confirmation-popu
 import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator';
 @Component({
   selector: 'app-create-vehicle-service',
-  templateUrl: './create-vehicle-service.component.html',
-  styleUrls: ['./create-vehicle-service.component.scss'],
+  templateUrl: './create-service-vehicle.component.html',
+  styleUrls: ['./create-service-vehicle.component.scss'],
 
   imports: [
     FormsModule,

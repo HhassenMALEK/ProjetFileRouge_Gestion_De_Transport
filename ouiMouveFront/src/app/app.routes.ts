@@ -36,7 +36,7 @@ export const routes: Routes = [
     path: 'serviceVehicle',
     loadComponent: () =>
       import(
-        '@features/ServiceVehicle/components/create-vehicle-service/create-vehicle-service.component'
+        '@features/ServiceVehicle/components/create-service-vehicle/create-service-vehicle.component'
       ).then((m) => m.CreateVehicleServiceComponent),
     },
     {

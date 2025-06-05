@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CreateVehicleServiceComponent } from './create-vehicle-service.component';
+import { CreateVehicleServiceComponent } from './create-service-vehicle.component';
 
 describe('CreateVehicleServiceComponent', () => {
   let component: CreateVehicleServiceComponent;
