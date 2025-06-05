@@ -12,4 +12,5 @@ import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 public interface CarPoolingReservationsRepository extends JpaRepository<CarPoolingReservations, Long> {
     List<CarPoolingReservations> findByUserId(Long userId);
     int countByCarPoolingIdAndStatus(Long carPoolingId, CarPoolingReservationStatus status);
+    List<CarPoolingReservations> findByCarPoolingId(Long carpoolingId);
 }

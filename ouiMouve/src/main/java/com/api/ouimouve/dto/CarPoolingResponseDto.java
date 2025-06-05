@@ -29,6 +29,6 @@ public class CarPoolingResponseDto {
 
     private VehicleDto vehicle;
     /** User who organizes the carpooling. */
-    private Long organizerId;
+    private UserDto organizer;
     private Integer participantCount;
 }

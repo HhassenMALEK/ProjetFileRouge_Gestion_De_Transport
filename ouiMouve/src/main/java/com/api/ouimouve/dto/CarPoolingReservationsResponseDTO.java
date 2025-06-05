@@ -5,6 +5,7 @@ import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Data Transfer Object (DTO) for CarPoolingReservations.
@@ -16,4 +17,5 @@ public class CarPoolingReservationsResponseDTO {
     private CarPoolingResponseDto carPooling;
     private CarPoolingReservationStatus status;
     private Integer participantCount;
+    private List<String> bookedUsers;
 }

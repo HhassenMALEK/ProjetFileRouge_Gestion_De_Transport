@@ -54,11 +54,20 @@ public class CarPoolingReservationsService {
      * @param id the ID of the CarPoolingReservations
      * @return the CarPoolingReservationsResponseDTO if found, null otherwise
      */
-    public CarPoolingReservationsResponseDTO getReservation(Long id) {
-        return carPoolingReservationsMapper
+    public CarPoolingReservationsResponseDTO getReservation(Long id) {   
+        CarPoolingReservationsResponseDTO res = carPoolingReservationsMapper
                 .toResponseDTO
                         (carPoolingReservationsRepository.findById(id)
-                                .orElse(null));
+                            .orElse(null));
+        if (res != null) {
+            // Set the participant count for the reservation
+            List<CarPoolingReservations> reservations = carPoolingReservationsRepository.findByCarPoolingId(res.getCarPooling().getId());
+            res.setBookedUsers(reservations.stream()
+                    .filter(r -> r.getStatus() == CarPoolingReservationStatus.BOOKED)
+                    .map(r -> r.getUser().getFirstName() + " " + r.getUser().getLastName())
+                    .collect(Collectors.toList())); 
+        }
+        return res;
     }
     /**
      * Create a new CarPoolingReservations

@@ -1,19 +1,18 @@
 package com.api.ouimouve.service;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.api.ouimouve.bo.ServiceVehicle;
-import com.api.ouimouve.bo.Site;
 import com.api.ouimouve.dto.ServiceVehicleCreateDto;
 import com.api.ouimouve.dto.ServiceVehicleDto;
-import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleMapper;
 import com.api.ouimouve.repository.ServiceVehicleRepository;
 import com.api.ouimouve.utils.AuthContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 /**
  * Service for managing Service vehicles.
