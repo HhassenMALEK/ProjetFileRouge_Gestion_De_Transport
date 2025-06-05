@@ -9,6 +9,8 @@ import { formatMinIntoHoursAndMinutes } from '@shared/utils/dateUtils';
 import { DateAndCityComponent } from '../date-and-city/date-and-city.component';
 import { UserListComponent } from '../user-list/user-list.component';
 import { VehicleReservationComponent } from '../vehicle-reservation/vehicle-reservation.component';
+import { MatIconModule } from '@angular/material/icon';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-carpooling-resa-detail',
@@ -18,6 +20,7 @@ import { VehicleReservationComponent } from '../vehicle-reservation/vehicle-rese
     UserListComponent,
     DateAndCityComponent,
     ButtonComponent,
+    MatIconModule,
   ],
   templateUrl: './carpooling-resa-detail.component.html',
   styleUrl: './carpooling-resa-detail.component.scss',
@@ -51,7 +54,47 @@ export class CarpoolingResaDetailComponent implements OnInit {
         });
     }
   }
-  handleAnnulation(): void {
-    console.log('Annulation clicked');
+  handleButton(): void {
+    const status = this.reservation?.status;
+    if (status && this.reservation?.id) {
+      switch (status) {
+        case 'BOOKED':
+          this.resaService.cancelReservation(this.reservation.id).subscribe({
+            next: () => {
+              this.router.navigate(['/carpooling-reservation']);
+            },
+            error: (error) => {
+              console.error('Error cancelling reservation:', error);
+            },
+          });
+          break;
+        case 'CANCELLED':
+          this.resaService
+            .subscribeToCarPooling(this.reservation.id)
+            .subscribe({
+              next: () => {
+                this.router.navigate(['/carpooling-reservation']);
+              },
+              error: (error: HttpErrorResponse) => {
+                // Pour du texte brut renvoyé par Spring Boot
+                let errorMessage = 'Erreur lors de la souscription';
+
+                if (typeof error.error === 'string') {
+                  errorMessage = error.error;
+                } else if (error.message) {
+                  errorMessage = error.message;
+                }
+
+                console.error(
+                  'Error subscribing to reservation:',
+                  errorMessage
+                );
+              },
+            });
+          break;
+        default:
+          this.router.navigate(['/carpooling-reservation']);
+      }
+    }
   }
 }

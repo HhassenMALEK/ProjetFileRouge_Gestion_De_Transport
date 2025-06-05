@@ -7,14 +7,18 @@ import {
   withEventReplay,
 } from '@angular/platform-browser';
 
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withFetch,
+  withInterceptors,
+} from '@angular/common/http';
 import { authInterceptor } from '@shared/service/auth.interceptor';
 import { Configuration } from '@openapi/index';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
     provideRouter(routes),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(withInterceptors([authInterceptor]), withFetch()),
     provideClientHydration(withEventReplay()),
     { provide: BASE_PATH, useValue: 'http://localhost:8087' },
     {

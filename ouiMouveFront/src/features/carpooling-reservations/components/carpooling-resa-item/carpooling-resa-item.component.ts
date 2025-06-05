@@ -15,6 +15,7 @@ import { MatIconModule } from '@angular/material/icon';
 export class CarpoolingResaItemComponent implements OnInit {
   reservation = input<CarPoolingReservationsResponseDTO>();
   arrivalDate: any;
+  color = input<string>();
   router = inject(Router);
   ngOnInit(): void {
     this.arrivalDate = this.getFormattedDateTime(

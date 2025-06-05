@@ -8,7 +8,10 @@
     @for (reservation of reservations; track reservation.id) {
     <app-carpooling-resa-item
       [reservation]="reservation"
-    ></app-carpooling-resa-item>
+      [color]="$even ? 'gray' : 'white'"
+    >
+      ></app-carpooling-resa-item
+    >
     }
   </div>
   }

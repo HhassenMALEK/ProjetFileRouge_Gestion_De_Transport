@@ -13,13 +13,14 @@
       <br />
       Distance : {{ reservation.carPooling?.distance }}
     </p>
+    <mat-icon>arrow_forward</mat-icon>
   </div>
   <div>
     <p>
       <app-button
-        [label]="'Annuler'"
+        [label]="reservation.status === 'BOOKED' ? 'Annuler' : 'Se réinscrire'"
         [color]="'red'"
-        (onClick)="handleAnnulation()"
+        (onClick)="handleButton()"
       ></app-button>
     </p>
     <app-date-and-city [reservation]="reservation" [type]="'arrival'">

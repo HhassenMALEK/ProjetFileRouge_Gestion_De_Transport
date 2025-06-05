@@ -13,6 +13,7 @@ import { ButtonComponent } from '@shared/components/button/button.component';
 })
 export class CarpoolingCardComponent {
   carpooling = input<CarPoolingResponseDto>();
+  color = input<string>();
   handleReservation() {
     // TODO détail de la résa
     console.log('Reservation button clicked');

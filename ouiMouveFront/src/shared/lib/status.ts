@@ -12,7 +12,7 @@ export const apiStatus: Record<string, ColorLabelPair> = {
     color: '#4CAF50',
     label: 'Réservation en cours',
   },
-  FINSHED: {
+  FINISHED: {
     color: '#b53d3d',
     label: 'Réservation terminée',
   },
@@ -28,4 +28,5 @@ export const apiStatus: Record<string, ColorLabelPair> = {
     color: '#4CAF50',
     label: 'Réservation effectuée',
   },
+
 };

@@ -1,16 +1,14 @@
 @let nb = 1;
-<section>
+<section [class]="color()">
   <div>
     <!-- TODO: ajouter les places dans le covoiturages-->
     <app-status [status]="carpooling()?.status"></app-status>
     <!-- <p>Places restantes: {{carpooling().}}</p> -->
     <p>
       Date de départ: {{ getFormattedDateTime(carpooling()?.departure)?.date }}
-    </p>
-    <p>
-      Heure de départ: {{ getFormattedDateTime(carpooling()?.departure)?.time }}
-    </p>
-    <p>
+      <br />
+      Heure de départ:
+      {{ getFormattedDateTime(carpooling()?.departure)?.time }} <br />
       Lieu de départ:
       {{`${carpooling()?.departureSite?.label}, ${carpooling()?.departureSite?.city}`}}
     </p>
@@ -24,15 +22,11 @@
       (onClick)="handleReservation()"
     ></app-button>
     }
-    <p></p>
     <p>
-      Date de arrivée: {{ getFormattedDateTime(carpooling()?.departure)?.date }}
-    </p>
-    <p>
+      Date de arrivée:
+      {{ getFormattedDateTime(carpooling()?.departure)?.date }} <br />
       Heure de arrivée:
-      {{ getFormattedDateTime(carpooling()?.departure)?.time }}
-    </p>
-    <p>
+      {{ getFormattedDateTime(carpooling()?.departure)?.time }}<br />
       Lieu de arrivée:
       {{`${carpooling()?.destinationSite?.label}, ${carpooling()?.destinationSite?.city}`}}
     </p>

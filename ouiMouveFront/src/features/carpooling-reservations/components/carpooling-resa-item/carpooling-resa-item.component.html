@@ -1,17 +1,15 @@
-<section>
+<section [class]="color()">
   <div>
     <app-status [status]="reservation()?.status"> </app-status>
     <!-- TODO: modifier l'api pour rajouter le nombre de place restantes dans la réservation -->
-    <p>Places restantes: {{ reservation()?.participantCount }}</p>
     <p>
+      Places restantes: {{ reservation()?.participantCount }} <br />
       Date de départ :
       {{ getFormattedDateTime(reservation()?.carPooling?.departure)?.date }}
-    </p>
-    <p>
+      <br />
       Heure de départ :
       {{ getFormattedDateTime(reservation()?.carPooling?.departure)?.time }}
-    </p>
-    <p>
+      <br />
       Lieu de départ :
       {{
       `${reservation()?.carPooling?.departureSite?.label}, ${reservation()?.carPooling?.departureSite?.city}`
@@ -23,15 +21,13 @@
     <app-button
       (onClick)="handleDetailsClick()"
       [label]="'Voir détails'"
+      [color]="'red'"
     ></app-button>
     <p>
       Date de départ :
-      {{ arrivalDate?.date }}
-    </p>
-    <p>
+      {{ arrivalDate?.date }} <br />
       Heure d'arrivée :
       {{ arrivalDate?.time }}
     </p>
-    <p></p>
   </div>
 </section>

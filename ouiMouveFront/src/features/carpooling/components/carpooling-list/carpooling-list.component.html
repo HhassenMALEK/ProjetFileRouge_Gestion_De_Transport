@@ -1,7 +1,10 @@
 <section>
   <div>
     @for (carPooling of carPoolings; track carPooling.id) {
-    <app-carpooling-card [carpooling]="carPooling"></app-carpooling-card>
+    <app-carpooling-card
+      [carpooling]="carPooling"
+      [color]="$even ? 'gray' : 'white'"
+    ></app-carpooling-card>
     }
   </div>
 </section>
