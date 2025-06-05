@@ -58,6 +58,10 @@ export class CarpoolingFormComponent implements OnInit {
   ngOnInit(): void {
     this.loadPersonalVehicles();
     this.loadSites();
+    if (this.carpooling.departure) {
+      const date = new Date(this.carpooling.departure);
+      this.departureTime = date.toISOString().substring(11, 16); // 'HH:mm'
+    }
   }
 
   private loadPersonalVehicles(): void {
@@ -69,9 +73,22 @@ export class CarpoolingFormComponent implements OnInit {
         next: async (resp: any) => {
           if (resp instanceof Blob) {
             const text = await resp.text();
-            this.personalVehicles = JSON.parse(text);
+            const parsed = JSON.parse(text);
+            this.personalVehicles = parsed.map(
+              (vehicle: PersonalVehicleDto) => ({
+                ...vehicle,
+                label: `${vehicle.description ?? ''} ${
+                  vehicle.color ?? ''
+                }`.trim(),
+              })
+            );
           } else {
-            this.personalVehicles = resp;
+            this.personalVehicles = resp.map((vehicle: PersonalVehicleDto) => ({
+              ...vehicle,
+              label: `${vehicle.description ?? ''} ${
+                vehicle.color ?? ''
+              }`.trim(),
+            }));
           }
           console.log('Liste récupérée :', this.personalVehicles);
         },
@@ -79,28 +96,29 @@ export class CarpoolingFormComponent implements OnInit {
           console.error('Erreur chargement véhicules perso :', err);
         },
       });
+
     this.subscriptions.push(sub);
   }
 
-  // private loadServiceVehicles(): void {
-  //   const sub = this.serviceVehicleService
-  //     .getServiceVehicle(undefined, undefined, { httpHeaderAccept: '*/*' })
-  //     .subscribe({
-  //       next: async (resp: any) => {
-  //         if (resp instanceof Blob) {
-  //           const text = await resp.text();
-  //           this.serviceVehicle = JSON.parse(text);
-  //         } else {
-  //           this.serviceVehicle = resp;
-  //         }
-  //         console.log('Liste récupérée :', this.serviceVehicle);
-  //       },
-  //       error: (err) => {
-  //         console.error('Erreur chargement véhicules de service :', err);
-  //       },
-  //     });
-  //   this.subscriptions.push(sub);
-  // }
+  private loadServiceVehicles(): void {
+    const sub = this.serviceVehicleService
+      .getServiceVehicle(undefined, undefined, { httpHeaderAccept: '*/*' })
+      .subscribe({
+        next: async (resp: any) => {
+          if (resp instanceof Blob) {
+            const text = await resp.text();
+            this.serviceVehicle = JSON.parse(text);
+          } else {
+            this.serviceVehicle = resp;
+          }
+          console.log('Liste récupérée :', this.serviceVehicle);
+        },
+        error: (err) => {
+          console.error('Erreur chargement véhicules de service :', err);
+        },
+      });
+    this.subscriptions.push(sub);
+  }
 
   private loadSites(): void {
     const Sub = this.siteControllerService
@@ -123,7 +141,24 @@ export class CarpoolingFormComponent implements OnInit {
     this.subscriptions.push(Sub);
   }
 
-  onSubmit(): void {}
+  departureTime: string = '';
+
+  updateDepartureTime(): void {
+    if (!this.carpooling.departure) return;
+
+    const date = new Date(this.carpooling.departure);
+    const [hours, minutes] = this.departureTime.split(':');
+    date.setHours(+hours);
+    date.setMinutes(+minutes);
+    date.setSeconds(0);
+
+    // Met à jour departure avec la nouvelle heure
+    this.carpooling.departure = date.toISOString().slice(0, 16); // 'YYYY-MM-DDTHH:mm'
+  }
+
+  onSubmit(): void {
+    console.log('Date de départ sélectionnée :', this.carpooling.departure);
+  }
 
   onCancel(): void {}
 }
