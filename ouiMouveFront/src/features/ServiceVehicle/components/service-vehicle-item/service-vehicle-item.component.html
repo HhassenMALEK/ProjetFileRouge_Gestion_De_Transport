@@ -1,1 +1,46 @@
-<p>service-vehicle-item works!</p>
+<section [style.background-color]="color()">
+      
+  <div>
+    <p> Immatriculation: {{ serviceVehicle()?.immatriculation }}</p>
+    <p> {{ serviceVehicle()?.model?.category }}</p>
+    <p> Nombre de place: {{ serviceVehicle()?.model?.seatsModel }}</p>
+    <p> Consommation: {{ serviceVehicle()?.model?.co2 }} g/km de CO2</p>
+  </div>
+  <div>
+    <p> Modèle: {{ serviceVehicle()?.model?.modelName }}</p>
+      <img 
+      [src]="serviceVehicle()?.model?.photoURL" 
+      [alt]="serviceVehicle()?.model?.modelName"
+      width="300"
+      height="150"
+      class="vehicle-image"
+    >
+  </div>
+  <div>  
+    <p>
+      Site : {{ serviceVehicle()?.site?.name }}
+    </p>
+    <p>
+      {{ serviceVehicle()?.site?.label }} {{ serviceVehicle()?.site?.city }}
+    </p>
+  </div>
+  
+  <div class="actions">
+    <app-button
+      [label]="'Voir détail'"
+      [color]="'gray'"
+      (onClick)="addRepair()"
+    ></app-button>
+    <app-button
+      [label]="'Ajouter une réparation'"
+      [color]="'gray'"
+      (onClick)="addRepair()"
+    ></app-button>
+    <app-button
+      [label]="'Supprimer'"
+      [color]="'red'"
+      (onClick)="addRepair()"
+    ></app-button>
+</div>
+</section>
+

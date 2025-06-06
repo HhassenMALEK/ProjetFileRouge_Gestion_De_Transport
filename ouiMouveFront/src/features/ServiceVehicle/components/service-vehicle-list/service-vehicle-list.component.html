@@ -1,16 +1,16 @@
 <section>
-<!--  @if (vehicles && vehicles.length === 0) {
+ @if (serviceVehicles && serviceVehicles.length === 0) {
   <div class="text-center">
     <p class="text-muted">No Service Vehicle found.</p>
   </div>
-  } @else if (vehicles) {
+  } @else if (serviceVehicles) {
   <div class="list-group">
-    @for (vehicle of vehicles; track vehicle.id) {
+    @for (serviceVehicle of serviceVehicles; track serviceVehicle.id) {
     <app-service-vehicle-item
-      [vehicle]="vehicle"
+      [color]="$even ?  'lightgray' : 'gray' " 
+      [serviceVehicle]="serviceVehicle"
     ></app-service-vehicle-item>
     }
   </div>
   }
--->
 </section>
