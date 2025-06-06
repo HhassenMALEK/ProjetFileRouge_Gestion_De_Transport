@@ -1,37 +1,48 @@
 <section>
+  @if (reservation) {
   <div>
-    <app-status [status]="reservation?.status"> </app-status>
-    <p>Places restantes : {{ reservation?.participantCount }}</p>
-    <p>
-      Date de départ : {{ departureDate.date }} <br />
-      Heure de départ : {{ departureDate.time }} <br />
-      Lieu de départ : {{ reservation?.carPooling?.departureSite?.city }} <br />
-    </p>
-    <p>
-      Adresse de départ : {{ reservation?.carPooling?.departureSite?.label
-      }}<br />
-      {{ reservation?.carPooling?.departureSite?.name }} <br />
-    </p>
+    <app-status [status]="reservation.status"> </app-status>
+    <app-date-and-city
+      [carpooling]="reservation"
+      [type]="'departure'"
+      [color]="'bisque'"
+    >
+    </app-date-and-city>
+    <app-user-list [users]="reservation.bookedUsers"></app-user-list>
   </div>
   <div>
     <p>
       Durée du voyage :
-      {{ formatHoursAndMinutes(reservation?.carPooling?.durationInMinutes) }}
+      {{ formatHoursAndMinutes(reservation.carPooling?.durationInMinutes) }}
       <br />
-      Distance : {{ reservation?.carPooling?.distance }}
+      Distance : {{ reservation.carPooling?.distance }}
     </p>
+    <mat-icon>arrow_forward</mat-icon>
   </div>
   <div>
     <p>
-      Date d'arrivée : {{ arrivalDate.date }} <br />
-      Heure d'arrivée : {{ arrivalDate.time }}<br />
-      Lieu d'arrivée : {{ reservation?.carPooling?.destinationSite?.city }}
-      <br />
+      <app-button
+        [label]="reservation.status === 'BOOKED' ? 'Annuler' : 'Se réinscrire'"
+        [color]="'red'"
+        (onClick)="handleButton()"
+      ></app-button>
     </p>
+    <app-date-and-city
+      [carpooling]="reservation"
+      [type]="'arrival'"
+      [color]="'bisque'"
+    >
+    </app-date-and-city>
+    <app-vehicle-reservation
+      [vehicle]="reservation.carPooling?.vehicle"
+    ></app-vehicle-reservation>
+    <h2>Organisateur</h2>
     <p>
-      Adresse d'arrivée : {{ reservation?.carPooling?.destinationSite?.label
-      }}<br />
-      {{ reservation?.carPooling?.destinationSite?.name }} <br />
+      {{ reservation.carPooling?.organizer?.firstName }}
+      {{ reservation.carPooling?.organizer?.lastName }}
     </p>
   </div>
+  } @else {
+  <p>Chargement...</p>
+  }
 </section>

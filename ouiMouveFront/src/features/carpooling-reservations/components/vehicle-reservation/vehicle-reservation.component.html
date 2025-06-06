@@ -1,0 +1,6 @@
+<h2>Vehicule</h2>
+@if (serviceVehicle) {
+<p>{{ serviceVehicle.model?.mark }} {{ serviceVehicle.model?.modelName }}</p>
+} @else {
+<p>{{ personalVehicle?.description }} - {{ personalVehicle?.color }}</p>
+}

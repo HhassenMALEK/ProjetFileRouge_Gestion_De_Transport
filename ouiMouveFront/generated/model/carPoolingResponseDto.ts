@@ -7,19 +7,21 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { UserDto } from './userDto';
+import { VehicleDto } from './vehicleDto';
 import { SiteResponseDto } from './siteResponseDto';
 
 
 export interface CarPoolingResponseDto { 
     id?: number;
     departure?: string;
-    arrival?: string;
     status?: CarPoolingResponseDto.StatusEnum;
     durationInMinutes?: number;
     distance?: number;
     departureSite?: SiteResponseDto;
     destinationSite?: SiteResponseDto;
-    organizerId?: number;
+    vehicle?: VehicleDto;
+    organizer?: UserDto;
     participantCount?: number;
 }
 export namespace CarPoolingResponseDto {

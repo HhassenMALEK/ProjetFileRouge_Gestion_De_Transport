@@ -1,18 +1,22 @@
 section {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-around;
   width: 80%;
   min-width: 80vw;
   height: 33%;
-  background-color: aliceblue;
-  color: var(--oui-color-text);
-  border-radius: 5px;
-  border-top: 3px solid gray;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+    border-radius: 0.5rem;
   mat-icon {
     font-size: 15rem;
     height: auto;
     width: auto;
   }
+}
+.gray {
+  background-color: rgb(223, 223, 223);
+}
+.white {
+  background-color: white;
 }

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { UserControllerService, UserDto } from '@openapi';
+import { UserControllerService, UserDto } from '@openapi/index';
 import { TokenService } from './token.service';
 interface DecodedToken {
   sub: string; // Email de l'utilisateur

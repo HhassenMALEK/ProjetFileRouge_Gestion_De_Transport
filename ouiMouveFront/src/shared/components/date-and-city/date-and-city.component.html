@@ -1,0 +1,14 @@
+<h2>{{ type() === "departure" ? "Départ" : "Arrivée" }}</h2>
+<p [class]="color()">
+  Date {{ type() === "departure" ? "de départ" : "d'arrivée" }}:
+  {{ formatedDate?.date }} <br />
+  Heure {{ type() === "departure" ? "de départ" : "d'arrivée" }}:
+  {{ formatedDate?.time }} <br />
+  Lieu {{ type() === "departure" ? "de départ" : "d'arrivée" }}:
+  {{
+    type() === "departure"
+      ? extractedCarpooling()?.departureSite?.city
+      : extractedCarpooling()?.destinationSite?.city
+  }}
+  <br />
+</p>

@@ -1,5 +1,8 @@
 import { DatePipe } from '@angular/common';
-import { CarPoolingReservationsResponseDTO } from '@openapi/index';
+import {
+  CarPoolingReservationsResponseDTO,
+  CarPoolingResponseDto,
+} from '@openapi/index';
 /**
  * Extrait la date et l'heure d'une chaîne de caractères de date.
  * @param dateString La chaîne de caractères de date à analyser (par exemple, "2024-05-27T10:30:00").
@@ -53,12 +56,12 @@ export function formatMinIntoHoursAndMinutes(minutes: number): string {
 }
 
 export function getArrivalDate(
-  reservation: CarPoolingReservationsResponseDTO
+  carPooling: CarPoolingResponseDto
 ): Date | undefined {
-  const departureValue = reservation?.carPooling?.departure;
+  const departureValue = carPooling?.departure;
   const departureDate =
     departureValue !== undefined ? new Date(departureValue) : undefined;
-  const durationInMinutes = reservation?.carPooling?.durationInMinutes;
+  const durationInMinutes = carPooling?.durationInMinutes;
   const arrivalTimeInSeconds =
     departureDate && durationInMinutes !== undefined
       ? departureDate.getTime() / 1000 + durationInMinutes * 60
