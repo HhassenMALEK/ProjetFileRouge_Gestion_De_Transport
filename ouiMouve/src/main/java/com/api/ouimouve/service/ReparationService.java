@@ -1,6 +1,12 @@
 package com.api.ouimouve.service;
 
-import com.api.ouimouve.bo.CarPoolingReservations;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.api.ouimouve.bo.Reparation;
 import com.api.ouimouve.bo.ServiceVehicle;
 import com.api.ouimouve.bo.Vehicle;
@@ -12,12 +18,6 @@ import com.api.ouimouve.mapper.ReparationMapper;
 import com.api.ouimouve.repository.ReparationRepository;
 import com.api.ouimouve.repository.ServiceVehicleRepository;
 import com.api.ouimouve.repository.VehicleRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ReparationService {
@@ -30,13 +30,13 @@ public class ReparationService {
     @Autowired
     private ServiceVehicleRepository serviceVehicleRepository;
 
-
     // Add methods to handle CRUD operations for Reparation entities
     /**
      * Get all Reparations
+     * 
      * @return a list of ReparationDto
      */
-    public List<ReparationResponseDto>  getAllReparations(Long vehicleId) {
+    public List<ReparationResponseDto> getAllReparations(Long vehicleId) {
         return reparationRepository.findByServiceVehicleId(vehicleId).stream()
                 .map(reparationMapper::toDto)
                 .collect(Collectors.toList());
@@ -44,6 +44,7 @@ public class ReparationService {
 
     /**
      * Get a Reparation by its ID
+     * 
      * @param id the ID of the Reparation
      * @return the ReparationDto if found, null otherwise
      */
@@ -55,6 +56,7 @@ public class ReparationService {
 
     /**
      * Create a new Reparation
+     * 
      * @param reparationDto the ReparationDto to create
      * @return the created ReparationDto
      */
@@ -65,12 +67,12 @@ public class ReparationService {
         }
 
         ServiceVehicle serviceVehicle = (ServiceVehicle) vehicleRepository.findById(reparationDto.getVehicleId())
-            .orElseThrow(() -> new RessourceNotFoundException("Service Vehicle not found"));
+                .orElseThrow(() -> new RessourceNotFoundException("Service Vehicle not found"));
 
         Reparation reparation = reparationMapper.toEntity(reparationDto);
         reparation.setServiceVehicle(serviceVehicle);
 
-        if (!checkDateForCreateReparation(reparation) ) {
+        if (!checkDateForCreateReparation(reparation)) {
             throw new IllegalArgumentException("A reparation already exists for this service vehicle.");
         }
         reparation = reparationRepository.save(reparation);
@@ -79,8 +81,9 @@ public class ReparationService {
     }
 
     /**
-
+     * 
      * Delete a Reparation by its ID
+     * 
      * @param id the ID of the Reparation to delete
      * @return the deleted ReparationDto
      */
@@ -95,7 +98,8 @@ public class ReparationService {
 
     /**
      * Update an existing Reparation
-     * @param id the id of the Reparation to update
+     * 
+     * @param id            the id of the Reparation to update
      * @param reparationDto the updated ReparationDto
      * @return the updated ReparationDto
      */
@@ -104,7 +108,8 @@ public class ReparationService {
         Reparation reparationExisting = reparationRepository.findById(id)
                 .orElseThrow(() -> new RessourceNotFoundException("Reparation not found"));
 
-        //check if the ServiceVehicle is present, so we can add his ID to this ReparationCreateDto
+        // check if the ServiceVehicle is present, so we can add his ID to this
+        // ReparationCreateDto
         if (checkServiceVehicleExist(reparationDto.getVehicleId())) {
 
             Optional<Vehicle> serviceVehicleOpt = vehicleRepository.findById(reparationDto.getVehicleId());
@@ -115,39 +120,44 @@ public class ReparationService {
             reparationExisting.setMotive(reparationDto.getMotive());
             Reparation updated = reparationRepository.save(reparationExisting);
             return reparationMapper.toDto(updated);
-        }else {
+        } else {
             throw new ReservationConflictException("Service Vehicle not found");
         }
     }
 
-//    /**
-//     * check if a reparation already exists during reserving a carpooling
-//     * @return response
-//     */
-//    public boolean checkDateForReparation(CarPoolingReservations carPoolingReservations) {
-//
-//        List<Reparation> reparation = reparationRepository.findOverlappingReparations(carPoolingReservations.getCarPooling().getVehicle().getId()
-//        ,carPoolingReservations.getCarPooling().getDeparture(),carPoolingReservations.getCarPooling().getArrival());
-//
-//        return reparation.isEmpty();
-//    }
+    // /**
+    // * check if a reparation already exists during reserving a carpooling
+    // * @return response
+    // */
+    // public boolean checkDateForReparation(CarPoolingReservations
+    // carPoolingReservations) {
+    //
+    // List<Reparation> reparation =
+    // reparationRepository.findOverlappingReparations(carPoolingReservations.getCarPooling().getVehicle().getId()
+    // ,carPoolingReservations.getCarPooling().getDeparture(),carPoolingReservations.getCarPooling().getArrival());
+    //
+    // return reparation.isEmpty();
+    // }
 
     /**
      * check if a reparation already exists during reserving a carpooling
+     * 
      * @return response
      */
     public boolean checkDateForCreateReparation(Reparation reparation) {
 
-        List<Reparation> reparationList = reparationRepository.findByServiceVehicleId(reparation.getServiceVehicle().getId());
+        List<Reparation> reparationList = reparationRepository
+                .findByServiceVehicleId(reparation.getServiceVehicle().getId());
         return reparationList.isEmpty();
 
     }
 
     /**
      * Check if a serviceVehicle exists in database
+     * 
      * @return true of false
      */
-    public boolean checkServiceVehicleExist(Long id){
+    public boolean checkServiceVehicleExist(Long id) {
         return serviceVehicleRepository.findById(id).isPresent();
     }
 }

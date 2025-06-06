@@ -1,12 +1,19 @@
 package com.api.ouimouve.bo;
 
-import com.api.ouimouve.enumeration.VehicleCategory;
-import com.api.ouimouve.enumeration.VehicleStatus;
-import com.api.ouimouve.validation.ValidMaxNbSeats;
-import jakarta.persistence.*;
-import lombok.Data;
-
 import java.util.List;
+
+import com.api.ouimouve.enumeration.VehicleCategory;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.Data;
 
 /**
  * Reparation entity class representing a repair record.
@@ -73,4 +80,3 @@ public class Model {
     private List<ServiceVehicle> serviceVehicles;
 
 }
-

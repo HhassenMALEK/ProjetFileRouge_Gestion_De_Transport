@@ -8,6 +8,9 @@ import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleMapper;
 import com.api.ouimouve.repository.PersonalVehicleRepository;
 import com.api.ouimouve.utils.AuthContext;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import java.util.List;
  * Handles CRUD operations and specific personal vehicle functionalities.
  */
 @Service
+@Slf4j
 public class PersonalVehicleService {
 
     @Autowired
@@ -39,9 +43,11 @@ public class PersonalVehicleService {
      * @return The personal vehicle DTO if found, null otherwise
      */
     public PersonalVehicleDto getPersonalVehicleById(Long id) {
-        return personalVehicleRepository.findById(id)
+        PersonalVehicleDto res = personalVehicleRepository.findById(id)
                 .map(vehicle -> vehicleMapper.toDto(vehicle))
                 .orElseThrow(() -> new RessourceNotFoundException("Vehicle not found"));
+        log.info("Retrieved personal vehicle with ID: {}", res);
+        return res;
     }
     /**
      * Get all personal vehicles for a specific user.

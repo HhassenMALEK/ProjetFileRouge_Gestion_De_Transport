@@ -2,8 +2,6 @@ package com.api.ouimouve.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * DTO used to return Site information to the client.
  */
@@ -32,6 +30,5 @@ public class SiteResponseDto {
      * Longitude of this address
      */
     private float longY;
-
 
 }

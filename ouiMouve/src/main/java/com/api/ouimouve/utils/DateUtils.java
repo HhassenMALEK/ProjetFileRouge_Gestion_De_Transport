@@ -2,12 +2,12 @@ package com.api.ouimouve.utils;
 
 import java.time.ZoneId;
 import java.util.Date;
-import java.time.LocalTime;
 
 public class DateUtils {
 
     /**
      * Converts the given date to the end of the day (23:59:59).
+     * 
      * @param date the original date
      * @return a new Date object set to 23:59:59 of the same day
      */

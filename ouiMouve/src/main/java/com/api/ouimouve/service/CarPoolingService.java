@@ -1,32 +1,33 @@
 package com.api.ouimouve.service;
 
-import com.api.ouimouve.bo.CarPooling;
-import com.api.ouimouve.bo.Site;
-import com.api.ouimouve.dto.CarPoolingCreateDto;
-import com.api.ouimouve.dto.CarPoolingResponseDto;
-import com.api.ouimouve.enumeration.CarPoolingStatus;
-import com.api.ouimouve.exception.InvalidRessourceException;
-import com.api.ouimouve.utils.Email;
-import com.api.ouimouve.utils.DateUtils;
-import com.api.ouimouve.exception.RessourceNotFoundException;
-import com.api.ouimouve.mapper.CarPoolingMapper;
-import com.api.ouimouve.repository.*;
-import com.api.ouimouve.validation.CarPoolingValidator;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.api.ouimouve.bo.CarPooling;
+import com.api.ouimouve.bo.Site;
+import com.api.ouimouve.dto.CarPoolingCreateDto;
+import com.api.ouimouve.dto.CarPoolingResponseDto;
+import com.api.ouimouve.enumeration.CarPoolingStatus;
+import com.api.ouimouve.exception.RessourceNotFoundException;
+import com.api.ouimouve.mapper.CarPoolingMapper;
+import com.api.ouimouve.repository.CarPoolingRepository;
+import com.api.ouimouve.repository.SiteRepository;
+import com.api.ouimouve.utils.DateUtils;
+import com.api.ouimouve.utils.Email;
+import com.api.ouimouve.validation.CarPoolingValidator;
+
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * Service class for managing carpooling operations.
- * Provides methods to create, update, delete, and retrieve carpooling information.
+ * Provides methods to create, update, delete, and retrieve carpooling
+ * information.
  */
 @Slf4j
 @Service
@@ -47,16 +48,6 @@ public class CarPoolingService {
     @Autowired
     private SiteRepository siteRepository;
     /**
-     * Repository for user-related data access.
-     */
-    @Autowired
-    private UserRepository userRepository;
-    /**
-     * Repository for vehicle-related data access.
-     */
-    @Autowired
-    private VehicleRepository vehicleRepository;
-    /**
      * Email utility for sending notifications.
      */
     @Autowired
@@ -69,6 +60,7 @@ public class CarPoolingService {
 
     /**
      * Retrieves all carpoolings.
+     * 
      * @return a list of CarPoolingResponseDto
      */
     public List<CarPoolingResponseDto> getAllCarpooling() {
@@ -79,6 +71,7 @@ public class CarPoolingService {
 
     /**
      * Retrieves a carpooling by its ID.
+     * 
      * @param id the ID of the carpooling
      * @return the CarPoolingResponseDto
      */
@@ -94,6 +87,7 @@ public class CarPoolingService {
 
     /**
      * Creates a new carpooling entry.
+     * 
      * @param dto containing carpooling details.
      * @return the created carpooling entry.
      */
@@ -102,18 +96,18 @@ public class CarPoolingService {
         CarPooling carPooling = carPoolingMapper.toEntity(dto);
         carPoolingValidator.checkInput(carPooling, dto);
         CarPooling saved = carPoolingRepository.save(carPooling);
-        //send an email alert to the organizer
+        // send an email alert to the organizer
         email.sendAlert(
                 saved.getOrganizer().getEmail(),
                 "Covoiturage créé avec succès",
-                "Votre covoiturage prévu pour le " + saved.getDeparture() + " a bien été enregistré."
-        );
+                "Votre covoiturage prévu pour le " + saved.getDeparture() + " a bien été enregistré.");
         return carPoolingMapper.toResponseDto(saved);
     }
 
     /**
      * Updates an existing carpooling entry.
-     * @param id the ID of the carpooling to update
+     * 
+     * @param id  the ID of the carpooling to update
      * @param dto the updated carpooling details
      * @return the updated carpooling entry
      */
@@ -131,13 +125,13 @@ public class CarPoolingService {
         email.sendAlert(
                 updated.getOrganizer().getEmail(),
                 "Mise à jour de votre covoiturage",
-                "Votre covoiturage a été modifié. Nouvelle date de départ : " + updated.getDeparture()
-        );
+                "Votre covoiturage a été modifié. Nouvelle date de départ : " + updated.getDeparture());
         return carPoolingMapper.toResponseDto(updated);
     }
 
     /**
      * Deletes a carpooling entry by its ID.
+     * 
      * @param id the ID of the carpooling entry
      */
     public void deleteCarpooling(Long id) {
@@ -146,20 +140,20 @@ public class CarPoolingService {
         // Check if the departure date has already passed
         carPoolingValidator.checkDeletable(carPooling);
         carPoolingRepository.deleteById(id);
-        //send an email to the organizer
+        // send an email to the organizer
         email.sendAlert(
                 carPooling.getOrganizer().getEmail(),
                 "Covoiturage annulé",
-                "Votre covoiturage prévu pour le " + carPooling.getDeparture() + " a été supprimé."
-        );
+                "Votre covoiturage prévu pour le " + carPooling.getDeparture() + " a été supprimé.");
     }
 
     /**
      * Filters carpoolings based on optional criteria.
+     * 
      * @param organizerId the ID of the organizer (optional)
-     * @param status the status of the carpooling (optional)
-     * @param startDate the start of the departure date range (optional)
-     * @param vehicleId the ID of the vehicle (optional)
+     * @param status      the status of the carpooling (optional)
+     * @param startDate   the start of the departure date range (optional)
+     * @param vehicleId   the ID of the vehicle (optional)
      * @return a list of carpoolings matching the given filters
      */
     public List<CarPoolingResponseDto> getCarPoolingByFilter(
@@ -170,10 +164,9 @@ public class CarPoolingService {
             String nameDeparture,
             String nameDestination,
             Long vehicleId,
-            Integer capacity
-    ) {
+            Integer capacity) {
         Date dateBegin = null;
-        if (startDate != null ) {
+        if (startDate != null) {
             LocalDate localDate = LocalDate.parse(startDate);
             dateBegin = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         }
@@ -185,19 +178,23 @@ public class CarPoolingService {
         }
 
         Long departureSiteId = null;
-        if(nameDeparture != null){
+        if (nameDeparture != null) {
             Site departureSite = siteRepository.findByName(nameDeparture)
-                    .orElseThrow(() -> new RessourceNotFoundException("Adresse de départ introuvable : " + nameDeparture));
+                    .orElseThrow(
+                            () -> new RessourceNotFoundException("Adresse de départ introuvable : " + nameDeparture));
             departureSiteId = departureSite.getId();
         }
 
         Long destinationSiteId = null;
-        if(nameDestination != null){
+        if (nameDestination != null) {
             Site destinationSite = siteRepository.findByName(nameDestination)
-                    .orElseThrow(() -> new RessourceNotFoundException("Adresse de destination introuvable : " + nameDestination));
+                    .orElseThrow(() -> new RessourceNotFoundException(
+                            "Adresse de destination introuvable : " + nameDestination));
             destinationSiteId = destinationSite.getId();
         }
-        return carPoolingRepository.filterCarpoolings(organizerId, status, dateBegin, dateFinal, departureSiteId, destinationSiteId, vehicleId)
+        return carPoolingRepository
+                .filterCarpoolings(organizerId, status, dateBegin, dateFinal, departureSiteId, destinationSiteId,
+                        vehicleId)
                 .stream()
                 .filter(carpooling -> capacity == null || carpooling.getNbSeatAvailable() >= capacity)
                 .map(carPoolingMapper::toResponseDto)

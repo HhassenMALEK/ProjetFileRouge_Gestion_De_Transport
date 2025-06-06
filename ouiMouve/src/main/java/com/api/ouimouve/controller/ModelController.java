@@ -1,19 +1,27 @@
 package com.api.ouimouve.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.api.ouimouve.dto.ModelCreateDto;
 import com.api.ouimouve.dto.ModelDto;
 import com.api.ouimouve.enumeration.VehicleCategory;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.ModelMapper;
 import com.api.ouimouve.service.ModelService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/model")
@@ -30,7 +38,7 @@ public class ModelController {
      * @throws RessourceNotFoundException if no models are found
      */
     @GetMapping("/list")
-    //@PreAuthorize("hasRole('ADMIN')")
+    // @PreAuthorize("hasRole('ADMIN')")
     @Operation(summary = "Get all models", responses = {
             @ApiResponse(responseCode = "200", description = "List of all models"),
             @ApiResponse(responseCode = "403", description = "Access required"),
@@ -78,7 +86,8 @@ public class ModelController {
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "404", description = "No models found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    public List<ModelDto> getAllModelsByCategory(@PathVariable VehicleCategory category) throws RessourceNotFoundException {
+    public List<ModelDto> getAllModelsByCategory(@PathVariable VehicleCategory category)
+            throws RessourceNotFoundException {
         List<ModelDto> models = modelService.GetAllModelsByCategory(category);
         if (models.isEmpty()) {
             throw new RessourceNotFoundException("No models found for this category");
@@ -110,7 +119,7 @@ public class ModelController {
     /**
      * Update a model by its ID
      *
-     * @param id the ID of the model
+     * @param id       the ID of the model
      * @param modelDto the updated ModelDto object
      * @return the updated ModelDto object
      * @throws RessourceNotFoundException if the model does not exist
@@ -121,7 +130,8 @@ public class ModelController {
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "404", description = "No model found"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    public ModelDto updateModel(@PathVariable long id, @Valid @RequestBody ModelCreateDto modelDto) throws RessourceNotFoundException {
+    public ModelDto updateModel(@PathVariable long id, @Valid @RequestBody ModelCreateDto modelDto)
+            throws RessourceNotFoundException {
         ModelDto modelToModify = modelMapper.toModelDto(modelMapper.toModel(modelDto));
         ModelDto updatedModel = modelService.updateModel(id, modelToModify);
         if (updatedModel == null) {
@@ -141,7 +151,7 @@ public class ModelController {
             @ApiResponse(responseCode = "200", description = "Model created"),
             @ApiResponse(responseCode = "403", description = "Access required"),
             @ApiResponse(responseCode = "500", description = "Internal Server Error") })
-    public ModelDto createModel( @Valid @RequestBody ModelCreateDto modelDto) {
+    public ModelDto createModel(@Valid @RequestBody ModelCreateDto modelDto) {
         ModelDto modelToModify = modelMapper.toModelDto(modelMapper.toModel(modelDto));
         return modelService.createModel(modelToModify);
     }
