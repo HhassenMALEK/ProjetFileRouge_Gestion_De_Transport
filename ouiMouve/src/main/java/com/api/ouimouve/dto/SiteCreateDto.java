@@ -2,8 +2,6 @@ package com.api.ouimouve.dto;
 
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * DTO used to create a Site.
  * Contains minimal information needed for creation.
@@ -31,6 +29,5 @@ public class SiteCreateDto {
      * Longitude of this address
      */
     private float longY;
-
 
 }

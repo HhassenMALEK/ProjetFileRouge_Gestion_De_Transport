@@ -20,6 +20,8 @@ public abstract class CarPoolingReservationsMapper {
     private CarPoolingReservationsRepository repository;
     // Entité vers DTO de réponse (lecture)
     @Mapping(target = "carPooling", source = "carPooling")
+    @Mapping(target = "participantCount", ignore = true) // This will be calculated after mapping
+    @Mapping(target ="bookedUsers", ignore = true) // This will be set later if needed
     public abstract CarPoolingReservationsResponseDTO toResponseDTO(CarPoolingReservations entity);
 
     // DTO de création vers entité

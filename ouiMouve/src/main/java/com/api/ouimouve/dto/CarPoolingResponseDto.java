@@ -1,12 +1,10 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.bo.Vehicle;
-import com.api.ouimouve.enumeration.CarPoolingStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.annotation.Nullable;
-import lombok.Data;
-
 import java.util.Date;
+
+import com.api.ouimouve.enumeration.CarPoolingStatus;
+
+import lombok.Data;
 
 /**
  * Dto used to return carpooling information to the client.
@@ -17,8 +15,6 @@ public class CarPoolingResponseDto {
     private Long id;
     /** The date and time when the carpooling is scheduled to start. */
     private Date departure;
-    /** The date and time when the carpooling is scheduled to arrive. */
-    private Date arrival;
     /** The time when the carpooling is scheduled to start. */
     private CarPoolingStatus status;
     /** Duration of the carpooling in minutes. */
@@ -31,14 +27,8 @@ public class CarPoolingResponseDto {
     /** Adress where the carpooling ends. */
     private SiteResponseDto destinationSite;
 
-
-    /** vehicle used for the carpooling. */
-    @JsonIgnore
-    private Vehicle vehicle;
+    private VehicleDto vehicle;
     /** User who organizes the carpooling. */
-
-    private Long organizerId;
-
-    /** User who organizes the carpooling. */
+    private UserDto organizer;
     private Integer participantCount;
 }

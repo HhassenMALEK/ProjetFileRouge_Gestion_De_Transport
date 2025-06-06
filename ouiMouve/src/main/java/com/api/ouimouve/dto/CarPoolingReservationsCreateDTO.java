@@ -1,10 +1,12 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
-import lombok.Data;
+import java.util.Date;
+
 import org.springframework.lang.Nullable;
 
-import java.util.Date;
+import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
+
+import lombok.Data;
 
 @Data
 public class CarPoolingReservationsCreateDTO {

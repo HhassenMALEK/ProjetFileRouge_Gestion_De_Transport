@@ -7,6 +7,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,7 @@ import java.util.Map;
  * Exception handler class for handling exceptions in the application.
  */
 @ControllerAdvice
+@Slf4j
 public class ExceptionsHandler {
     /**
      * Handles RessourceNotFoundException and returns a 404 Not Found response.
@@ -26,6 +29,7 @@ public class ExceptionsHandler {
         RessourceNotFoundException.class
     })
     public ResponseEntity<String> handleRessourceNotFoundException(RessourceNotFoundException ex) {
+        log.error(null, ex);
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
@@ -66,6 +70,7 @@ public class ExceptionsHandler {
         InvalidRequestException.class
     })
     public ResponseEntity<String> handleInvalidRequestException(InvalidRequestException ex) {
+        log.error(null, ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
     }
     /**

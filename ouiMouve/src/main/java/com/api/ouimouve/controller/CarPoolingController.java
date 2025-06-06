@@ -1,20 +1,28 @@
 package com.api.ouimouve.controller;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
-import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.service.CarPoolingService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
-import java.util.List;
 /**
  * Controller for managing carpooling operations.
- * Provides endpoints for creating, updating, deleting, and retrieving carpooling information.
+ * Provides endpoints for creating, updating, deleting, and retrieving
+ * carpooling information.
  */
 @RestController
 @RequestMapping("/api/carpooling")
@@ -25,6 +33,7 @@ public class CarPoolingController {
 
     /**
      * Creates a new carpooling entry.
+     * 
      * @param dto containing carpooling details.
      * @return the created carpooling entry.
      */
@@ -35,7 +44,8 @@ public class CarPoolingController {
 
     /**
      * Updates an existing carpooling entry.
-     * @param id the ID of the carpooling to update.
+     * 
+     * @param id  the ID of the carpooling to update.
      * @param dto the updated carpooling details.
      * @return the updated carpooling entry.
      */
@@ -46,6 +56,7 @@ public class CarPoolingController {
 
     /**
      * Deletes a carpooling entry by its ID.
+     * 
      * @param id the ID of the carpooling entry.
      * @return a response indicating the deletion status.
      */
@@ -54,8 +65,10 @@ public class CarPoolingController {
         carPoolingService.deleteCarpooling(id);
         return ResponseEntity.noContent().build();
     }
+
     /**
      * Retrieves all carpoolings.
+     * 
      * @return list of all carpoolings.
      */
     @GetMapping("/list")
@@ -65,6 +78,7 @@ public class CarPoolingController {
 
     /**
      * Retrieves a carpooling entry by its ID.
+     * 
      * @param id the ID of the carpooling entry.
      * @return the carpooling entry with the specified ID.
      */
@@ -74,15 +88,18 @@ public class CarPoolingController {
     }
 
     /**
-     * Filters carpoolings based on optional criteria such as organizer ID, status, departure date, and vehicle ID.
-     * All parameters are optional; if none are provided, all carpoolings are returned.
+     * Filters carpoolings based on optional criteria such as organizer ID, status,
+     * departure date, and vehicle ID.
+     * All parameters are optional; if none are provided, all carpoolings are
+     * returned.
      *
-     * @param organizerId optional ID of the organizer (user)
-     * @param status optional status of the carpooling (e.g., PENDING, VALIDATED)
-     * @param startDate optional departure date to filter
-     * @param endDate option optional departure site
+     * @param organizerId     optional ID of the organizer (user)
+     * @param status          optional status of the carpooling (e.g., PENDING,
+     *                        VALIDATED)
+     * @param startDate       optional departure date to filter
+     * @param endDate         option optional departure site
      * @param nameDestination optional destination site
-     * @param vehicleId optional ID of the vehicle
+     * @param vehicleId       optional ID of the vehicle
      * @return list of carpoolings matching the provided filters
      * @return capacity passagers
      */
@@ -97,8 +114,8 @@ public class CarPoolingController {
             @RequestParam(required = false) Long vehicleId,
             @RequestParam(required = false) Integer capacity
 
-
     ) {
-        return carPoolingService.getCarPoolingByFilter(organizerId, status, startDate, endDate, nameDeparture, nameDestination, vehicleId, capacity);
+        return carPoolingService.getCarPoolingByFilter(organizerId, status, startDate, endDate, nameDeparture,
+                nameDestination, vehicleId, capacity);
     }
 }

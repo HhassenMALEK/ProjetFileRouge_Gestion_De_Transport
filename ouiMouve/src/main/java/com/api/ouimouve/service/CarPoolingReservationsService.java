@@ -1,5 +1,12 @@
 package com.api.ouimouve.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.api.ouimouve.bo.CarPoolingReservations;
 import com.api.ouimouve.dto.CarPoolingReservationsCreateDTO;
 import com.api.ouimouve.dto.CarPoolingReservationsResponseDTO;
@@ -7,16 +14,11 @@ import com.api.ouimouve.dto.CarPoolingResponseDto;
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.mapper.CarPoolingReservationsMapper;
 import com.api.ouimouve.repository.CarPoolingReservationsRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class CarPoolingReservationsService {
     @Autowired
     private CarPoolingReservationsRepository carPoolingReservationsRepository;
@@ -24,45 +26,60 @@ public class CarPoolingReservationsService {
     private CarPoolingReservationsMapper carPoolingReservationsMapper;
     @Autowired
     private CarPoolingService carPoolingService;
-//    /**
-//     * Legacy method to get all CarPoolingReservations, not used in the current implementation
-//     * Get all CarPoolingReservations
-//     * @return a list of CarPoolingReservationsResponseDTO
-//     */
-//    public List<CarPoolingReservationsResponseDTO> getAllReservations() {
-//        return carPoolingReservationsRepository.findAll()
-//                .stream()
-//                .map(
-//                        x ->
-//                                carPoolingReservationsMapper
-//                                        .toCarPoolingReservationsDTO(x))
-//                .collect(Collectors.toList());
-//    }
+    // /**
+    // * Legacy method to get all CarPoolingReservations, not used in the current
+    // implementation
+    // * Get all CarPoolingReservations
+    // * @return a list of CarPoolingReservationsResponseDTO
+    // */
+    // public List<CarPoolingReservationsResponseDTO> getAllReservations() {
+    // return carPoolingReservationsRepository.findAll()
+    // .stream()
+    // .map(
+    // x ->
+    // carPoolingReservationsMapper
+    // .toCarPoolingReservationsDTO(x))
+    // .collect(Collectors.toList());
+    // }
 
     /**
      * Get all CarPoolingReservations by userId
+     * 
      * @param userId the ID of the user
      * @return a list of CarPoolingReservationsResponseDTO
      */
     public List<CarPoolingReservationsResponseDTO> getAllReservationsByUserId(Long userId) {
-        return carPoolingReservationsRepository.findByUserIdAndDateAfter(userId, Date.from(Instant.now()))
+        return carPoolingReservationsRepository.findByUserId(userId)
                 .stream()
                 .map(carPoolingReservationsMapper::toResponseDTO)
                 .collect(Collectors.toList());
     }
+
     /**
      * Get a CarPoolingReservations by its ID
+     * 
      * @param id the ID of the CarPoolingReservations
      * @return the CarPoolingReservationsResponseDTO if found, null otherwise
      */
     public CarPoolingReservationsResponseDTO getReservation(Long id) {
-        return carPoolingReservationsMapper
-                .toResponseDTO
-                        (carPoolingReservationsRepository.findById(id)
-                                .orElse(null));
+        CarPoolingReservationsResponseDTO res = carPoolingReservationsMapper
+                .toResponseDTO(carPoolingReservationsRepository.findById(id)
+                        .orElse(null));
+        if (res != null) {
+            // Set the participant count for the reservation
+            List<CarPoolingReservations> reservations = carPoolingReservationsRepository
+                    .findByCarPoolingId(res.getCarPooling().getId());
+            res.setBookedUsers(reservations.stream()
+                    .filter(r -> r.getStatus() == CarPoolingReservationStatus.BOOKED)
+                    .map(r -> r.getUser().getFirstName() + " " + r.getUser().getLastName())
+                    .collect(Collectors.toList()));
+        }
+        return res;
     }
+
     /**
      * Create a new CarPoolingReservations
+     * 
      * @param carPoolingReservations the CarPoolingReservationsResponseDTO to create
      * @return the created CarPoolingReservationsResponseDTO
      */
@@ -75,6 +92,7 @@ public class CarPoolingReservationsService {
 
     /**
      * Update an existing CarPoolingReservations
+     * 
      * @param id the id of the CarPoolingReservations to update
      * @return the updated CarPoolingReservationsResponseDTO
      */
@@ -83,33 +101,40 @@ public class CarPoolingReservationsService {
         if (reservation.isPresent()) {
             CarPoolingReservations existingReservation = reservation.get();
             // Mettre à jour les champs de l'entité existante
+            log.info("Updating reservation with ID: {}", id);
+            log.info("Current status: {}", existingReservation.getStatus());
+            log.info("New status: {}", status);
             existingReservation.setStatus(status);
             // Enregistrer l'entité mise à jour
-            return carPoolingReservationsMapper.toResponseDTO(carPoolingReservationsRepository.save(existingReservation));
+            return carPoolingReservationsMapper
+                    .toResponseDTO(carPoolingReservationsRepository.save(existingReservation));
         } else {
             return null;
         }
     }
     // Pas utilisé pour l'instant
-//    /**
-//     * Delete a CarPoolingReservations by its ID
-//     * @param id the ID of the CarPoolingReservations to delete
-//     */
-//    public void deleteReservation(Long id) {
-//        carPoolingReservationsRepository.deleteById(id);
-//    }
+    // /**
+    // * Delete a CarPoolingReservations by its ID
+    // * @param id the ID of the CarPoolingReservations to delete
+    // */
+    // public void deleteReservation(Long id) {
+    // carPoolingReservationsRepository.deleteById(id);
+    // }
 
     /**
      * Count the number of participants in a carpooling by its ID
+     * 
      * @param carPoolingId the ID of the carpooling
      * @return the number of participants
      */
     public int countParticipantsByCarPoolingId(Long carPoolingId) {
-        return carPoolingReservationsRepository.countByCarPoolingIdAndStatus(carPoolingId, CarPoolingReservationStatus.BOOKED);
+        return carPoolingReservationsRepository.countByCarPoolingIdAndStatus(carPoolingId,
+                CarPoolingReservationStatus.BOOKED);
     }
 
     /**
      * Boolean indicating if there is any available seats in the vehicle
+     * 
      * @param dto the CarPoolingReservationsResponseDTO
      * @return true if there are available seats, false otherwise
      */
@@ -118,8 +143,10 @@ public class CarPoolingReservationsService {
         int reservedSeats = countParticipantsByCarPoolingId(dto.getCarPooling().getId());
         return availableSeats <= reservedSeats;
     }
+
     /**
      * Boolean indicating if there is any available seats in the vehicle
+     * 
      * @param dto the CarPoolingReservationsCreateDTO
      * @return true if there are available seats, false otherwise
      */

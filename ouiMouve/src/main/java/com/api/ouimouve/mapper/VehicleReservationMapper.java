@@ -1,20 +1,21 @@
 package com.api.ouimouve.mapper;
 
-import com.api.ouimouve.bo.ServiceVehicle;
-import com.api.ouimouve.bo.User;
-import com.api.ouimouve.bo.VehicleReservation;
-import com.api.ouimouve.dto.ModelDto;
-import com.api.ouimouve.dto.VehicleReservationCreateDto;
-import com.api.ouimouve.dto.VehicleReservationDto;
-import com.api.ouimouve.repository.UserRepository;
-import com.api.ouimouve.repository.VehicleRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.api.ouimouve.bo.ServiceVehicle;
+import com.api.ouimouve.bo.User;
+import com.api.ouimouve.bo.VehicleReservation;
+import com.api.ouimouve.dto.VehicleReservationCreateDto;
+import com.api.ouimouve.dto.VehicleReservationDto;
+import com.api.ouimouve.repository.UserRepository;
+import com.api.ouimouve.repository.VehicleRepository;
+
 /**
- *  Mapper for converting between VehicleReservation entities and their DTO representations.
+ * Mapper for converting between VehicleReservation entities and their DTO
+ * representations.
  */
 @Mapper(componentModel = "spring")
 public abstract class VehicleReservationMapper {
@@ -26,6 +27,7 @@ public abstract class VehicleReservationMapper {
     protected UserRepository userRepository;
 
     public abstract VehicleReservation toVehicleReservation(VehicleReservationDto reservationDto);
+
     public abstract VehicleReservationDto toVehicleReservationDto(VehicleReservation reservation);
 
     @Mapping(target = "serviceVehicle", source = "serviceVehicleId", qualifiedByName = "serviceVehicleIdToEntity")
@@ -34,7 +36,8 @@ public abstract class VehicleReservationMapper {
 
     @Named("serviceVehicleIdToEntity")
     protected ServiceVehicle mapServiceVehicle(Long id) {
-        if (id == null) return null;
+        if (id == null)
+            return null;
         return vehicleRepository.findById(id)
                 .map(vehicle -> (ServiceVehicle) vehicle)
                 .orElse(null);
@@ -42,7 +45,8 @@ public abstract class VehicleReservationMapper {
 
     @Named("userIdToEntity")
     protected User mapUser(Long id) {
-        if (id == null) return null;
+        if (id == null)
+            return null;
         return userRepository.findById(id).orElse(null);
     }
 }

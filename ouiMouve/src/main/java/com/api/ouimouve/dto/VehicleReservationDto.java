@@ -1,13 +1,10 @@
 package com.api.ouimouve.dto;
 
-import com.api.ouimouve.bo.ServiceVehicle;
-import com.api.ouimouve.bo.User;
-import com.api.ouimouve.bo.Vehicle;
-import com.api.ouimouve.enumeration.VehicleStatus;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.Data;
-
 import java.util.Date;
+
+import com.api.ouimouve.enumeration.VehicleStatus;
+
+import lombok.Data;
 
 /**
  * Data Transfer Object (DTO) for Reservation

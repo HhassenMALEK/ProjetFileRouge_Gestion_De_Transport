@@ -1,23 +1,16 @@
 package com.api.ouimouve.service;
 
+
 import com.api.ouimouve.bo.Model;
 import com.api.ouimouve.bo.ServiceVehicle;
-import com.api.ouimouve.bo.Site;
 import com.api.ouimouve.dto.ServiceVehicleCreateDto;
 import com.api.ouimouve.dto.ServiceVehicleDto;
-import com.api.ouimouve.dto.SiteResponseDto;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.mapper.VehicleMapper;
 import com.api.ouimouve.repository.ModelRepository;
 import com.api.ouimouve.repository.ServiceVehicleRepository;
-import com.api.ouimouve.repository.SiteRepository;
-import com.api.ouimouve.utils.AuthContext;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Service for managing Service vehicles.
@@ -31,9 +24,6 @@ public class ServiceVehicleService {
 
     @Autowired
     private VehicleService vehicleService;
-
-    @Autowired
-    private AuthContext authContext;
 
     @Autowired
     private VehicleMapper vehicleMapper;
@@ -87,7 +77,7 @@ public class ServiceVehicleService {
     /**
      * Update an existing service vehicle.
      * 
-     * @param id The ID of the service vehicle to update
+     * @param id  The ID of the service vehicle to update
      * @param dto The DTO containing the updated data
      * @return The updated service vehicle DTO
      * @throws RessourceNotFoundException if the vehicle doesn't exist
@@ -117,7 +107,7 @@ public class ServiceVehicleService {
         if (vehicle != null) {
             serviceVehicleRepository.deleteById(id);
         }
-        //TODO:Revoir controle avant suppression
+        // TODO:Revoir controle avant suppression
         return vehicleMapper.toDto(vehicle);
     }
 
