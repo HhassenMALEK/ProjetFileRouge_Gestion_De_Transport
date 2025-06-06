@@ -51,7 +51,7 @@ export class CarpoolingFormComponent implements OnInit {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
-  isSubmitting = false; //États internes / événements
+  showConfirmationPopup: boolean = false;
   @Output() cancel = new EventEmitter<void>();
   @Output() created = new EventEmitter<CarPoolingCreateDto>();
 
@@ -100,25 +100,25 @@ export class CarpoolingFormComponent implements OnInit {
     this.subscriptions.push(sub);
   }
 
-  private loadServiceVehicles(): void {
-    const sub = this.serviceVehicleService
-      .getServiceVehicle(undefined, undefined, { httpHeaderAccept: '*/*' })
-      .subscribe({
-        next: async (resp: any) => {
-          if (resp instanceof Blob) {
-            const text = await resp.text();
-            this.serviceVehicle = JSON.parse(text);
-          } else {
-            this.serviceVehicle = resp;
-          }
-          console.log('Liste récupérée :', this.serviceVehicle);
-        },
-        error: (err) => {
-          console.error('Erreur chargement véhicules de service :', err);
-        },
-      });
-    this.subscriptions.push(sub);
-  }
+  // private loadServiceVehicles(): void {
+  //   const sub = this.serviceVehicleService
+  //     .getServiceVehicle(undefined, undefined, { httpHeaderAccept: '*/*' })
+  //     .subscribe({
+  //       next: async (resp: any) => {
+  //         if (resp instanceof Blob) {
+  //           const text = await resp.text();
+  //           this.serviceVehicle = JSON.parse(text);
+  //         } else {
+  //           this.serviceVehicle = resp;
+  //         }
+  //         console.log('Liste récupérée :', this.serviceVehicle);
+  //       },
+  //       error: (err) => {
+  //         console.error('Erreur chargement véhicules de service :', err);
+  //       },
+  //     });
+  //   this.subscriptions.push(sub);
+  // }
 
   private loadSites(): void {
     const Sub = this.siteControllerService
@@ -157,8 +157,31 @@ export class CarpoolingFormComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log('Date de départ sélectionnée :', this.carpooling.departure);
+    console.log('test');
+    this.showConfirmationPopup = true;
   }
 
-  onCancel(): void {}
+  confirmSubmit = (): void => {
+    this.updateDepartureTime();
+
+    const sub = this.carPoolingService
+      .createCarPooling(this.carpooling)
+      .subscribe({
+        next: (res) => {
+          console.log('Covoiturage créé :', res);
+          this.created.emit(this.carpooling); // ou `res` si tu veux le retour exact
+          this.showConfirmationPopup = false;
+        },
+        error: (err) => {
+          console.error('Erreur création covoiturage :', err);
+          this.showConfirmationPopup = false;
+        },
+      });
+
+    this.subscriptions.push(sub);
+  };
+
+  cancelSubmit = (): void => {
+    this.showConfirmationPopup = false;
+  };
 }

@@ -1,5 +1,5 @@
 <div class="carpooling-container">
-  <form>
+  <form #carpoolingForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="field-group">
       <app-select
         class="select-vehicle"
@@ -31,7 +31,7 @@
     <div class="field-group">
       <app-input-icon
         class="input-with-icon"
-        [type]="'datetime-local'"
+        [type]="'date-time'"
         [placeholder]="'Date de départ'"
         [icon]="'date_range'"
         name="departure"
@@ -76,7 +76,7 @@
         class="btn btn-cancel gray"
         [color]="'gray'"
         [label]="'Annuler'"
-        (click)="onCancel()"
+        (click)="cancelSubmit()"
       ></app-button>
     </div>
   </form>
