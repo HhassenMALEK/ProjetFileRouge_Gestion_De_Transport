@@ -5,9 +5,11 @@ import { SelectComponent } from '@shared/components/select/select.component';
 import { ModelControllerService } from '@openapi/api/modelController.service';
 import { SiteControllerService } from '@openapi/api/siteController.service';
 import { ModelDto } from '@openapi/index';
-import { SiteCreateDto } from '@openapi/model/siteCreateDto';
+import { SiteResponseDto } from '@openapi/model/siteResponseDto';
 import { Subscription } from 'rxjs';
-import { ServiceVehicleCreateDto } from '@openapi/model/serviceVehicleCreateDto';
+import { ServiceVehicleDto } from '@openapi/model/serviceVehicleDto';
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
+import { ServiceVehicleFilteringService } from '@shared/service/serviceVehicle-filtering.service';
 
 @Component({
   selector: 'app-service-vehicle-search',
@@ -21,24 +23,29 @@ export class ServiceVehicleSearchComponent {
 
   private readonly modelControllerService = inject(ModelControllerService);
   private readonly siteControllerService = inject(SiteControllerService);
+  private readonly serviceVehiclControllereService = inject(ServiceVehicleControllerService);
+  private readonly serviceVehicleFilteringService = inject(ServiceVehicleFilteringService);
 
   private subscriptions: Subscription[] = [];
 
   modelDtos: ModelDto[] = [];
-  siteCreateDtos: SiteCreateDto[] = [];
+  siteCreateDtos: SiteResponseDto[] = [];
+  serviceVehicleResults: ServiceVehicleDto[] | undefined = undefined;
 
-  vehicleFilter: ServiceVehicleCreateDto = {
+  vehicleFilter: ServiceVehicleDto = {
       immatriculation:undefined ,
       seats: undefined,
       status: undefined,
-      modelId: undefined,
-      siteId: undefined,
+      model: undefined,
+      site: undefined,
     };
-  
+  modelId: number | undefined;
+  siteId: number | undefined;
 
 ngOnInit(): void {
   this.loadModels();
   this.loadSites();
+  this.onSearch();
 }
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
@@ -87,8 +94,42 @@ private loadModels(): void {
   }
 
   onSearch(): void {
-    // Implement search logic here
+
+    if (this.modelId) {
+      this.vehicleFilter.model = this.modelDtos.find(
+        (model) => model.id === this.modelId
+      );
+    }
+    if (this.siteId) {
+      this.vehicleFilter.site = this.siteCreateDtos.find(
+        (site) => site.id === this.siteId
+      );
+    }
     console.log('Searching with filter:', this.vehicleFilter);
+    this.serviceVehiclControllereService
+      .filterServiceVehicles(
+        undefined,
+        this.vehicleFilter.model?.modelName || undefined,
+        this.vehicleFilter.site?.name || undefined,
+        undefined,
+      )
+      .subscribe({
+        next: (response) => {
+          this.serviceVehicleResults = response;
+          console.log(
+            'ServiceVehicle search results from search covoit:',
+            this.serviceVehicleResults
+          );
+          this.serviceVehicleFilteringService.sendServiceVehicle(
+            this.serviceVehicleResults || []
+          );
+        },
+        error: (error) => {
+          console.error('Error searching for carpooling:', error);
+          console.log('Search parameters:', this.vehicleFilter);
+        },
+      });
+
   }
 
 
