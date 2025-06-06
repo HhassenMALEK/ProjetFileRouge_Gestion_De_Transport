@@ -1,0 +1,31 @@
+section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+  width: 80%;
+  min-width: 80vw;
+  height: 33%;
+
+  color: var(--oui-color-text);
+  border-radius: 5px;
+  border-top: 3px solid gray;
+  mat-icon {
+    font-size: 15rem;
+    height: auto;
+    width: auto;
+  }
+}
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between; 
+  height: 75%; 
+  
+}
+.vehicle-image {
+  object-fit: cover;
+  border: 2px solid black;
+  margin-bottom: 10px;
+}

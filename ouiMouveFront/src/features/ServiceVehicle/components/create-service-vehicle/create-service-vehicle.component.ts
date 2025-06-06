@@ -19,10 +19,11 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { SelectComponent } from '@shared/components/select/select.component';
 
 import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
+import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator';
 @Component({
-  selector: 'app-create-vehicle-service',
-  templateUrl: './create-vehicle-service.component.html',
-  styleUrls: ['./create-vehicle-service.component.scss'],
+  selector: 'app-create-service-vehicle',
+  templateUrl: './create-service-vehicle.component.html',
+  styleUrls: ['./create-service-vehicle.component.scss'],
 
   imports: [
     FormsModule,
@@ -31,13 +32,14 @@ import { ConfirmationPopupComponent } from '@shared/components/confirmation-popu
     SelectComponent,
     CommonModule,
     ConfirmationPopupComponent,
+    ImmatriculationValidator
   ],
 
 })
-export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
-  // Services injectés
+export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
+  // Services
   private readonly router = inject(Router);
-  private readonly serviceVehicleService = inject(
+  private readonly serviceServiceVehicle = inject(
     ServiceVehicleControllerService
   );
   private readonly modelControllerService = inject(ModelControllerService);
@@ -46,17 +48,16 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   // Gestion des souscriptions
   private subscriptions: Subscription[] = [];
 
-  // Données du formulaire
+  // Data for the component
   modelDtos: ModelDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
   showConfirmationPopup = signal(false);
 
   vehicle: ServiceVehicleCreateDto = {
     immatriculation: '',
-    seats: undefined,
-    status: undefined,
+    seats: 1,
+    status: 'ENABLED',
     modelId: undefined,
-
     siteId: undefined,
   };
 
@@ -114,26 +115,40 @@ export class CreateVehicleServiceComponent implements OnInit, OnDestroy {
   onSubmit(): void {
     this.showConfirmationPopup.set(true);
   }
+  onAbort(): void {
+    this.router.navigate(['..']);
+  }
 
-  confirmSubmit(): void {
-    const submitSub = this.serviceVehicleService
+   confirmSubmit = () => {
+    // get nbseats from the model
+    const selectedModel = this.modelDtos.find(
+      (model) => model.id === this.vehicle.modelId
+    );
+    if (selectedModel) {
+      this.vehicle.seats = selectedModel.seatsModel;
+    } else {
+      console.error('Modèle sélectionné non trouvé');
+      return;
+    }
+
+    const submitSub = this.serviceServiceVehicle
       .createServiceVehicle(this.vehicle)
       .subscribe({
         next: (res) => {
           console.log('Véhicule créé avec succès', res);
-          this.router.navigate(['..']); // Retourne à la liste
+          this.showConfirmationPopup.set(false);
+          this.router.navigate(['..']);
         },
-        error: (err) =>
-          console.error('Erreur à la création du véhicule service', err),
+        error: (err) => console.error('Erreur à la création du véhicule service', err),
       });
-
     this.subscriptions.push(submitSub);
-  }
-  cancelSubmit(): void {
     this.showConfirmationPopup.set(false);
-  }
+  };
 
-  onAbort(): void {
-    this.router.navigate(['..']);
-  }
+  cancelSubmit = () => {
+    this.showConfirmationPopup.set(false);
+  };
+
+
+
 }

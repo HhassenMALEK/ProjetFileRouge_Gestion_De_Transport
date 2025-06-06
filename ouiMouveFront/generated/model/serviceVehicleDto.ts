@@ -17,9 +17,7 @@ export interface ServiceVehicleDto {
     seats?: number;
     status?: ServiceVehicleDto.StatusEnum;
     model?: ModelDto;
-    mark?: string;
     site?: SiteResponseDto;
-    siteName?: string;
 }
 export namespace ServiceVehicleDto {
     export const StatusEnum = {

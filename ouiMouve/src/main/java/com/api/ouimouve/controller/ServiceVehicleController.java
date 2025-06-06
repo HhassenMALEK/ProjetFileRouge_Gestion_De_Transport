@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.api.ouimouve.dto.ServiceVehicleCreateDto;
 import com.api.ouimouve.dto.ServiceVehicleDto;
+import com.api.ouimouve.enumeration.VehicleStatus;
 import com.api.ouimouve.exception.InvalidRessourceException;
 import com.api.ouimouve.exception.RessourceNotFoundException;
 import com.api.ouimouve.service.ServiceVehicleService;
@@ -106,4 +107,47 @@ public class ServiceVehicleController {
     public ServiceVehicleDto deleteServiceVehicle(@PathVariable Long id) throws RessourceNotFoundException {
         return serviceVehicleService.deleteServiceVehicle(id);
     }
+
+
+    /** * Gets all service vehicles * * @return a list of ServiceVehicleDto objects */
+    @GetMapping("list")
+    @Operation(summary = "Get all service vehicles")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Vehicles found"),
+            @ApiResponse(responseCode = "403", description = "Access required"),
+            @ApiResponse(responseCode = "500", description = "Internal Server Error")})
+    public List<ServiceVehicleDto> getAllServiceVehicles() {
+        return serviceVehicleService.getAllServiceVehicles();
+    }
+
+    /**
+     * Gets all service vehicles by Filters
+     *
+     **/
+    @GetMapping("/filter")
+    @Operation(summary = "Filtrer les véhicules de service",
+               description = "Recherche des véhicules de service selon différents critères optionnels")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Véhicules trouvés"),
+        @ApiResponse(responseCode = "403", description = "Accès requis"),
+        @ApiResponse(responseCode = "404", description = "Ressource non trouvée si les filtres sont invalides"),
+        @ApiResponse(responseCode = "500", description = "Erreur serveur interne")
+    })
+    public List<ServiceVehicleDto> filterServiceVehicles(
+            @RequestParam(required = false) String status,
+            @RequestParam(required = false) String modelName,
+            @RequestParam(required = false) String siteName,
+            @RequestParam(required = false) Integer seats) {
+
+        if (status != null && !status.isEmpty()) {
+            try {
+                VehicleStatus.valueOf(status);
+            } catch (IllegalArgumentException e) {
+                throw new InvalidRessourceException("Statut de véhicule invalide: " + status +
+                        ". Valeurs autorisées: " + Arrays.toString(VehicleStatus.values()));
+            }
+        }
+        return serviceVehicleService.findAllServiceVehiclesByFilters(status, modelName, siteName, seats);
+    }
 }
+

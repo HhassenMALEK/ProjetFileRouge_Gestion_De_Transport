@@ -23,13 +23,15 @@
     [icon]="'event_seat'"
     [(value)]="searchParameters.capacity"
   ></app-input-icon>
-  <app-button
+  <app-button class="search-button"
     [label]="'Rechercher'"
     (click)="searchCovoit()"
+    
     [isDisabled]="
       !searchParameters.siteDeparture ||
       !searchParameters.siteDestination ||
       !searchParameters.startDate
     "
+    [color]="'red'"
   ></app-button>
 </div>

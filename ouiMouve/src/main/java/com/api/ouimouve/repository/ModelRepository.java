@@ -14,4 +14,6 @@ import java.util.List;
 public interface ModelRepository extends JpaRepository<Model, Long> {
     List<Model> findByMark(String mark);
     List<Model> findByCategory(VehicleCategory category);
+    List<Model> findByModelName(String name);
+
 }
