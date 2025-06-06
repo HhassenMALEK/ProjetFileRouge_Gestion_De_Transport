@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarPoolingResponseDto } from '@openapi/model/carPoolingResponseDto';
 import { CarPoolingFilteringService } from '@shared/service/carpooling-filtering.service';
-import { CarpoolingCardComponent } from '../carpooling-card/carpooling-card.component';
+import { CarpoolingCardComponent } from '@shared/components/carpooling-card/carpooling-card.component';
 @Component({
   selector: 'app-carpooling-list',
   imports: [CarpoolingCardComponent],
@@ -21,5 +21,9 @@ export class CarpoolingListComponent implements OnInit {
         this.carPoolings = carPoolings;
       }
     );
+  }
+  handleReservation(): void {
+    // Handle reservation logic here
+    console.log('Reservation button clicked');
   }
 }

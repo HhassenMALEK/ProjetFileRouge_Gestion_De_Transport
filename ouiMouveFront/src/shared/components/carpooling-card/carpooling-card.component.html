@@ -1,0 +1,23 @@
+<section [class]="color()">
+  <div>
+    <app-status [status]="carpooling()?.status"></app-status>
+    <app-date-and-city
+      [carpooling]="carpooling()"
+      [type]="'departure'"
+      [color]="dateAndCityColor()"
+    ></app-date-and-city>
+  </div>
+  <mat-icon>{{ icon() }}</mat-icon>
+  <div>
+    <app-button
+      [color]="'red'"
+      [label]="btnLabel() ?? ''"
+      (onClick)="onClick.emit()"
+    ></app-button>
+    <app-date-and-city
+      [carpooling]="carpooling()"
+      [type]="'arrival'"
+      [color]="dateAndCityColor()"
+    ></app-date-and-city>
+  </div>
+</section>

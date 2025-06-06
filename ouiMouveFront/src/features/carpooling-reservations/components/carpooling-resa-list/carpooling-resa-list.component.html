@@ -6,12 +6,14 @@
   } @else if (reservations) {
   <div class="list-group">
     @for (reservation of reservations; track reservation.id) {
-    <app-carpooling-resa-item
-      [reservation]="reservation"
+    <app-carpooling-card
+      [carpooling]="reservation"
       [color]="$even ? 'gray' : 'white'"
-    >
-      ></app-carpooling-resa-item
-    >
+      [icon]="'compare_arrows'"
+      [btnLabel]="'Voir détails'"
+      (onClick)="handleDetailsClick(reservation.id!)"
+    ></app-carpooling-card>
+
     }
   </div>
   }

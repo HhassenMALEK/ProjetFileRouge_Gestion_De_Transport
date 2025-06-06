@@ -4,6 +4,9 @@
     <app-carpooling-card
       [carpooling]="carPooling"
       [color]="$even ? 'gray' : 'white'"
+      [icon]="'compare_arrows'"
+      [btnLabel]="'Réserver'"
+      (onClick)="handleReservation()"
     ></app-carpooling-card>
     }
   </div>

@@ -5,8 +5,9 @@ section {
   width: 80%;
   min-width: 80vw;
   height: 33%;
-  color: var(--oui-color-text);
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 1.5rem;
+    border-radius: 0.5rem;
   mat-icon {
     font-size: 15rem;
     height: auto;

@@ -2,7 +2,11 @@
   @if (reservation) {
   <div>
     <app-status [status]="reservation.status"> </app-status>
-    <app-date-and-city [reservation]="reservation" [type]="'departure'">
+    <app-date-and-city
+      [carpooling]="reservation"
+      [type]="'departure'"
+      [color]="'bisque'"
+    >
     </app-date-and-city>
     <app-user-list [users]="reservation.bookedUsers"></app-user-list>
   </div>
@@ -23,7 +27,11 @@
         (onClick)="handleButton()"
       ></app-button>
     </p>
-    <app-date-and-city [reservation]="reservation" [type]="'arrival'">
+    <app-date-and-city
+      [carpooling]="reservation"
+      [type]="'arrival'"
+      [color]="'bisque'"
+    >
     </app-date-and-city>
     <app-vehicle-reservation
       [vehicle]="reservation.carPooling?.vehicle"

@@ -6,7 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ButtonComponent } from '@shared/components/button/button.component';
 import { StatusComponent } from '@shared/components/status/status.component';
 import { formatMinIntoHoursAndMinutes } from '@shared/utils/dateUtils';
-import { DateAndCityComponent } from '../date-and-city/date-and-city.component';
+import { DateAndCityComponent } from '../../../../shared/components/date-and-city/date-and-city.component';
 import { UserListComponent } from '../user-list/user-list.component';
 import { VehicleReservationComponent } from '../vehicle-reservation/vehicle-reservation.component';
 import { MatIconModule } from '@angular/material/icon';
