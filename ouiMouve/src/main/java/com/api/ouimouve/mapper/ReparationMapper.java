@@ -15,9 +15,8 @@ public interface ReparationMapper {
     //Mapping Reparation -> ReparationResponseDto
     @Mapping(target ="vehicle.id", source = "serviceVehicle.id")
     @Mapping(target ="vehicle.immatriculation", source = "serviceVehicle.immatriculation")
-    @Mapping(target ="vehicle.model.mark", source = "serviceVehicle.model.mark")
+
     @Mapping(target ="vehicle.model.modelName", source = "serviceVehicle.model.modelName")
-    @Mapping(target ="vehicle.siteName", source = "serviceVehicle.site.name")
     @Mapping(target ="vehicle.status", source = "serviceVehicle.status")
     ReparationResponseDto toDto(Reparation reparation);
 

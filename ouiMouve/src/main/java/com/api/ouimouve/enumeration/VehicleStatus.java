@@ -12,7 +12,7 @@ import lombok.Getter;
 public enum VehicleStatus {
 
         /**
-         * The vehicle is available for booking.
+         * The vehicle is not available for booking.
          */
         DISABLED("DISABLED"),
 

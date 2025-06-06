@@ -1,0 +1,16 @@
+<section>
+ @if (serviceVehicles && serviceVehicles.length === 0) {
+  <div class="text-center">
+    <p class="text-muted">No Service Vehicle found.</p>
+  </div>
+  } @else if (serviceVehicles) {
+  <div class="list-group">
+    @for (serviceVehicle of serviceVehicles; track serviceVehicle.id) {
+    <app-service-vehicle-item
+      [color]="$even ?  'lightgray' : 'gray' " 
+      [serviceVehicle]="serviceVehicle"
+    ></app-service-vehicle-item>
+    }
+  </div>
+  }
+</section>
