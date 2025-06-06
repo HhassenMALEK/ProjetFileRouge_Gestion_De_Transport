@@ -2,9 +2,7 @@ package com.api.ouimouve.bo;
 
 import com.api.ouimouve.enumeration.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -13,8 +11,6 @@ import java.util.List;
  */
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
 public class User {
     /**
      * Unique identifier for the user.

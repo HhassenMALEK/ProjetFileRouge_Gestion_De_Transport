@@ -1,6 +1,7 @@
 package com.api.ouimouve.service;
 
 import com.api.ouimouve.bo.CarPooling;
+import com.api.ouimouve.bo.CarPoolingReservations;
 import com.api.ouimouve.enumeration.CarPoolingReservationStatus;
 import com.api.ouimouve.enumeration.CarPoolingStatus;
 import com.api.ouimouve.repository.CarPoolingRepository;
@@ -32,7 +33,7 @@ public class CarPoolingStatusService {
     @Transactional
     public void closeExpiredCarpoolings() {
 
-            List<CarPooling> carPoolings = carPoolingRepository.findAllNonFinishedNonCancelled();
+        List<CarPooling> carPoolings = carPoolingRepository.findAllNonFinishedNonCancelled();
 
         LocalDateTime now = LocalDateTime.now();
 
@@ -50,13 +51,14 @@ public class CarPoolingStatusService {
                 cp.setStatus(CarPoolingStatus.FINISHED);
                 carPoolingRepository.save(cp);
 
-                // Update the status of associated reservations to FINISHED
-                cp.getReservations().stream()
+                // Update the status of associated reservations to FINISHED and collect them
+                List<CarPoolingReservations> updatedReservations = cp.getReservations().stream()
                         .filter(res -> res.getStatus() != CarPoolingReservationStatus.CANCELLED)
-                        .forEach(res -> {
-                            res.setStatus(CarPoolingReservationStatus.FINISHED);
-                            reservationRepository.save(res);
-                        });
+                        .peek(res -> res.setStatus(CarPoolingReservationStatus.FINISHED))
+                        .toList();
+
+                // Save all updated reservations in one batch
+                reservationRepository.saveAll(updatedReservations);
             }
         }
     }
