@@ -31,4 +31,5 @@ public class PersonalVehicle extends Vehicle {
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
+
 }
