@@ -28,6 +28,11 @@
     <app-vehicle-reservation
       [vehicle]="reservation.carPooling?.vehicle"
     ></app-vehicle-reservation>
+    <h2>Organisateur</h2>
+    <p>
+      {{ reservation.carPooling?.organizer?.firstName }}
+      {{ reservation.carPooling?.organizer?.lastName }}
+    </p>
   </div>
   } @else {
   <p>Chargement...</p>
