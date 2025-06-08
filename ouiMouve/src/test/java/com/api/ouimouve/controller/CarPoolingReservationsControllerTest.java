@@ -78,7 +78,7 @@ public class CarPoolingReservationsControllerTest {
 
         carPoolingDto = new CarPoolingResponseDto();
         carPoolingDto.setId(10L);
-        carPoolingDto.setVehicle(vehicle);
+        carPoolingDto.setVehicle(vehicleDto);
         carPoolingDto.setStatus(CarPoolingStatus.BOOKING_OPEN);
 
         reservationResponseDto = new CarPoolingReservationsResponseDTO();

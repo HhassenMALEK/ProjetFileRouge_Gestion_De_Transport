@@ -18,7 +18,7 @@ INSERT INTO vehicle (id, type, immatriculation, seats, status, model_id, site_id
 
 INSERT INTO vehicle (id, type, immatriculation, seats,color, description, user_id) VALUES
 -- PersonnalVehicle
-(6, 'personal', 'KK-678-LL', 5,  'Rouge', 'Berline familiale, très confortable', 2),
-(7, 'personal', 'MM-901-NN', 4,  'Bleu', 'Citadine compacte', 1),
-(8, 'personal', 'OO-234-PP', 5,  'Noir', 'SUV spacieux', 2);
+(6, 'personal', 'KK-678-LL', 5,  'Rouge', 'Citroen c4', 2),
+(7, 'personal', 'MM-901-NN', 4,  'Bleu', 'Citroen c3', 1),
+(8, 'personal', 'OO-234-PP', 5,  'Noir', 'Citroeen c5 ', 2);
 

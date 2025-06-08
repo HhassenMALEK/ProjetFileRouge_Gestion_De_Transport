@@ -55,4 +55,16 @@ export class AuthService {
     const decodedToken = jwtDecode<DecodedToken>(token);
     return decodedToken.role ? decodedToken.role.includes('ADMIN') : false;
   }
+
+  getUserId(): number | null {
+    const token = this.tokenService.getToken();
+    if (!token) return null;
+    try {
+      const decodedToken = jwtDecode<DecodedToken>(token);
+      return decodedToken.userId ?? null;
+    } catch (err) {
+      console.error('Erreur lors du décodage du token :', err);
+      return null;
+    }
+  }
 }

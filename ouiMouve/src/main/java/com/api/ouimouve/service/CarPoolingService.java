@@ -93,7 +93,9 @@ public class CarPoolingService {
      */
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
         carPoolingValidator.validate(dto, null);
+        log.info("Création covoiturage avec DTO : {}", dto);
         CarPooling carPooling = carPoolingMapper.toEntity(dto);
+        log.info("Entité mappée : {}", carPooling);
         carPoolingValidator.checkInput(carPooling, dto);
         CarPooling saved = carPoolingRepository.save(carPooling);
         // send an email alert to the organizer

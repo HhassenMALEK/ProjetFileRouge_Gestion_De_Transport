@@ -5,8 +5,8 @@ import { Subscription } from 'rxjs';
 import { CommonModule } from '@angular/common';
 // Services API
 import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
-import { ModelControllerService } from '@openapi/api/modelController.service';  
-import { SiteControllerService } from '@openapi/api/siteController.service';  
+import { ModelControllerService } from '@openapi/api/modelController.service';
+import { SiteControllerService } from '@openapi/api/siteController.service';
 import { ModelDto } from '@openapi/index';
 
 // DTOs
@@ -32,9 +32,8 @@ import { ImmatriculationValidator } from '@shared/utils/ImmatriculationValidator
     SelectComponent,
     CommonModule,
     ConfirmationPopupComponent,
-    ImmatriculationValidator
+    ImmatriculationValidator,
   ],
-
 })
 export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
   // Services
@@ -119,7 +118,7 @@ export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
     this.router.navigate(['..']);
   }
 
-   confirmSubmit = () => {
+  confirmSubmit = () => {
     // get nbseats from the model
     const selectedModel = this.modelDtos.find(
       (model) => model.id === this.vehicle.modelId
@@ -139,7 +138,8 @@ export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
           this.showConfirmationPopup.set(false);
           this.router.navigate(['..']);
         },
-        error: (err) => console.error('Erreur à la création du véhicule service', err),
+        error: (err) =>
+          console.error('Erreur à la création du véhicule service', err),
       });
     this.subscriptions.push(submitSub);
     this.showConfirmationPopup.set(false);
@@ -148,7 +148,4 @@ export class CreateServiceVehicleComponent implements OnInit, OnDestroy {
   cancelSubmit = () => {
     this.showConfirmationPopup.set(false);
   };
-
-
-
 }

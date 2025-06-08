@@ -7,7 +7,7 @@
         [displayAttr]="'name'"
         [valueAttr]="'id'"
         [label]="'*Site de départ'"
-        name="siteId"
+        name="departureSiteId"
         [(ngModel)]="carpooling.departureSiteId"
         #site="ngModel"
         [required]="true"
@@ -21,17 +21,22 @@
         [displayAttr]="'name'"
         [valueAttr]="'id'"
         [label]="'*Site de destination'"
-        name="siteId"
+        name="destinationSiteId"
         [(ngModel)]="carpooling.destinationSiteId"
         #site="ngModel"
         [required]="true"
       ></app-select>
     </div>
 
-    <div class="field-group">
+    <input
+      type="datetime-local"
+      [(ngModel)]="carpooling.departure"
+      name="departure"
+    />
+    <!-- <div class="field-group">
       <app-input-icon
         class="input-with-icon"
-        [type]="'date-time'"
+        [type]="'datetime-local'"
         [placeholder]="'Date de départ'"
         [icon]="'date_range'"
         name="departure"
@@ -39,9 +44,9 @@
         #departureDate="ngModel"
         [required]="true"
       ></app-input-icon>
-    </div>
+    </div> -->
 
-    <div class="field-group">
+    <!-- <div class="field-group">
       <label for="departureTime">Heure</label>
       <input
         type="time"
@@ -50,12 +55,12 @@
         [(ngModel)]="departureTime"
         (change)="updateDepartureTime()"
       />
-    </div>
+    </div> -->
 
     <div class="field-group">
       <app-select
         class="select-vehicle"
-        [items]="personalVehicles"
+        [items]="availableVehicles"
         [displayAttr]="'label'"
         [label]="'*Véhicule'"
         [valueAttr]="'id'"
@@ -70,7 +75,7 @@
         class="btn btn-create red"
         [color]="'red'"
         [label]="'Créer'"
-        (click)="onSubmit()"
+        (click)="confirmSubmit()"
       ></app-button>
       <app-button
         class="btn btn-cancel gray"
