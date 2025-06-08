@@ -1,4 +1,4 @@
-<div class="carpooling-container">
+<section class="carpooling-container">
   <form #carpoolingForm="ngForm" (ngSubmit)="onSubmit()">
     <div class="field-group">
       <app-select
@@ -85,4 +85,23 @@
       ></app-button>
     </div>
   </form>
-</div>
+</section>
+
+@if (showConfirmationPopup()) {
+<app-confirmation-modal
+  title="Confirmation de création"
+  message="Êtes-vous sûr de vouloir créer carpooling ?"
+  (onConfirm)="confirmSubmit()"
+  (onCancel)="cancelSubmit()"
+></app-confirmation-modal>
+}
+
+<!-- Popup de confirmation d'annulation
+@if (showCancelPopup()) {
+<app-confirmation-modal
+  title="Annuler la création de coivoiturage"
+  message="Êtes-vous sûr de vouloir créer ce covoiturage ?"
+  (onConfirm)="confirmSubmit()"
+  (onCancel)="cancelSubmit()"
+></app-confirmation-modal>
+} -->

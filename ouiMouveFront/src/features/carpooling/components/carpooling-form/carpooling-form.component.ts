@@ -22,6 +22,8 @@ import { PersonalVehicleControllerService } from '@openapi/api/personalVehicleCo
 import { PersonalVehicleDto } from '@openapi/model/personalVehicleDto';
 import { SiteControllerService, SiteCreateDto } from '@openapi/index';
 import { AuthService } from '@shared/service/auth.service';
+import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carpooling-form',
@@ -31,12 +33,14 @@ import { AuthService } from '@shared/service/auth.service';
     FormsModule,
     InputIconComponent,
     ButtonComponent,
+    ConfirmationPopupComponent,
     SelectComponent,
   ],
   templateUrl: './carpooling-form.component.html',
   styleUrl: './carpooling-form.component.scss',
 })
 export class CarpoolingFormComponent implements OnInit, OnDestroy {
+  private readonly router = inject(Router);
   private readonly carPoolingService = inject(CarPoolingControllerService);
   private readonly serviceVehicleService = inject(
     ServiceVehicleControllerService
@@ -180,6 +184,10 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
     this.showConfirmationPopup.set(true);
   }
 
+  onAbort(): void {
+    this.router.navigate(['/carpooling']);
+  }
+
   confirmSubmit = (): void => {
     this.updateDepartureTime();
 
@@ -231,6 +239,7 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
           console.log('✅ Covoiturage créé :', res);
           this.created.emit(carpoolingForApi); // Émettre l'objet avec les dates au format ISO
           this.showConfirmationPopup.set(false);
+          this.router.navigate(['/carpooling']);
         },
         error: async (err) => {
           let message = 'Erreur inconnue';
@@ -253,15 +262,14 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
           }
 
           console.error('❌ Erreur création covoiturage :', message);
-          alert(message);
-          this.showConfirmationPopup.set(false);
         },
       });
 
     this.subscriptions.push(sub);
+    this.showConfirmationPopup.set(false);
   };
 
   cancelSubmit = (): void => {
-    this.showConfirmationPopup.set(false);
+    this.router.navigate(['/carpooling']);
   };
 }

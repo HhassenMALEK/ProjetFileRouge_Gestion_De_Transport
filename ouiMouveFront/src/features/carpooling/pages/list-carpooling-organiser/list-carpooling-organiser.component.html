@@ -1,0 +1,20 @@
+<section>
+  <h3>
+    <p>Mes covoiturages organisés</p>
+    <a [routerLink]="['/create-carpooling']"> Créer un covoiturage </a>
+  </h3>
+  <div>
+    @for (carPooling of carPoolings; track carPooling.id) {
+
+    <app-carpooling-card
+      [carpooling]="carPooling"
+      [color]="$even ? 'gray' : 'white'"
+      [icon]="'compare_arrows'"
+      [btnLabel]="'Voir détails'"
+      [btnLabel]="'Modifier'"
+      [btnLabel]="'Supprimer'"
+    ></app-carpooling-card>
+
+    }
+  </div>
+</section>

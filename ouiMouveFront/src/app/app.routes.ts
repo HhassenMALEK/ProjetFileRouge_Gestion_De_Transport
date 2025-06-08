@@ -29,17 +29,24 @@ export const routes: Routes = [
     path: 'carpooling',
     loadComponent: () =>
       import(
-        '@features/carpooling/pages/create-carpooling/create-carpooling.component'
-              ).then((m) => m.CreateCarpoolingComponent),
-    },
-     {
+        '@features/carpooling/pages/list-carpooling-organiser/list-carpooling-organiser.component'
+      ).then((m) => m.ListCarpoolingOrganiserComponent),
+  },
+  {
+    path: 'create-carpooling', // Ajouter cette route pour la création de covoiturage
+    loadComponent: () =>
+      import(
+        '@features/carpooling/pages/create-carpooling/create-carpooling.component' // Remplacez par le chemin correct de votre composant
+      ).then((m) => m.CreateCarpoolingComponent),
+  },
+  {
     path: 'serviceVehicle',
     loadComponent: () =>
       import(
         '@features/ServiceVehicle/components/service-vehicle-main/service-vehicle-main.component'
       ).then((m) => m.ServiceVehicleMainComponent),
-    },
-    {
+  },
+  {
     path: 'carpooling-reservation',
     loadComponent: () =>
       import(
