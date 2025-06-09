@@ -21,6 +21,8 @@ import com.api.ouimouve.repository.SiteRepository;
 import com.api.ouimouve.utils.DateUtils;
 import com.api.ouimouve.utils.Email;
 import com.api.ouimouve.validation.CarPoolingValidator;
+import com.api.ouimouve.exception.InvalidRessourceException;
+
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -92,19 +94,49 @@ public class CarPoolingService {
      * @return the created carpooling entry.
      */
     public CarPoolingResponseDto createCarpooling(CarPoolingCreateDto dto) {
+        // Étape 1: Validation du DTO (cela inclut le calcul de l'arrivée si nécessaire)
         carPoolingValidator.validate(dto, null);
-        log.info("Création covoiturage avec DTO : {}", dto);
+
+        // 2. Calcul de la date d'arrivée après validation
+        Date arrival = carPoolingValidator.calculateArrival(dto.getDeparture(), dto.getDurationInMinutes());
+
+        // 3. Vérification des chevauchements pour le véhicule et l'organisateur
+        // Passer la date d'arrivée calculée dans la requête
+        List<CarPooling> overlappingCarpoolings = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(
+                dto.getVehicleId(), dto.getDeparture(), arrival, null);
+
+        // Si des chevauchements existent, il faut gérer l'erreur
+        if (!overlappingCarpoolings.isEmpty()) {
+            throw new InvalidRessourceException("Le véhicule est déjà réservé sur ce créneau.");
+        }
+
+        // Vérification des chevauchements pour l'organisateur
+        overlappingCarpoolings = carPoolingRepository.findOverlappingCarPoolingByOrganizer(
+                dto.getOrganizerId(), dto.getDeparture(), arrival, null);
+
+        if (!overlappingCarpoolings.isEmpty()) {
+            throw new InvalidRessourceException("L'organisateur a déjà un covoiturage prévu sur ce créneau.");
+        }
+
+        // 4. Transformation du DTO en entité
         CarPooling carPooling = carPoolingMapper.toEntity(dto);
-        log.info("Entité mappée : {}", carPooling);
+
+        // 5. Vérification des entités associées (adresse, véhicule, organisateur)
         carPoolingValidator.checkInput(carPooling, dto);
+
+        // 6. Enregistrement de l'entité dans la base de données
         CarPooling saved = carPoolingRepository.save(carPooling);
-        // send an email alert to the organizer
+
+        // 7. Envoi de l'email de confirmation à l'organisateur
         email.sendAlert(
                 saved.getOrganizer().getEmail(),
                 "Covoiturage créé avec succès",
                 "Votre covoiturage prévu pour le " + saved.getDeparture() + " a bien été enregistré.");
+
+        // 8. Retour de l'entité convertie en DTO pour la réponse
         return carPoolingMapper.toResponseDto(saved);
     }
+
 
     /**
      * Updates an existing carpooling entry.

@@ -30,4 +30,5 @@ public class CarPoolingCreateDto {
     private Long vehicleId;
     /** organizer of the carpooling. */
     private Long organizerId;
+
 }

@@ -30,12 +30,6 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     AND c.departure < :end
     AND c.departure > :start
 """)
-    /**find over lapping carpooling by vehicle
-     * @param vehicleId the ID of the vehicle
-     * @param start     the start date
-     * @param end       the end date
-     * @return a list of overlapping carpoolings
-     */
     List<CarPooling> findOverlappingCarPoolingByVehicle(
             @Param("vehicleId") Long vehicleId,
             @Param("start") Date start,
@@ -85,11 +79,15 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
             @Param("end") Date end,
              @Param("excludeId") Long excludeId
     );
-
-    /** Filter carpoolings based on multiple criteria.
+    /**
+     * Filter carpoolings based on multiple criteria.
      * @param organizerId the ID of the organizer (optional)
-     * @param status      the status of the carpooling (optional)
-     * @param vehicleId   the ID of the vehicle (optional)
+     * @param status the status of the carpooling (optional)
+     * @param startDate the start date (optional)
+     * @param endDate the end date (optional)
+     * @param departureSiteId the departure site ID (optional)
+     * @param destinationSiteId the destination site ID (optional)
+     * @param vehicleId the ID of the vehicle (optional)
      * @return a list of carpoolings matching the criteria
      */
     @Query("""
@@ -113,9 +111,9 @@ public interface CarPoolingRepository extends JpaRepository<CarPooling, Long>{
     );
 
     /**
-     Searches for all CarPoolings whose status is not in the excluded list
+     * Searches for all CarPoolings whose status is not in the excluded list
      * (FINISHED, CANCELLED)
-     *
+     * @return a list of active carpoolings
      */
     @Query("""
     SELECT c FROM CarPooling c

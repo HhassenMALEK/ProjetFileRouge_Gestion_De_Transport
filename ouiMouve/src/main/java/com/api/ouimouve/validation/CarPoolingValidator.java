@@ -8,6 +8,8 @@ import com.api.ouimouve.repository.CarPoolingRepository;
 import com.api.ouimouve.repository.SiteRepository;
 import com.api.ouimouve.repository.UserRepository;
 import com.api.ouimouve.repository.VehicleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalTime;
@@ -17,11 +19,12 @@ import java.util.List;
 
 @Component
 public class CarPoolingValidator {
+    private static final Logger log = LoggerFactory.getLogger(CarPoolingValidator.class);
+
     private final CarPoolingRepository carPoolingRepository;
     private final SiteRepository siteRepository;
     private final VehicleRepository vehicleRepository;
     private final UserRepository userRepository;
-
 
     public CarPoolingValidator(
             CarPoolingRepository carPoolingRepository,
@@ -32,8 +35,7 @@ public class CarPoolingValidator {
         this.siteRepository = siteRepository;
         this.vehicleRepository = vehicleRepository;
         this.userRepository = userRepository;
-
-        }
+    }
 
     /**
      * Validates all aspects of a carpooling entry.
@@ -98,13 +100,15 @@ public class CarPoolingValidator {
      * @param dto the DTO to validate
      */
     private void validateDateLogic(CarPoolingCreateDto dto) {
+        // Vérifie que l'arrivée est après le départ
         if (dto.getArrival().before(dto.getDeparture())) {
-            throw new InvalidRessourceException("La date d'arrivée doit être inférieur à la date de départ.");
+            throw new InvalidRessourceException("La date d'arrivée doit être après la date de départ.");
         }
         if (dto.getDeparture().equals(dto.getArrival())) {
             throw new InvalidRessourceException("La date de départ et d'arrivée ne peuvent pas être identiques.");
         }
         if (dto.getDurationInMinutes() != null) {
+            // Vérifie que la durée correspond à la différence entre l'arrivée et le départ
             long expected = (dto.getArrival().getTime() - dto.getDeparture().getTime()) / 60000;
             if (expected != dto.getDurationInMinutes()) {
                 throw new InvalidRessourceException("La durée ne correspond pas aux horaires définis.");
@@ -135,17 +139,35 @@ public class CarPoolingValidator {
      * @param excludeId the ID to exclude from the check (for updates)
      */
     private void checkOverlaps(Long vehicleId, Long organizerId, Date start, Date end, Long excludeId) {
-        // Vehicle conflict check
+        log.info("Vérification des chevauchements pour le véhicule ID: {} et l'organisateur ID: {}", vehicleId, organizerId);
+        // Vérification des chevauchements pour le véhicule
         List<CarPooling> vehicleConflicts = carPoolingRepository.findOverlappingCarPoolingByVehicleExcludingId(
                 vehicleId, start, end, excludeId);
         if (!vehicleConflicts.isEmpty()) {
+            log.error("Le véhicule est déjà réservé sur ce créneau. Conflits trouvés : {}", vehicleConflicts);
             throw new InvalidRessourceException("Le véhicule est déjà réservé sur ce créneau.");
         }
-        // Organizer conflict check
+
+        // Vérification des chevauchements pour l'organisateur
         List<CarPooling> userConflicts = carPoolingRepository.findOverlappingCarPoolingByOrganizer(
                 organizerId, start, end, excludeId);
         if (!userConflicts.isEmpty()) {
+            log.error("L'organisateur a déjà un covoiturage prévu sur ce créneau. Conflits trouvés : {}", userConflicts);
             throw new InvalidRessourceException("L'organisateur a déjà un covoiturage prévu sur ce créneau.");
         }
+    }
+
+    /**
+     * Calcule la date d'arrivée en fonction de la date de départ et de la durée en minutes.
+     * @param departure la date de départ
+     * @param durationInMinutes la durée en minutes
+     * @return la date d'arrivée calculée
+     */
+    public Date calculateArrival(Date departure, Integer durationInMinutes) {
+        if (departure == null || durationInMinutes == null) {
+            return null;
+        }
+        long arrivalTimeInMillis = departure.getTime() + (durationInMinutes * 60 * 1000);
+        return new Date(arrivalTimeInMillis);
     }
 }

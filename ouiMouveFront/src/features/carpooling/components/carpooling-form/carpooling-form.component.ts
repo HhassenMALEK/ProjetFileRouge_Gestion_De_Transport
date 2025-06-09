@@ -1,30 +1,28 @@
+import { CommonModule } from '@angular/common';
 import {
   Component,
-  OnInit,
-  Output,
   EventEmitter,
   inject,
-  signal,
-  OnDestroy,
   Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Subscription } from 'rxjs';
-import { CommonModule } from '@angular/common';
-import { InputIconComponent } from '@shared/components/input-icon/input-icon.component';
-import { ButtonComponent } from '@shared/components/button/button.component';
-import { CarPoolingControllerService } from '@openapi/api/carPoolingController.service';
-import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
-import { CarPoolingCreateDto } from '@openapi/model/carPoolingCreateDto';
-import { ServiceVehicleDto } from '@openapi/model/serviceVehicleDto';
-import { SelectComponent } from '@shared/components/select/select.component';
-import { PersonalVehicleControllerService } from '@openapi/api/personalVehicleController.service';
-import { PersonalVehicleDto } from '@openapi/model/personalVehicleDto';
-import { SiteControllerService, SiteCreateDto } from '@openapi/index';
-import { AuthService } from '@shared/service/auth.service';
-import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
 import { Router } from '@angular/router';
-import { forkJoin } from 'rxjs';
+import { CarPoolingControllerService } from '@openapi/api/carPoolingController.service';
+import { PersonalVehicleControllerService } from '@openapi/api/personalVehicleController.service';
+import { ServiceVehicleControllerService } from '@openapi/api/serviceVehicleController.service';
+import { SiteControllerService, SiteCreateDto } from '@openapi/index';
+import { CarPoolingCreateDto } from '@openapi/model/carPoolingCreateDto';
+import { PersonalVehicleDto } from '@openapi/model/personalVehicleDto';
+import { ServiceVehicleDto } from '@openapi/model/serviceVehicleDto';
+import { ButtonComponent } from '@shared/components/button/button.component';
+import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
+import { SelectComponent } from '@shared/components/select/select.component';
+import { AuthService } from '@shared/service/auth.service';
+import { forkJoin, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-carpooling-form',
@@ -32,7 +30,6 @@ import { forkJoin } from 'rxjs';
   imports: [
     CommonModule,
     FormsModule,
-    InputIconComponent,
     ButtonComponent,
     ConfirmationPopupComponent,
     SelectComponent,
@@ -41,6 +38,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./carpooling-form.component.scss'],
 })
 export class CarpoolingFormComponent implements OnInit, OnDestroy {
+  // Injection des services nécessaires pour la gestion des données
   private readonly router = inject(Router);
   private readonly carPoolingService = inject(CarPoolingControllerService);
   private readonly serviceVehicleService = inject(
@@ -52,17 +50,19 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
   private readonly siteControllerService = inject(SiteControllerService);
   private readonly authService = inject(AuthService);
 
-  private subscriptions: Subscription[] = [];
+  private subscriptions: Subscription[] = []; // Stocke les abonnements à un observable pour pouvoir les désabonner plus tard.
 
+  // Données du formulaire
   personalVehicles: PersonalVehicleDto[] = [];
   serviceVehicles: ServiceVehicleDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
   availableVehicles: { id: number; label: string }[] = [];
 
+  // Indicateur pour afficher le popup de confirmation
   showConfirmationPopup = signal(false);
 
+  // Définition des champs du formulaire
   departureTime: string = '';
-
   carpooling: CarPoolingCreateDto = {
     departureSiteId: undefined,
     destinationSiteId: undefined,
@@ -71,22 +71,22 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
     organizerId: this.authService.getUserId() ?? undefined,
   };
 
-  @Output() created = new EventEmitter<CarPoolingCreateDto>();
-  @Input() initialData?: CarPoolingCreateDto;
+  @Output() created = new EventEmitter<CarPoolingCreateDto>(); // Émet l'objet de covoiturage créé
+  @Input() initialData?: CarPoolingCreateDto; // Données initiales envoyées au composant
 
-  // Méthode d'initialisation : Chargement des véhicules et sites au démarrage
+  // Méthode d'initialisation
   ngOnInit(): void {
     // Chargement des données en parallèle avec forkJoin pour optimiser les appels API
     forkJoin([
-      this.personalVehiclesService.getPersonalVehiclesByUserId(),
-      this.serviceVehicleService.getAllServiceVehicles(),
-      this.siteControllerService.getAllSites(),
+      this.personalVehiclesService.getPersonalVehiclesByUserId(), // Appel API pour les véhicules personnels
+      this.serviceVehicleService.getAllServiceVehicles(), // Appel API pour les véhicules de service
+      this.siteControllerService.getAllSites(), // Appel API pour les sites
     ]).subscribe(
       ([personalVehicles, serviceVehicles, sites]) => {
         this.personalVehicles = personalVehicles;
         this.serviceVehicles = serviceVehicles;
         this.siteCreateDtos = sites;
-        this.updateAvailableVehicles(); // Met à jour les véhicules disponibles
+        this.updateAvailableVehicles(); // Met à jour la liste des véhicules disponibles
       },
       (error) => {
         console.error('Erreur lors du chargement des données :', error);
@@ -94,43 +94,42 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
     );
   }
 
+  // Méthode de nettoyage (désabonnement des observables)
   ngOnDestroy(): void {
-    this.subscriptions.forEach((sub) => sub.unsubscribe());
+    this.subscriptions.forEach((sub) => sub.unsubscribe()); // Désabonne tous les abonnements lorsque le composant est détruit
   }
 
+  // Met à jour la liste des véhicules disponibles en combinant les véhicules personnels et de service
   private updateAvailableVehicles(): void {
     this.availableVehicles = [
       ...this.personalVehicles.map((v) => ({
         id: v.id!,
-        label: `[Perso] ${v.description ?? ''} ${v.color ?? ''}`.trim(),
+        label: `vehicule Personelle: ${v.description ?? ''} ${
+          v.color ?? ''
+        }`.trim(),
       })),
       ...this.serviceVehicles.map((v) => ({
         id: v.id!,
-        label: `[Service] ${v.model?.mark ?? ''} ${
+        label: `Vehicule de Service: ${v.model?.mark ?? ''} ${
           v.model?.modelName ?? ''
         }`.trim(),
       })),
     ];
   }
 
-  private isJsonString(str: string): boolean {
-    try {
-      JSON.parse(str);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
+  // Méthode déclenchée lors de la soumission du formulaire
   onSubmit(): void {
-    this.showConfirmationPopup.set(true); // Affiche le popup de confirmation
+    this.showConfirmationPopup.set(true); // Affiche le popup de confirmation avant soumission
   }
 
+  // Méthode pour annuler la soumission et revenir à la liste des covoiturages
   onAbort(): void {
-    this.router.navigate(['/carpooling']); // Redirige vers la liste des covoiturages
+    this.router.navigate(['/carpooling']); // Redirige vers la page des covoiturages
   }
 
+  // Méthode pour confirmer la soumission du covoiturage
   confirmSubmit = (): void => {
+    // Vérifie si tous les champs obligatoires sont remplis
     if (
       !this.carpooling.departureSiteId ||
       !this.carpooling.destinationSiteId ||
@@ -141,14 +140,17 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
       return;
     }
 
+    // Validation de la date de départ
     const departureDate = new Date(this.carpooling.departure);
     if (isNaN(departureDate.getTime())) {
       alert('Date de départ invalide.');
       return;
     }
 
+    // Calcul de la date d'arrivée (ajoute 1 heure)
     const arrivalDate = new Date(departureDate.getTime() + 60 * 60 * 1000); // Durée de 1 heure
 
+    // Préparation des données à envoyer à l'API
     const carpoolingForApi: CarPoolingCreateDto = {
       ...this.carpooling,
       departure: departureDate.toISOString(),
@@ -158,30 +160,21 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
       distance: 60,
       organizerId: this.authService.getUserId() ?? undefined,
     };
-    console.log('📅 Date de départ :', carpoolingForApi.departure);
 
-    console.log('📤 Données envoyées :', JSON.stringify(carpoolingForApi));
-
+    // Envoi de la demande à l'API pour créer un covoiturage
     const sub = this.carPoolingService
       .createCarPooling(carpoolingForApi)
       .subscribe({
         next: (res) => {
           console.log('✅ Covoiturage créé :', res);
-          this.created.emit(carpoolingForApi); // Émettre l'objet créé
-          this.showConfirmationPopup.set(false); // Fermer le popup de confirmation
+          this.created.emit(carpoolingForApi); // Émet l'objet créé vers le parent
+          this.showConfirmationPopup.set(false); // Ferme le popup de confirmation
           this.router.navigate(['/carpooling']); // Redirige vers la liste des covoiturages
         },
         error: async (err) => {
           let message = 'Erreur inconnue';
 
           if (err.error instanceof Blob) {
-            const text = await err.error.text();
-            if (this.isJsonString(text)) {
-              const parsed = JSON.parse(text);
-              message = parsed.message ?? text;
-            } else {
-              message = text;
-            }
           } else if (typeof err.error === 'string') {
             message = err.error;
           } else if (err.error?.message) {
@@ -190,14 +183,15 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
             message = JSON.stringify(err.error ?? err);
           }
           console.error('❌ Erreur création covoiturage :', message);
-          alert(`Erreur création covoiturage : ${message}`);
+          alert('Erreur création covoiturage');
         },
       });
 
-    this.subscriptions.push(sub);
-    this.showConfirmationPopup.set(false);
+    this.subscriptions.push(sub); // Ajoute l'abonnement à la liste pour pouvoir le désabonner plus tard
+    this.showConfirmationPopup.set(false); // Ferme le popup de confirmation
   };
 
+  // Annule la soumission et redirige vers la liste des covoiturages
   cancelSubmit = (): void => {
     this.router.navigate(['/carpooling']);
   };

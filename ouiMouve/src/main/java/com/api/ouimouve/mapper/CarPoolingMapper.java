@@ -1,13 +1,10 @@
 package com.api.ouimouve.mapper;
 
 import com.api.ouimouve.bo.CarPooling;
-import com.api.ouimouve.bo.User;
 import com.api.ouimouve.dto.CarPoolingCreateDto;
 import com.api.ouimouve.dto.CarPoolingResponseDto;
-import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 
 /**
  * Mapper interface for CarPooling.
@@ -44,12 +41,5 @@ public abstract class CarPoolingMapper {
     @Mapping(target = "vehicle", source="vehicle") // pour éviter de charger tout un arbre d’objet inutile
     public abstract CarPoolingResponseDto toResponseDto(CarPooling entity);
 
-    @AfterMapping
-    protected void linkOrganizer(CarPoolingCreateDto dto, @MappingTarget CarPooling entity) {
-        if (dto.getOrganizerId() != null) {
-            User organizer = new User();
-            organizer.setId(dto.getOrganizerId());
-            entity.setOrganizer(organizer);
-        }
-    }
+
 }
