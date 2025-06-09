@@ -24,6 +24,7 @@ import { SiteControllerService, SiteCreateDto } from '@openapi/index';
 import { AuthService } from '@shared/service/auth.service';
 import { ConfirmationPopupComponent } from '@shared/components/confirmation-popup/confirmation-popup.component';
 import { Router } from '@angular/router';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-carpooling-form',
@@ -37,7 +38,7 @@ import { Router } from '@angular/router';
     SelectComponent,
   ],
   templateUrl: './carpooling-form.component.html',
-  styleUrl: './carpooling-form.component.scss',
+  styleUrls: ['./carpooling-form.component.scss'],
 })
 export class CarpoolingFormComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);
@@ -56,7 +57,6 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
   personalVehicles: PersonalVehicleDto[] = [];
   serviceVehicles: ServiceVehicleDto[] = [];
   siteCreateDtos: SiteCreateDto[] = [];
-
   availableVehicles: { id: number; label: string }[] = [];
 
   showConfirmationPopup = signal(false);
@@ -74,77 +74,28 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
   @Output() created = new EventEmitter<CarPoolingCreateDto>();
   @Input() initialData?: CarPoolingCreateDto;
 
+  // Méthode d'initialisation : Chargement des véhicules et sites au démarrage
   ngOnInit(): void {
-    this.loadPersonalVehicles();
-    this.loadServiceVehicles();
-    this.loadSites();
-
-    if (this.carpooling.departure) {
-      const date = new Date(this.carpooling.departure);
-      this.departureTime = date.toISOString().substring(11, 16);
-    }
+    // Chargement des données en parallèle avec forkJoin pour optimiser les appels API
+    forkJoin([
+      this.personalVehiclesService.getPersonalVehiclesByUserId(),
+      this.serviceVehicleService.getAllServiceVehicles(),
+      this.siteControllerService.getAllSites(),
+    ]).subscribe(
+      ([personalVehicles, serviceVehicles, sites]) => {
+        this.personalVehicles = personalVehicles;
+        this.serviceVehicles = serviceVehicles;
+        this.siteCreateDtos = sites;
+        this.updateAvailableVehicles(); // Met à jour les véhicules disponibles
+      },
+      (error) => {
+        console.error('Erreur lors du chargement des données :', error);
+      }
+    );
   }
 
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe());
-  }
-
-  private loadPersonalVehicles(): void {
-    const sub = this.personalVehiclesService
-      .getPersonalVehiclesByUserId(undefined, undefined, {
-        httpHeaderAccept: '*/*',
-      })
-      .subscribe({
-        next: async (resp: any) => {
-          const data =
-            resp instanceof Blob ? JSON.parse(await resp.text()) : resp;
-          this.personalVehicles = data;
-          this.updateAvailableVehicles();
-        },
-        error: (err) =>
-          console.error('Erreur chargement véhicules perso :', err),
-      });
-    this.subscriptions.push(sub);
-  }
-
-  private loadServiceVehicles(): void {
-    const sub = this.serviceVehicleService
-      .getAllServiceVehicles(undefined, undefined, {
-        httpHeaderAccept: '*/*',
-      })
-      .subscribe({
-        next: async (resp: any) => {
-          const data =
-            resp instanceof Blob ? JSON.parse(await resp.text()) : resp;
-          this.serviceVehicles = data;
-          this.updateAvailableVehicles();
-        },
-        error: (err) =>
-          console.error('Erreur chargement véhicules service :', err),
-      });
-    this.subscriptions.push(sub);
-  }
-
-  private loadSites(): void {
-    const sub = this.siteControllerService
-      .getAllSites(undefined, undefined, {
-        httpHeaderAccept: '*/*',
-      })
-      .subscribe({
-        next: async (resp: any) => {
-          const data =
-            resp instanceof Blob ? JSON.parse(await resp.text()) : resp;
-          this.siteCreateDtos = data;
-          // 📍 Afficher longitude et latitude de chaque site
-          data.forEach((site: any) => {
-            console.log(
-              `Site: ${site.name}, Longitude: ${site.longY}, Latitude: ${site.latX}`
-            );
-          });
-        },
-        error: (err) => console.error('Erreur chargement sites :', err),
-      });
-    this.subscriptions.push(sub);
   }
 
   private updateAvailableVehicles(): void {
@@ -162,35 +113,24 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
     ];
   }
 
-  updateDepartureTime(): void {
-    const raw = this.carpooling.departure;
-    if (!raw) return;
-    const date = new Date(raw);
-    if (isNaN(date.getTime())) return;
-
-    if (this.departureTime) {
-      const [hours, minutes] = this.departureTime.split(':');
-      date.setHours(+hours);
-      date.setMinutes(+minutes);
-      date.setSeconds(0);
-      date.setMilliseconds(0);
+  private isJsonString(str: string): boolean {
+    try {
+      JSON.parse(str);
+      return true;
+    } catch (e) {
+      return false;
     }
-
-    // Format pour l'input HTML
-    this.carpooling.departure = date.toISOString().slice(0, 16);
   }
 
   onSubmit(): void {
-    this.showConfirmationPopup.set(true);
+    this.showConfirmationPopup.set(true); // Affiche le popup de confirmation
   }
 
   onAbort(): void {
-    this.router.navigate(['/carpooling']);
+    this.router.navigate(['/carpooling']); // Redirige vers la liste des covoiturages
   }
 
   confirmSubmit = (): void => {
-    this.updateDepartureTime();
-
     if (
       !this.carpooling.departureSiteId ||
       !this.carpooling.destinationSiteId ||
@@ -201,57 +141,46 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Créer des dates à partir des valeurs du formulaire
     const departureDate = new Date(this.carpooling.departure);
     if (isNaN(departureDate.getTime())) {
       alert('Date de départ invalide.');
       return;
     }
 
-    const arrivalDate = new Date(departureDate.getTime() + 60 * 60 * 1000);
+    const arrivalDate = new Date(departureDate.getTime() + 60 * 60 * 1000); // Durée de 1 heure
 
-    // Créer un nouvel objet pour l'envoi à l'API avec les dates au format ISO complet
     const carpoolingForApi: CarPoolingCreateDto = {
       ...this.carpooling,
-      departure: departureDate.toISOString(), // Format ISO complet avec Z pour l'API
-      arrival: arrivalDate.toISOString(), // Format ISO complet avec Z pour l'API
+      departure: departureDate.toISOString(),
+      arrival: arrivalDate.toISOString(),
       durationInMinutes: 60,
-      status: 'IN_PROGRESS', // Ajout du statut pour correspondre à l'exemple JSON
-      distance: 60, // Ajout de la distance pour correspondre à l'exemple JSON
+      status: 'IN_PROGRESS',
+      distance: 60,
       organizerId: this.authService.getUserId() ?? undefined,
     };
+    console.log('📅 Date de départ :', carpoolingForApi.departure);
 
     console.log('📤 Données envoyées :', JSON.stringify(carpoolingForApi));
 
-    function isJsonString(str: string): boolean {
-      try {
-        JSON.parse(str);
-        return true;
-      } catch (e) {
-        return false;
-      }
-    }
-
     const sub = this.carPoolingService
-      .createCarPooling(carpoolingForApi) // Utiliser le nouvel objet pour l'API
+      .createCarPooling(carpoolingForApi)
       .subscribe({
         next: (res) => {
           console.log('✅ Covoiturage créé :', res);
-          this.created.emit(carpoolingForApi); // Émettre l'objet avec les dates au format ISO
-          this.showConfirmationPopup.set(false);
-          this.router.navigate(['/carpooling']);
+          this.created.emit(carpoolingForApi); // Émettre l'objet créé
+          this.showConfirmationPopup.set(false); // Fermer le popup de confirmation
+          this.router.navigate(['/carpooling']); // Redirige vers la liste des covoiturages
         },
         error: async (err) => {
           let message = 'Erreur inconnue';
 
           if (err.error instanceof Blob) {
             const text = await err.error.text();
-
-            if (isJsonString(text)) {
+            if (this.isJsonString(text)) {
               const parsed = JSON.parse(text);
               message = parsed.message ?? text;
             } else {
-              message = text; // Ici, c'est juste du texte "La date de..."
+              message = text;
             }
           } else if (typeof err.error === 'string') {
             message = err.error;
@@ -260,8 +189,8 @@ export class CarpoolingFormComponent implements OnInit, OnDestroy {
           } else {
             message = JSON.stringify(err.error ?? err);
           }
-
           console.error('❌ Erreur création covoiturage :', message);
+          alert(`Erreur création covoiturage : ${message}`);
         },
       });
 

@@ -1,5 +1,5 @@
 <section class="carpooling-container">
-  <form #carpoolingForm="ngForm" (ngSubmit)="onSubmit()">
+  <form #carpoolingForm="ngForm">
     <div class="field-group">
       <app-select
         class="select-vehicle"
@@ -70,13 +70,15 @@
         [required]="true"
       ></app-select>
     </div>
+
     <div class="buttons">
       <app-button
         class="btn btn-create red"
         [color]="'red'"
         [label]="'Créer'"
-        (click)="confirmSubmit()"
+        (click)="onSubmit()"
       ></app-button>
+
       <app-button
         class="btn btn-cancel gray"
         [color]="'gray'"
